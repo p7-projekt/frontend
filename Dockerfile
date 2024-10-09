@@ -9,9 +9,9 @@ RUN  apt-get update \
 
 WORKDIR /home/ubuntu/frontend
 
-RUN npx svelte-add@latest tailwindcss && npm install
-
 COPY . .
+
+RUN npx svelte-add@latest tailwindcss && npm install
 
 CMD ["npm", "run", "dev", "--", "--host"]
 

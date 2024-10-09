@@ -5,7 +5,7 @@
 Navigate the root of the frontend project and run
 
 ```bash
-docker compose up -d
+docker-compose up --build -d
 ```
 
 Go to localhost:5173
