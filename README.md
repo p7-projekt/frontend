@@ -1,8 +1,31 @@
-# create-svelte
+# Local Docker for Development
+
+## Docker compose
+
+Navigate the root of the frontend project and run
+
+```bash
+docker compose up -d
+```
+
+Go to localhost:5173
+
+The container is created with bind mounts to the root of the project, which allow to see your changes to the file system of the project directly in the browser without reconstructing the container.
+For security reasons this docker image and container should only be used for local development.
+
+When finished, run
+
+```bash
+docker compose down
+```
+
+# Or install locally
+
+## create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
 
-## Creating a project
+### Creating a project
 
 If you're seeing this, you've probably already done this step. Congrats!
 
@@ -14,7 +37,7 @@ npm create svelte@latest
 npm create svelte@latest my-app
 ```
 
-## Developing
+### Developing
 
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
@@ -25,7 +48,7 @@ npm run dev
 npm run dev -- --open
 ```
 
-## Building
+### Building
 
 To create a production version of your app:
 
