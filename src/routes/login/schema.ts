@@ -1,7 +1,9 @@
 import { z } from "zod";
- 
+
 export const formSchema = z.object({
- username: z.string().min(2).max(50),
+//temp random validation #esbenlove
+  email: z.string().email("Invalid email").min(5).max(50),
+  password: z.string().max(100),
 });
- 
+
 export type FormSchema = typeof formSchema;

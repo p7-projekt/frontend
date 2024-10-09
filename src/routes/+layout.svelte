@@ -1,6 +1,13 @@
 <script>
     import "../app.css"; 
-  </script>
-  
-  <slot />
+</script>
+
+<style lang="postcss">
+  :global(body) {
+    @apply bg-cyan-500;
+  }
+</style>
+
+
+<slot />
    
