@@ -4,8 +4,10 @@
 	import Footer from '$components/Layout/Footer.svelte';
 </script>
 
-<div class="grid grid-rows-[1fr_auto] min-h-screen">
+<div class="grid grid-rows-[auto_1fr_auto] min-h-screen">
 	<Header />
-	<slot />
+	<main>
+		<slot />
+	</main>
 	<Footer />
 </div>
