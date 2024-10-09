@@ -13,7 +13,6 @@ COPY . .
 
 RUN npx svelte-add@latest tailwindcss && npm install
 
-ENTRYPOINT ["docker-entrypoint.sh"]
 
 CMD ["npm", "run", "dev", "--", "--host"]
 
