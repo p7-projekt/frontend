@@ -15,7 +15,7 @@
      validators: zodClient(formSchema),
     });
     
-    const { form: formData, enhance } = form;
+    const { form: formData, enhance, errors } = form;
    </script>
     
     <form method="POST" use:enhance>
@@ -38,7 +38,7 @@
             <Form.Description>Enter your password to log in.</Form.Description>
             <Form.FieldErrors />
         </Form.Field>
-    
+        {#if $errors.email}<span class="invalid">{$errors.email}</span>{/if}    
         <Form.Button>Login</Form.Button>
     </form>
     
