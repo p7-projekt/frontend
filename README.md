@@ -10,9 +10,6 @@ docker-compose up --build -d
 
 Go to localhost:5173
 
-The container is created with bind mounts to the root of the project, which allow to see your changes to the file system of the project directly in the browser without reconstructing the container.
-For security reasons this docker image and container should only be used for local development.
-
 When finished, run
 
 ```bash
