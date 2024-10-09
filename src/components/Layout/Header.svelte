@@ -5,7 +5,7 @@
  e.g. SPACING SYSTEM (px)
 2 / 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 80 / 96 / 128 
 -->
-<header class="flex py-4 px-4 sm:px-5 bg-white min-h-[70px] tracking-wide relative z-50">
+<header class="py-4 px-4 sm:px-5 bg-white min-h-[70px] tracking-wide relative z-50">
 	<div class="grid grid-cols-3 justify-between gap-4 w-full">
 		<a href="/" class="font-medium text-[18px]"> Home</a>
 
@@ -17,7 +17,7 @@
 			</div>
 			<a
 				href="/signup"
-				class="text-[18px] px-4 py-2 text-sm rounded-sm font-bold text-white border-2 border-[#0b7285] bg-[#0b7285] transition-all ease-in-out duration-300 hover:bg-transparent hover:text-[#0b7285]"
+				class="text-[18px] px-4 py-2 text-sm rounded-sm font-bold text-white border-2 border-[#1f2937] bg-[#1f2937] transition-all ease-in-out duration-300 hover:bg-transparent hover:text-[#1f2937]"
 				>Sign up</a
 			>
 		</div>
