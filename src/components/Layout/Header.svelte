@@ -1,6 +1,12 @@
-<script>
+<script lang="ts">
+	import * as Avatar from '$lib/components/ui/avatar';
+	export let preloadImage = '/default_profile.png';
 	export let user;
 </script>
+
+<svelte:head>
+	<link rel="preload" href={preloadImage} as="image" />
+</svelte:head>
 
 <!-- 
  - Font sizes (px)
@@ -17,6 +23,12 @@
 
 		{#if user.role === 3}
 			<div class="flex items-center ml-auto space-x-6">
+				<div
+					class="text-[18px] px-4 py-2 text-sm rounded-sm font-bold text-white border-2 border-[#1f2937] bg-[#1f2937] transition-all ease-in-out duration-300 hover:bg-transparent hover:text-[#1f2937]"
+				>
+					<a href="/login">Login</a>
+				</div>
+				<!-- <div class="flex items-center ml-auto space-x-6">
 				<div class="font-medium text-[18px] border-none outline-none">
 					<a href="/login">Login</a>
 				</div>
@@ -24,7 +36,14 @@
 					href="/signup"
 					class="text-[18px] px-4 py-2 text-sm rounded-sm font-bold text-white border-2 border-[#1f2937] bg-[#1f2937] transition-all ease-in-out duration-300 hover:bg-transparent hover:text-[#1f2937]"
 					>Sign up</a
-				>
+				> -->
+			</div>
+		{:else}
+			<div class="flex items-center ml-auto space-x-6">
+				<p>Hello {user.name}</p>
+				<Avatar.Root>
+					<Avatar.Fallback><img src={preloadImage} alt="Profile picture" /></Avatar.Fallback>
+				</Avatar.Root>
 			</div>
 		{/if}
 	</div>
