@@ -1,4 +1,7 @@
 <script>
+	import PrimaryButton from "../components/Buttons/PrimaryButton.svelte";
+	import SecondaryButton from "../components/Buttons/SecondaryButton.svelte";
+
 </script>
 
 <h1>Welcome to SvelteKit</h1>
