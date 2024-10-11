@@ -5,7 +5,7 @@
 </script>
 
 <div class="grid gap-1.5">
-	<Label class="text-base" for="message">{description_name} Description</Label>
+	<Label class="text-base pl-1" for="message">{description_name} Description</Label>
 	<Textarea placeholder="Type your message here." id="message" />
 </div>
 

@@ -1,6 +1,7 @@
 <script>
 	import DescriptionBox from '$components/Textarea/DescriptionBox.svelte';
 	import TitleInput from '$components/Input/TitleInput.svelte';
+	import ExerciseList from '$components/ExerciseList/ExerciseList.svelte';
 </script>
 
 <div class="grid grid-cols-2 text-[#333] mt-3">
@@ -8,5 +9,6 @@
 		<h1 class="text-2xl font-semibold">Create Session</h1>
 		<TitleInput />
 		<DescriptionBox />
+		<ExerciseList />
 	</div>
 </div>

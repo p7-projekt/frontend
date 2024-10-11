@@ -5,6 +5,6 @@
 </script>
 
 <div class="grid gap-1.5">
-	<Label class="text-base" for="message">{title_name} Title</Label>
+	<Label class="text-base pl-1" for="message">{title_name} Title</Label>
 	<Input />
 </div>
