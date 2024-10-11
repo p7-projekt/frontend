@@ -5,8 +5,6 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-
-	console.log(data.user);
 </script>
 
 <div class="grid grid-rows-[auto_1fr_auto] min-h-screen">
