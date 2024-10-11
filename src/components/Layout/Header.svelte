@@ -1,12 +1,7 @@
 <script lang="ts">
-	import * as Avatar from '$lib/components/ui/avatar';
-	export let preloadImage = '/default_profile.png';
+	import ProfileDropdown from '$components/DropdownMenus/ProfileDropdown.svelte';
 	export let user;
 </script>
-
-<svelte:head>
-	<link rel="preload" href={preloadImage} as="image" />
-</svelte:head>
 
 <!-- 
  - Font sizes (px)
@@ -17,9 +12,13 @@
 -->
 <header class="py-4 px-4 sm:px-5 bg-white min-h-[70px] tracking-wide relative z-50">
 	<div class="grid grid-cols-3 justify-between gap-4 w-full">
-		<a href="/" class="font-medium text-[18px]"> Home</a>
+		<div>
+			<a href="/" class="inline-block font-medium text-[18px]">Home</a>
+		</div>
 
-		<a href="/session" class="text-center font-medium text-[18px]">Session</a>
+		<div class="text-center">
+			<a href="/session" class=" font-medium text-[18px]">Session</a>
+		</div>
 
 		{#if user.role === 3}
 			<div class="flex items-center ml-auto space-x-6">
@@ -41,13 +40,8 @@
 		{:else}
 			<div class="flex items-center ml-auto space-x-6">
 				<p>Hello {user.name}</p>
-				<Avatar.Root>
-					<Avatar.Fallback><img src={preloadImage} alt="Profile picture" /></Avatar.Fallback>
-				</Avatar.Root>
+				<ProfileDropdown />
 			</div>
 		{/if}
 	</div>
 </header>
-
-<style>
-</style>
