@@ -19,12 +19,12 @@ export const actions: Actions = {
         return fail(400, { form });
       }
   
-      // Extract the email and password from the form data
+      // Extract the email and password 
       const { email, password } = form.data;
   
       console.log('email', email);
 
-      // Make a POST request to your C# backend
+      // Make a POST request to backend
       const response = await fetch(backendUrl+'/login', {
         method: 'POST',
         headers: {
