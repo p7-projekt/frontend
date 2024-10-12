@@ -3,6 +3,7 @@
     import * as Card from "$lib/components/ui/card/index.js";
     import { Input } from "$lib/components/ui/input/index.js";
     import { Label } from "$lib/components/ui/label/index.js";
+    import * as Select from "$lib/components/ui/select/index.js";
     import { writable } from 'svelte/store';
 
     export let TCNumber: number;
@@ -13,6 +14,11 @@
     let testName = writable(""); 
     let inputParameters = writable(Inputs);
     let outputParameters = writable(Outputs);
+
+    const types = [
+        { value: "String", label: "String" },
+        { value: "Integer", label: "Integer" }
+    ];
 
     // Function to add a new input parameter
     function addInput() {
@@ -46,17 +52,33 @@
         });
     }
 
+    // Validation function for checking integer type
+    function validateValue(input: any) {
+        if (input.type === 'Integer') {
+            return /^\d+$/.test(input.value); // Check if the value is a valid integer
+        }
+        return true;
+    }
+
     // Function to handle the form submission
     function createTestCase() {
-        const testCase = {
-            id: TCNumber, 
-            parameters: {
-                input: $inputParameters,
-                output: $outputParameters
-            }
-        };
-        console.log("Test Case Created: ", testCase);
-        // You can add logic here to save or send this data as needed
+        console.log("Test Case Created: ", $inputParameters, $outputParameters);
+        
+        // const validInputs = $inputParameters.every(validateValue);
+        
+        // if (validInputs) {
+        //     const testCase = {
+        //         id: TCNumber, 
+        //         parameters: {
+        //             input: $inputParameters,
+        //             output: $outputParameters
+        //         }
+        //     };
+        //     console.log("Test Case Created: ", testCase);
+        //     // You can add logic here to save or send this data as needed
+        // } else {
+        //     console.error("Invalid input: Please ensure all integers are valid numbers.");
+        // }
     }
 </script>
 
@@ -73,8 +95,29 @@
                     <Label>Input Parameters</Label>
                     {#each $inputParameters as input, index}
                         <div class="flex space-x-2 items-center">
-                            <Input bind:value={input.type} placeholder="Type" />
-                            <Input bind:value={input.value} placeholder="Value" />
+                            <!-- Type Select -->
+                            <Select.Root portal={null}>
+                                <Select.Trigger class="w-[120px]">
+                                    <Select.Value placeholder="Type" />
+                                </Select.Trigger>
+                                <Select.Content>
+                                    <Select.Group>
+                                        <Select.Label>Types</Select.Label>
+                                        {#each types as type}
+                                            <Select.Item on:click={() =>input.type = type.value} value={type.value}>{type.label}</Select.Item>
+                                        {/each}
+                                    </Select.Group>
+                                </Select.Content>
+                                <Select.Input name="inputType" />
+                            </Select.Root>
+
+                            <!-- Value Input -->
+                            <Input bind:value={input.value} placeholder="Value" class={input.type === 'Integer' && !/^\d+$/.test(input.value) ? 'border-red-500' : ''} />
+                            {#if input.type === 'Integer' && !/^\d+$/.test(input.value)}
+                                <span class="text-red-500">Invalid Integer</span>
+                            {/if}
+
+                            <!-- Remove Button -->
                             <Button type="button" on:click={() => removeInput(index)}>Remove</Button>
                         </div>
                     {/each}
@@ -86,8 +129,29 @@
                     <Label>Output Parameters</Label>
                     {#each $outputParameters as output, index}
                         <div class="flex space-x-2 items-center">
-                            <Input bind:value={output.type} placeholder="Type" />
-                            <Input bind:value={output.value} placeholder="Value" />
+                            <!-- Type Select -->
+                            <Select.Root portal={null}>
+                                <Select.Trigger class="w-[120px]">
+                                    <Select.Value placeholder="Type" />
+                                </Select.Trigger>
+                                <Select.Content>
+                                    <Select.Group>
+                                        <Select.Label>Types</Select.Label>
+                                        {#each types as type}
+                                            <Select.Item value={type.value}>{type.label}</Select.Item>
+                                        {/each}
+                                    </Select.Group>
+                                </Select.Content>
+                                <Select.Input name="outputType" />
+                            </Select.Root>
+
+                            <!-- Value Input -->
+                            <Input bind:value={output.value} placeholder="Value" class={output.type === 'Integer' && !/^\d+$/.test(output.value) ? 'border-red-500' : ''} />
+                            {#if output.type === 'Integer' && !/^\d+$/.test(output.value)}
+                                <span class="text-red-500">Invalid Integer</span>
+                            {/if}
+
+                            <!-- Remove Button -->
                             <Button type="button" on:click={() => removeOutput(index)}>Remove</Button>
                         </div>
                     {/each}
@@ -101,3 +165,5 @@
         <Button type="submit" on:click={createTestCase}>Create</Button>
     </Card.Footer>
 </Card.Root>
+
+<Button on:click={createTestCase}>Create</Button>
