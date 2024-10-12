@@ -7,11 +7,11 @@
     import { writable } from 'svelte/store';
     import CircleAlert from "lucide-svelte/icons/circle-alert";
     import * as Alert from "$lib/components/ui/alert/index.js";
-	import PrimaryButton from "$components/Buttons/PrimaryButton.svelte";
+    import PrimaryButton from "$components/Buttons/PrimaryButton.svelte";
 
     export let TCNumber: number;
-    export let Inputs: { type: string; value: string; argNumber: number }[] = [];
-    export let Outputs: { type: string; value: string; argNumber: number }[] = [];
+    export let Inputs: { type: string; value: string; argNumber: number, isInput: boolean }[] = [];
+    export let Outputs: { type: string; value: string; argNumber: number, isInput: boolean }[] = [];
 
     // Writable stores to hold inputs and outputs
     let testName = writable(""); 
@@ -30,7 +30,7 @@
     function addInput() {
         inputParameters.update(inputs => [
             ...inputs, 
-            { type: '', value: '', argNumber: inputs.length } // Set argNumber to current length (index)
+            { type: '', value: '', argNumber: inputs.length, isInput: true } // Add isInput attribute
         ]);
     }
 
@@ -38,7 +38,7 @@
     function addOutput() {
         outputParameters.update(outputs => [
             ...outputs, 
-            { type: '', value: '', argNumber: outputs.length } // Set argNumber to current length (index)
+            { type: '', value: '', argNumber: outputs.length, isInput: false } // Add isInput attribute
         ]);
     }
 
@@ -69,8 +69,10 @@
     // Function to handle the form submission
     function createTestCase() { 
         const validInputs = $inputParameters.every(validateIntegerValue);
-        
-        if (validInputs) {
+        const hasInputs = $inputParameters.length > 0; // Check for at least one input
+        const hasOutputs = $outputParameters.length > 0; // Check for at least one output
+
+        if (validInputs && hasInputs && hasOutputs) {
             const testCase = {
                 id: TCNumber, 
                 parameters: {
@@ -79,10 +81,9 @@
                 }
             };
             console.log("Test Case Created: ", testCase);
-            // You can add logic here to save or send this data as needed
             showAlert.set(false); // Hide alert when inputs are valid
         } else {
-            // Show alert when there is invalid input
+            // Show alert when there is invalid input or missing inputs/outputs
             showAlert.set(true);
         }
     }
@@ -110,7 +111,7 @@
                                     <Select.Group>
                                         <Select.Label>Types</Select.Label>
                                         {#each types as type}
-                                            <Select.Item on:click={() =>input.type = type.value} value={type.value}>{type.label}</Select.Item>
+                                            <Select.Item on:click={() => input.type = type.value} value={type.value}>{type.label}</Select.Item>
                                         {/each}
                                     </Select.Group>
                                 </Select.Content>
@@ -144,7 +145,7 @@
                                     <Select.Group>
                                         <Select.Label>Types</Select.Label>
                                         {#each types as type}
-                                            <Select.Item value={type.value}>{type.label}</Select.Item>
+                                            <Select.Item on:click={() => output.type = type.value} value={type.value}>{type.label}</Select.Item>
                                         {/each}
                                     </Select.Group>
                                 </Select.Content>
@@ -178,15 +179,8 @@
     <CircleAlert class="h-4 w-4" />
     <Alert.Title>Error</Alert.Title>
     <Alert.Description>
-        Invalid input: Please ensure all integers are valid numbers. 
+        Invalid input: Please ensure all integers are valid numbers, and at least one input and one output are provided.
     </Alert.Description>
     <Button on:click={() => {console.log("hello button clicked"); showAlert.set(false);}}>X</Button>
 </Alert.Root>
 {/if}
-
-
-
-
-
-
-<Button on:click={createTestCase}>Create</Button>
