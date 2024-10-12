@@ -8,7 +8,6 @@
 <h1>Welcome to SvelteKit</h1>
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
 
-<TestCase TCNumber={1}></TestCase>
 
 <!-- <PrimaryButton text="Primary Button" />
 <PrimaryButton text="Secondary Button" /> -->

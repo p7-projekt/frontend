@@ -8,8 +8,8 @@
     import CircleAlert from "lucide-svelte/icons/circle-alert";
     import * as Alert from "$lib/components/ui/alert/index.js";
     import PrimaryButton from "$components/Buttons/PrimaryButton.svelte";
+    import { testCasesStore } from '$lib/testCasesStore'; 
 
-    export let TCNumber: number;
     export let Inputs: { type: string; value: string; argNumber: number, isInput: boolean }[] = [];
     export let Outputs: { type: string; value: string; argNumber: number, isInput: boolean }[] = [];
 
@@ -69,21 +69,25 @@
     // Function to handle the form submission
     function createTestCase() { 
         const validInputs = $inputParameters.every(validateIntegerValue);
-        const hasInputs = $inputParameters.length > 0; // Check for at least one input
-        const hasOutputs = $outputParameters.length > 0; // Check for at least one output
+        const hasInputs = $inputParameters.length > 0;
+        const hasOutputs = $outputParameters.length > 0;
 
         if (validInputs && hasInputs && hasOutputs) {
-            const testCase = {
-                id: TCNumber, 
-                parameters: {
-                    input: $inputParameters,
-                    output: $outputParameters
-                }
-            };
-            console.log("Test Case Created: ", testCase);
-            showAlert.set(false); // Hide alert when inputs are valid
+            testCasesStore.update(store => {
+                const newTestCase = {
+                    id: store.idCounter + 1,
+                    parameters: {
+                        input: $inputParameters,
+                        output: $outputParameters
+                    }
+                };
+                return {
+                    idCounter: store.idCounter + 1,
+                    testCases: [...store.testCases, newTestCase]
+                };
+            });
+            showAlert.set(false);
         } else {
-            // Show alert when there is invalid input or missing inputs/outputs
             showAlert.set(true);
         }
     }
