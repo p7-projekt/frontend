@@ -1,8 +1,8 @@
 import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutServerLoad = ({ cookies }) => {
-	const real_token = cookies.get('token');
-	console.log(real_token);
+export const load: LayoutServerLoad = () => {
+	// const real_token = cookies.get('token');
+	// console.log(real_token);
 	const token = true;
 	// Get user from token (Not implemented)
 	// role: 1: (admin), 2: (instructor) and 3: (guest)
