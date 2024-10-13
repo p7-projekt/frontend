@@ -7,11 +7,13 @@
 	export let data: PageData;
 </script>
 
-<div class="grid grid-cols-2 text-[#333] mt-3">
-	<div class="grid grid-cols-1 gap-y-6 pl-6 w-4/5">
-		<h1 class="text-2xl font-semibold">Create Session</h1>
+<div class="container grid grid-cols-1 gap-y-6 pl-6 w-full text-[#333] mt-3">
+	<h1 class=" text-2xl font-semibold">Create Session</h1>
+	<div class="w-1/5">
 		<TitleInput />
-		<DescriptionBox />
-		<SessionExerciseList exercise_lists={data.exercise_lists} />
 	</div>
+	<div class="w-2/5">
+		<DescriptionBox />
+	</div>
+	<SessionExerciseList exercise_lists={data.exercise_lists} />
 </div>
