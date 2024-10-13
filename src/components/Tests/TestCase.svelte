@@ -13,6 +13,9 @@
     export let Inputs: { type: string; value: string; argNumber: number, isInput: boolean }[] = [];
     export let Outputs: { type: string; value: string; argNumber: number, isInput: boolean }[] = [];
 
+    export let isEditMode: boolean = false; // New prop to check edit mode
+    export let existingTestCase: { id: number; parameters: { input: any; output: any } } | null = null; // Prop to receive existing test case
+
     // Writable stores to hold inputs and outputs
     let testName = writable(""); 
     let inputParameters = writable(Inputs);
@@ -66,13 +69,52 @@
         return true;
     }
 
+    function submitTestCase() {
+        const validInputs = $inputParameters.every(validateIntegerValue);
+        const hasInputs = $inputParameters.length > 0;
+        const hasOutputs = $outputParameters.length > 0;
+        const hasType = $inputParameters.every(input => input.type !== '') && $outputParameters.every(output => output.type !== '');
+
+
+        if (validInputs && hasInputs && hasOutputs && hasType) {
+            testCasesStore.update(store => {
+                if (isEditMode && existingTestCase) {
+                    // Update the existing test case
+                    const updatedTestCases = store.testCases.map(tc => 
+                        tc.id === existingTestCase.id
+                        ? { ...tc, parameters: { input: $inputParameters, output: $outputParameters } }
+                        : tc
+                    );
+                    return { ...store, testCases: updatedTestCases };
+                } else {
+                    // Create a new test case
+                    const newTestCase = {
+                        id: store.idCounter + 1,
+                        parameters: {
+                            input: $inputParameters,
+                            output: $outputParameters
+                        }
+                    };
+                    return {
+                        idCounter: store.idCounter + 1,
+                        testCases: [...store.testCases, newTestCase]
+                    };
+                }
+            });
+            showAlert.set(false);
+        } else {
+            showAlert.set(true);
+        }
+    }
+
     // Function to handle the form submission
     function createTestCase() { 
         const validInputs = $inputParameters.every(validateIntegerValue);
         const hasInputs = $inputParameters.length > 0;
         const hasOutputs = $outputParameters.length > 0;
+        const hasType = $inputParameters.every(input => input.type !== '') && $outputParameters.every(output => output.type !== '');
 
-        if (validInputs && hasInputs && hasOutputs) {
+        if (validInputs && hasInputs && hasOutputs && hasType) {
             testCasesStore.update(store => {
                 const newTestCase = {
                     id: store.idCounter + 1,
@@ -95,11 +137,11 @@
 
 <Card.Root class="w-[350px]">
     <Card.Header>
-        <Card.Title>Create Test Case</Card.Title>
-        <Card.Description>Select inputs, types, and outputs.</Card.Description>
+        <Card.Title>{isEditMode ? 'Edit Test Case' : 'Create Test Case'}</Card.Title>
+        <Card.Description>{isEditMode ? 'Edit the selected test case.' : 'Select inputs, types, and outputs.'}</Card.Description>
     </Card.Header>
     <Card.Content>
-        <form on:submit|preventDefault={createTestCase}>
+        <form on:submit|preventDefault={submitTestCase}>
             <div class="grid w-full items-center gap-4">
                 <!-- Input Parameters -->
                 <div class="flex flex-col space-y-1.5">
@@ -173,7 +215,7 @@
     </Card.Content>
     <Card.Footer class="flex justify-between">
         <Button variant="outline">Cancel</Button>
-        <Button type="submit" on:click={createTestCase}>Create</Button>
+        <Button type="submit" on:click={submitTestCase}>{isEditMode ? 'Update' : 'Create'}</Button>
     </Card.Footer>
 </Card.Root>
 
@@ -183,7 +225,7 @@
     <CircleAlert class="h-4 w-4" />
     <Alert.Title>Error</Alert.Title>
     <Alert.Description>
-        Invalid input: Please ensure all integers are valid numbers, and at least one input and one output are provided.
+        Invalid input: Please ensure all integers are valid numbers, each parameter has a type, and at least one input and one output are provided.
     </Alert.Description>
     <Button on:click={() => {console.log("hello button clicked"); showAlert.set(false);}}>X</Button>
 </Alert.Root>
