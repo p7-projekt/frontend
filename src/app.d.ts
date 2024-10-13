@@ -7,12 +7,6 @@ declare global {
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
-
-		// Custom interfaces:
-		interface ExerciseItem {
-			id: int;
-			title: string;
-		}
 	}
 }
 
