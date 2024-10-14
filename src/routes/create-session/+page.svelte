@@ -1,13 +1,18 @@
 <script lang="ts">
 	import DescriptionBox from '$components/Textarea/DescriptionBox.svelte';
 	import TitleInput from '$components/Input/TitleInput.svelte';
-	import SessionExerciseList from './SessionExerciseList.svelte';
+	import ExerciseList from './ExerciseList.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	let added_exercise_list: string[] = [];
-	let unadded_exercise_list: string[] = data.exercise_lists.instructor_exercise_list.map(
-		(exercise: { title: string }) => exercise.title
+	let added_exercise_list: { id: number; content: string }[] = [];
+
+	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
+	let unadded_exercise_list = data.exercise_lists.instructor_exercise_list.map(
+		(exercise: { id: number; title: string }) => ({
+			id: exercise.id,
+			content: exercise.title
+		})
 	);
 </script>
 
@@ -18,5 +23,5 @@
 	</div>
 	<DescriptionBox />
 	<div></div>
-	<SessionExerciseList {added_exercise_list} {unadded_exercise_list} />
+	<ExerciseList {added_exercise_list} {unadded_exercise_list} />
 </div>
