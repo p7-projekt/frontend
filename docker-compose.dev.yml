@@ -1,0 +1,13 @@
+services:
+  frontend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - '5173:5173'
+    volumes:
+      - .:/home/ubuntu/frontend
+      - /home/ubuntu/frontend/node_modules
+
+volumes:
+  node_modules:
