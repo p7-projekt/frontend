@@ -18,6 +18,12 @@
         isEditMode = true;
     }
 
+    function finishCreatingOrUpdating() {
+        selectedTestCase = null;
+        isEditMode = false;
+    }
+    
+
     // Function to cancel the editing process
     function cancelEdit() {
         selectedTestCase = null;
@@ -31,6 +37,7 @@
         isEditMode={true}
         existingTestCase={selectedTestCase}
         on:cancelEdit={cancelEdit} 
+        on:finishCreatingOrUpdating={finishCreatingOrUpdating}
     />
 {:else}
     <Card.Root class="w-full">

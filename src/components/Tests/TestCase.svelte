@@ -9,7 +9,7 @@
     import * as Alert from "$lib/components/ui/alert/index.js";
     import PrimaryButton from "$components/Buttons/PrimaryButton.svelte";
     import { testCasesStore } from '$lib/testCasesStore'; 
-    import { createEventDispatcher } from 'svelte'
+    import { createEventDispatcher, onMount } from 'svelte'
 
     export let Inputs: { type: string; value: string; argNumber: number, isInput: boolean }[] = [];
     export let Outputs: { type: string; value: string; argNumber: number, isInput: boolean }[] = [];
@@ -35,7 +35,14 @@
         console.log(existingTestCase)
         dispatch('cancelEdit')
     } 
+ 
 
+    onMount(() => {
+        if (isEditMode && existingTestCase) {
+            inputParameters.set(existingTestCase.parameters.input);
+            outputParameters.set(existingTestCase.parameters.output);
+        }
+    });
 
     // Function to add a new input parameter
     function addInput() {
@@ -78,7 +85,7 @@
     }
 
     function submitTestCase() {
-        const validInputs = $inputParameters.every(validateIntegerValue);
+        const validInputs = $inputParameters.every(validateIntegerValue) && $outputParameters.every(validateIntegerValue);
         const hasInputs = $inputParameters.length > 0;
         const hasOutputs = $outputParameters.length > 0;
         const hasType = $inputParameters.every(input => input.type !== '') && $outputParameters.every(output => output.type !== '');
@@ -110,38 +117,16 @@
                 }
             });
             showAlert.set(false);
+            dispatch('finishCreatingOrUpdating')
+
         } else {
             showAlert.set(true);
         }
     }
-
-    // Function to handle the form submission
-    function createTestCase() { 
-        const validInputs = $inputParameters.every(validateIntegerValue);
-        const hasInputs = $inputParameters.length > 0;
-        const hasOutputs = $outputParameters.length > 0;
-        const hasType = $inputParameters.every(input => input.type !== '') && $outputParameters.every(output => output.type !== '');
-
-        if (validInputs && hasInputs && hasOutputs && hasType) {
-            testCasesStore.update(store => {
-                const newTestCase = {
-                    id: store.idCounter + 1,
-                    parameters: {
-                        input: $inputParameters,
-                        output: $outputParameters
-                    }
-                };
-                return {
-                    idCounter: store.idCounter + 1,
-                    testCases: [...store.testCases, newTestCase]
-                };
-            });
-            showAlert.set(false);
-        } else {
-            showAlert.set(true);
-        }
-    }
+ 
 </script>
+
+
 
 <Card.Root class="w-[350px]">
     <Card.Header>
@@ -156,20 +141,26 @@
                     <Label>Input Parameters</Label>
                     {#each $inputParameters as input, index}
                         <div class="flex space-x-2 items-center"> 
-                            <Select.Root portal={null}>
+                            <Select.Root portal={null} >
                                 <Select.Trigger class="w-[120px]">
-                                    <Select.Value placeholder="Type" />
+                                    <Select.Value placeholder={input.type ? input.type : "Type"} />
                                 </Select.Trigger>
                                 <Select.Content>
                                     <Select.Group>
                                         <Select.Label>Types</Select.Label>
                                         {#each types as type}
-                                            <Select.Item on:click={() => input.type = type.value} value={type.value}>{type.label}</Select.Item>
+                                            <Select.Item 
+                                                on:click={() => input.type = type.value} 
+                                                value={type.value}
+                                            >
+                                                {type.label}
+                                            </Select.Item>
                                         {/each}
                                     </Select.Group>
                                 </Select.Content>
                                 <Select.Input name="inputType" />
                             </Select.Root>
+                            
 
                             <!-- Value Input -->
                             <Input bind:value={input.value} placeholder="Value" class={input.type === 'Integer' && !/^\d+$/.test(input.value) ? 'border-red-500' : ''} />
@@ -192,18 +183,26 @@
                             <!-- Type Select -->
                             <Select.Root portal={null}>
                                 <Select.Trigger class="w-[120px]">
-                                    <Select.Value placeholder="Type" />
+                                    <!-- Bind the value to the current input or output type --> 
+                                    <Select.Value placeholder={output.type ? output.type : "Type"} /> 
                                 </Select.Trigger>
                                 <Select.Content>
                                     <Select.Group>
                                         <Select.Label>Types</Select.Label>
                                         {#each types as type}
-                                            <Select.Item on:click={() => output.type = type.value} value={type.value}>{type.label}</Select.Item>
+                                            <!-- Set the selected type on click -->
+                                            <Select.Item 
+                                                on:click={() => output.type = type.value} 
+                                                value={type.value}
+                                            >
+                                                {type.label}
+                                            </Select.Item>
                                         {/each}
                                     </Select.Group>
                                 </Select.Content>
                                 <Select.Input name="outputType" />
                             </Select.Root>
+                            
 
                             <!-- Value Input -->
                             <Input bind:value={output.value} placeholder="Value" class={output.type === 'Integer' && !/^\d+$/.test(output.value) ? 'border-red-500' : ''} />
