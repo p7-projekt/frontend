@@ -28,6 +28,12 @@
         selectedTestCase = null;
         isEditMode = false;
     }
+
+    // Function to handle the creation of a new test case
+    function createTestCase() {
+        selectedTestCase = null; // Clear any selected test case
+        isEditMode = true; // Set to edit mode to create a new test case
+    }
 </script>
 
 {#if isEditMode}
@@ -61,11 +67,9 @@
                                 {/each}
                             </div>
                         </div>
-                        <div>
-                            <!-- Edit button -->
-                            <Button 
-                                on:click={() => editTestCase(testCase)} 
-                                class="text-xs bg-blue-500 text-white hover:bg-blue-600 px-2 py-1 rounded-md"
+                        <div> 
+                            <Button variant="secondary" 
+                                on:click={() => editTestCase(testCase)}  
                             >
                                 Edit
                             </Button>
@@ -74,5 +78,14 @@
                 {/each}
             </div>
         {/if}
+        <!-- Create Test Case Button at the bottom -->
+        <div class="mt-4">
+            <Button 
+                on:click={createTestCase} 
+                class="w-full text-white hover:bg-green-600 py-2 rounded-md"
+            >
+                Create Test Case
+            </Button>
+        </div>
     </div>
 {/if}
