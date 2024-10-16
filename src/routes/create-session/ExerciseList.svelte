@@ -4,8 +4,8 @@
 	export let added_exercise_list: { id: number; content: string }[] = [];
 	export let unadded_exercise_list: { id: number; content: string }[] = [];
 
-	let receive_message = '';
-	let before_item = `
+	let receive_message: string = '';
+	let before_item: string = `
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"

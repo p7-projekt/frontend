@@ -1,7 +1,7 @@
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = () => {
-	const exercises = [
+	const instructor_exercises = [
 		{
 			id: 1,
 			title: 'Create Hello World Function'
@@ -17,15 +17,31 @@ export const load: PageServerLoad = () => {
 		{
 			id: 4,
 			title: 'Counter 2'
+		},
+		{
+			id: 5,
+			title: 'Simple calculator'
+		},
+		{
+			id: 6,
+			title: 'Simple calculator 2'
+		},
+		{
+			id: 7,
+			title: 'Simple calculator 3'
+		},
+		{
+			id: 8,
+			title: 'Binary tree'
+		},
+		{
+			id: 9,
+			title: 'Binary tree 2'
+		},
+		{
+			id: 10,
+			title: 'Linked list'
 		}
 	];
-
-	// if (!added_exercise_list) {
-	// 	throw error(404, 'Exercises not found!');
-	// }
-	return {
-		exercise_lists: {
-			instructor_exercise_list: exercises
-		}
-	};
+	return { instructor_exercises };
 };

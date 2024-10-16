@@ -23,11 +23,11 @@
 		</div>
 	</div>
 	<div class="text-sm font-medium">
-		<ol>
+		<ol class="w-full max-h-64 overflow-y-auto scrollable-list">
 			{#if list.length !== 0}
 				{#each list as list_item}
 					<li
-						class="pl-1 pr-1 w-[675px] h-[52px] border-b-[1.5px] flex items-center hover-effect w-full justify-between"
+						class="pl-1 pr-2 w-[675px] h-[52px] border-b-[1.5px] flex items-center hover-effect w-full justify-between"
 					>
 						{#if before_item}
 							<button on:click={() => sendToParent(list_item.id, list_item.content)}>
@@ -58,5 +58,22 @@
 	.hover-effect:hover,
 	.hover-effect:active {
 		background-color: #0000000d;
+	}
+	.scrollable-list::-webkit-scrollbar {
+		width: 2px; /* Make scrollbar width smaller */
+	}
+	scrollable-list::-webkit-scrollbar-track {
+		background: #cccccf; /* Optional: background color for scrollbar track */
+	}
+
+	/* Scrollbar handle */
+	.scrollable-list::-webkit-scrollbar-thumb {
+		background-color: #cccccf; /* Optional: scrollbar handle color */
+		border-radius: 10px; /* Optional: rounded edges for the handle */
+	}
+
+	/* Hover state for scrollbar handle */
+	.scrollable-list::-webkit-scrollbar-thumb:hover {
+		background-color: #aaa;
 	}
 </style>

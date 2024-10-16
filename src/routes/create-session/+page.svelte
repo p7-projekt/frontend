@@ -8,7 +8,7 @@
 	let added_exercise_list: { id: number; content: string }[] = [];
 
 	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
-	let unadded_exercise_list = data.exercise_lists.instructor_exercise_list.map(
+	let unadded_exercise_list = data.instructor_exercises.map(
 		(exercise: { id: number; title: string }) => ({
 			id: exercise.id,
 			content: exercise.title
