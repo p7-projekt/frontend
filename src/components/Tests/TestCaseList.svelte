@@ -8,6 +8,7 @@
     let isEditMode = false;  
     let openCreate: boolean = false;
     let openEdit: boolean = false;
+    let selectedTestCase: any;
 
     // Subscribe to the store to get test cases
     testCasesStore.subscribe(store => {
@@ -21,18 +22,33 @@
 
     function finishCreatingOrUpdating() { 
         isEditMode = false;
-        openCreate = false;
-        openEdit = false;
+        openCreate = false; 
+        selectedTestCase = null;
     }
 
     // Function to cancel the editing process
     function cancel() { 
         isEditMode = false;
+        selectedTestCase = null;
     }
  
 </script>
-
  
+<Dialog.Root bind:open={openEdit}> 
+        <Dialog.Content class="sm:max-w-[425px]">
+        <Dialog.Header>
+        <Dialog.Title>Edit Test Case</Dialog.Title> 
+        </Dialog.Header> 
+        <TestCase 
+            isEditMode={true}
+            existingTestCase={selectedTestCase}
+            on:cancel={cancel} 
+            on:finishCreatingOrUpdating={finishCreatingOrUpdating}
+        />
+    </Dialog.Content>
+</Dialog.Root>   
+
+
     <div class="space-y-2 w-full">
         <h3 class="font-semibold text-sm">Created Test Cases</h3>
         {#if testCases.length === 0}
@@ -58,29 +74,14 @@
                         <div> 
 
 
-                            <Dialog.Root bind:open={openEdit}>
-                                <Dialog.Trigger  
-                                ><Button  
-                                class="secondary"
-                            >
-                                Edit Test Case
-                                </Button></Dialog.Trigger
-                                >
-                                    <Dialog.Content class="sm:max-w-[425px]">
-                                    <Dialog.Header>
-                                    <Dialog.Title>Edit Test Case</Dialog.Title> 
-                                    </Dialog.Header> 
-                                    <TestCase 
-                                        isEditMode={true}
-                                        existingTestCase={testCase}
-                                        on:cancel={cancel} 
-                                        on:finishCreatingOrUpdating={finishCreatingOrUpdating}
-                                    />
-                                </Dialog.Content>
-                            </Dialog.Root>
+                            
 
  
-
+                            <Button  
+                            class="secondary" on:click={()=>{openEdit=true;selectedTestCase = testCase;}}
+                        >
+                            Edit Test Case
+                            </Button>
 
 
 
