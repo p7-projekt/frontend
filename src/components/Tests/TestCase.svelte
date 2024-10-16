@@ -33,7 +33,7 @@
 
     function cancel() {
         console.log(existingTestCase)
-        dispatch('cancelEdit')
+        dispatch('cancel')
     } 
  
 
@@ -128,11 +128,12 @@
 
 
 
+
 <Card.Root class="w-[350px]">
-    <Card.Header>
+    <!-- <Card.Header>
         <Card.Title>{isEditMode ? 'Edit Test Case' : 'Create Test Case'}</Card.Title>
         <Card.Description>{isEditMode ? 'Edit the selected test case.' : 'Select inputs, types, and outputs.'}</Card.Description>
-    </Card.Header>
+    </Card.Header> -->
     <Card.Content>
         <form on:submit|preventDefault={submitTestCase}>
             <div class="grid w-full items-center gap-4">
@@ -236,3 +237,5 @@
     <Button on:click={() => {console.log("hello button clicked"); showAlert.set(false);}}>X</Button>
 </Alert.Root>
 {/if}
+
+

@@ -1,50 +1,38 @@
 <script lang="ts">
     import { testCasesStore } from '$lib/testCasesStore';
-    import { Button } from "$lib/components/ui/button/index.js"; // Import a button component for the edit button
-    import TestCase from './TestCase.svelte'; // Import the TestCase component
+    import { Button } from "$lib/components/ui/button/index.js"; 
+    import * as Dialog from "$lib/components/ui/dialog/index.js"; 
+    import TestCase from './TestCase.svelte';  
 
-    let testCases: any[] = [];
-    let selectedTestCase: any = null; // To hold the test case selected for editing
-    let isEditMode = false; // To track if we're in edit mode
-    
+    let testCases: any[] = []; 
+    let isEditMode = false;  
+    let openCreate: boolean = false;
+    let openEdit: boolean = false;
+
     // Subscribe to the store to get test cases
     testCasesStore.subscribe(store => {
         testCases = store.testCases;
     });
 
     // Function to handle the edit button click
-    function editTestCase(testCase: any) {
-        selectedTestCase = testCase;
+    function editTestCase(testCase: any) { 
         isEditMode = true;
     }
 
-    function finishCreatingOrUpdating() {
-        selectedTestCase = null;
+    function finishCreatingOrUpdating() { 
         isEditMode = false;
+        openCreate = false;
+        openEdit = false;
     }
 
     // Function to cancel the editing process
-    function cancelEdit() {
-        selectedTestCase = null;
+    function cancel() { 
         isEditMode = false;
     }
-
-    // Function to handle the creation of a new test case
-    function createTestCase() {
-        selectedTestCase = null; // Clear any selected test case
-        isEditMode = true; // Set to edit mode to create a new test case
-    }
+ 
 </script>
 
-{#if isEditMode}
-    <!-- Render the TestCase component in edit mode if editing is active -->
-    <TestCase 
-        isEditMode={true}
-        existingTestCase={selectedTestCase}
-        on:cancelEdit={cancelEdit} 
-        on:finishCreatingOrUpdating={finishCreatingOrUpdating}
-    />
-{:else}
+ 
     <div class="space-y-2 w-full">
         <h3 class="font-semibold text-sm">Created Test Cases</h3>
         {#if testCases.length === 0}
@@ -68,11 +56,40 @@
                             </div>
                         </div>
                         <div> 
-                            <Button variant="secondary" 
-                                on:click={() => editTestCase(testCase)}  
+
+
+                            <Dialog.Root bind:open={openEdit}>
+                                <Dialog.Trigger  
+                                ><Button  
+                                class="secondary"
                             >
-                                Edit
-                            </Button>
+                                Edit Test Case
+                                </Button></Dialog.Trigger
+                                >
+                                    <Dialog.Content class="sm:max-w-[425px]">
+                                    <Dialog.Header>
+                                    <Dialog.Title>Edit Test Case</Dialog.Title> 
+                                    </Dialog.Header> 
+                                    <TestCase 
+                                        isEditMode={true}
+                                        existingTestCase={testCase}
+                                        on:cancel={cancel} 
+                                        on:finishCreatingOrUpdating={finishCreatingOrUpdating}
+                                    />
+                                </Dialog.Content>
+                            </Dialog.Root>
+
+ 
+
+
+
+
+
+
+
+
+
+
                         </div>
                     </div>
                 {/each}
@@ -80,12 +97,24 @@
         {/if}
         <!-- Create Test Case Button at the bottom -->
         <div class="mt-4">
-            <Button 
-                on:click={createTestCase} 
-                class="w-full text-white hover:bg-green-600 py-2 rounded-md"
+            <Dialog.Root bind:open={openCreate}>
+                <Dialog.Trigger class="w-full "  
+                ><Button  
+                class="w-full text-white   py-2 rounded-md"
             >
                 Create Test Case
-            </Button>
+            </Button></Dialog.Trigger
+               >
+                <Dialog.Content class="sm:max-w-[425px]">
+                <Dialog.Header>
+                 <Dialog.Title>Create Test Case</Dialog.Title> 
+                </Dialog.Header> 
+                <TestCase 
+                    isEditMode={false} 
+                    on:cancel={cancel} 
+                    on:finishCreatingOrUpdating={finishCreatingOrUpdating}
+                />
+        </Dialog.Content>
+    </Dialog.Root>
         </div>
-    </div>
-{/if}
+    </div> 
