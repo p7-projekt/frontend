@@ -1,5 +1,6 @@
 <script lang="ts">
-  import TitleInput from '$components/Input/TitleInput.svelte';
+  import Ide from '$components/IDE/IDE.svelte';
+import TitleInput from '$components/Input/TitleInput.svelte';
   import TestCaseList from '$components/Tests/TestCaseList.svelte';
   import DescriptionBox from '$components/Textarea/DescriptionBox.svelte';
   import { Button } from "$lib/components/ui/button/index.js"; 
@@ -21,7 +22,7 @@
       <Resizable.Handle />
       <Resizable.Pane defaultSize={50}>  
           <div class="flex flex-col h-full items-center justify-center p-6 space-y-4">
-              <span class="font-semibold">IDE</span>
+              <Ide/>
               <div class="flex space-x-4">
                   <Button variant="default">Validate</Button>
                   <Button variant="default">Confirm</Button>
