@@ -42,11 +42,34 @@
 <main> 
     <Resizable.PaneGroup direction="horizontal" class="pane-group max-w max-h rounded-lg border"> 
         <Resizable.Pane defaultSize={50} class="pane"> 
+            <Resizable.PaneGroup direction="vertical">
+
+
+                <Resizable.Pane defaultSize={25}>
             <div class="m-8 content">
-                <TitleInput/>
+                    
+                    <TitleInput/>
                 <DescriptionBox/> 
+
+            </div>
+
+                  </Resizable.Pane>
+                  <Resizable.Handle />
+                  <Resizable.Pane defaultSize={75}>
+            <div class="m-8 content">
+                   
                 <TestCaseList />
             </div>
+                    
+
+                  </Resizable.Pane>
+
+
+
+
+
+            </Resizable.PaneGroup>
+                
         </Resizable.Pane>
         <Resizable.Handle />
         <Resizable.Pane defaultSize={50} class="pane">  
