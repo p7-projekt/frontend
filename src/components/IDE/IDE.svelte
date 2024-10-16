@@ -10,4 +10,4 @@
   ];
 </script>
 
-<CodeMirror bind:value={value} extensions={extensions} />
+<CodeMirror class="w-full h-full" bind:value={value} extensions={extensions} />
