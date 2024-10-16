@@ -9,6 +9,7 @@
     import * as Alert from "$lib/components/ui/alert/index.js";
     import PrimaryButton from "$components/Buttons/PrimaryButton.svelte";
     import { testCasesStore } from '$lib/testCasesStore'; 
+    import { createEventDispatcher } from 'svelte'
 
     export let Inputs: { type: string; value: string; argNumber: number, isInput: boolean }[] = [];
     export let Outputs: { type: string; value: string; argNumber: number, isInput: boolean }[] = [];
@@ -20,6 +21,7 @@
     let testName = writable(""); 
     let inputParameters = writable(Inputs);
     let outputParameters = writable(Outputs);
+    const dispatch = createEventDispatcher()
 
     // Variable to track if alert should be shown
     let showAlert = writable(false); 
@@ -28,6 +30,12 @@
         { value: "String", label: "String" },
         { value: "Integer", label: "Integer" }
     ];
+
+    function cancel() {
+        console.log(existingTestCase)
+        dispatch('cancelEdit')
+    } 
+
 
     // Function to add a new input parameter
     function addInput() {
@@ -147,8 +155,7 @@
                 <div class="flex flex-col space-y-1.5">
                     <Label>Input Parameters</Label>
                     {#each $inputParameters as input, index}
-                        <div class="flex space-x-2 items-center">
-                            <!-- Type Select -->
+                        <div class="flex space-x-2 items-center"> 
                             <Select.Root portal={null}>
                                 <Select.Trigger class="w-[120px]">
                                     <Select.Value placeholder="Type" />
@@ -214,7 +221,7 @@
         </form>
     </Card.Content>
     <Card.Footer class="flex justify-between">
-        <Button variant="outline">Cancel</Button>
+        <Button variant="outline" on:click={cancel}>Cancel</Button>
         <Button type="submit" on:click={submitTestCase}>{isEditMode ? 'Update' : 'Create'}</Button>
     </Card.Footer>
 </Card.Root>
