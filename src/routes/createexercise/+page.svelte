@@ -1,6 +1,8 @@
 <script lang="ts">
-	import TestCase from '$components/Tests/TestCase.svelte';
+	import TitleInput from '$components/Input/TitleInput.svelte';
+import TestCase from '$components/Tests/TestCase.svelte';
 	import TestCaseList from '$components/Tests/TestCaseList.svelte';
+	import DescriptionBox from '$components/Textarea/DescriptionBox.svelte';
     import * as Resizable from "$lib/components/ui/resizable/index.js";
     import type { PageData } from './$types';
     
@@ -10,12 +12,14 @@
 
 <main> 
     <Resizable.PaneGroup direction="horizontal" class="max-w max-h rounded-lg border"> 
-        <Resizable.Pane defaultSize={50}>
-          <div class="flex h-[200px] items-center justify-center p-6">
-            <span class="font-semibold">Titel, description osv osv</span>
-          </div>
-
+        <Resizable.Pane defaultSize={50}> 
+          <div class="m-8">
+          
+          <TitleInput/>
+          <DescriptionBox/> 
           <TestCaseList />
+
+        </div>
         </Resizable.Pane>
         <Resizable.Handle />
         <Resizable.Pane defaultSize={50}>  

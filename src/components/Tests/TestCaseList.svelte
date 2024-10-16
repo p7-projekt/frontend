@@ -25,8 +25,7 @@
     }
 
     function removeTestCase(testCaseId: number) {
-        console.log(testCases)
-
+        console.log(testCases) 
         testCasesStore.update(store => {
             return {
                 ...store,
