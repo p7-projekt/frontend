@@ -2,6 +2,7 @@
     import { testCasesStore } from '$lib/testCasesStore';
     import { Button } from "$lib/components/ui/button/index.js"; 
     import TestCaseDialog from './TestCaseDialog.svelte';  
+	import { Label } from '$lib/components/ui/label/index.js';
 
     let testCases: any[] = []; 
     let openCreate: boolean = false;
@@ -46,7 +47,7 @@
 />
 
 <div class="space-y-2 w-full">
-    <h3 class="font-semibold text-sm">Created Test Cases</h3>
+    <Label class="text-base pl-1" >Created Test Cases</Label> 
     {#if testCases.length === 0}
         <p class="text-gray-500">No test cases created yet.</p>
     {:else}
