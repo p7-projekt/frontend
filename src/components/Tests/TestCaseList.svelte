@@ -23,12 +23,15 @@
     function finishCreatingOrUpdating() { 
         isEditMode = false;
         openCreate = false; 
+        openEdit = false; 
         selectedTestCase = null;
     }
 
     // Function to cancel the editing process
     function cancel() { 
         isEditMode = false;
+        openCreate = false; 
+        openEdit = false; 
         selectedTestCase = null;
     }
  
