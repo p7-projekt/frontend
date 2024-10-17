@@ -30,14 +30,14 @@
 						class="pl-1 pr-2 w-[675px] h-[52px] border-b-[1.5px] flex items-center hover-effect w-full justify-between"
 					>
 						{#if before_item}
-							<button on:click={() => sendToParent(list_item.id, list_item.content)}>
+							<button type="button" on:click={() => sendToParent(list_item.id, list_item.content)}>
 								{@html before_item}
 							</button>
 						{/if}
 						{list_item.content}
 
 						{#if after_item}
-							<button on:click={() => sendToParent(list_item.id, list_item.content)}>
+							<button type="button" on:click={() => sendToParent(list_item.id, list_item.content)}>
 								{@html after_item}
 							</button>
 						{/if}
@@ -61,9 +61,6 @@
 	}
 	.scrollable-list::-webkit-scrollbar {
 		width: 2px; /* Make scrollbar width smaller */
-	}
-	scrollable-list::-webkit-scrollbar-track {
-		background: #cccccf; /* Optional: background color for scrollbar track */
 	}
 
 	/* Scrollbar handle */

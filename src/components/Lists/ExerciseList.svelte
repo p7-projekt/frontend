@@ -1,5 +1,6 @@
 <script lang="ts">
-	import ListBox from '$components/Lists/ListBox.svelte';
+	import { createEventDispatcher } from 'svelte';
+	import ListBox from './ListBox.svelte';
 
 	export let added_exercise_list: { id: number; content: string }[] = [];
 	export let unadded_exercise_list: { id: number; content: string }[] = [];
@@ -47,7 +48,6 @@
 	// Event handler that updates the when elements are removed and added from them using the arrows
 	function handleMessage(event) {
 		receive_message = event.detail;
-		console.log(receive_message);
 
 		if (receive_message.list_id === 1) {
 			added_exercise_list = added_exercise_list.filter(
@@ -66,6 +66,16 @@
 				content: receive_message.item_content
 			});
 		}
+		sendToParent();
+	}
+
+	const dispatch = createEventDispatcher();
+
+	function sendToParent() {
+		dispatch('message', {
+			added_exercise_list: added_exercise_list,
+			unadded_exercise_list: unadded_exercise_list
+		});
 	}
 </script>
 
