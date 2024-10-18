@@ -1,0 +1,12 @@
+FROM node:22-bullseye
+
+WORKDIR /home/ubuntu/frontend
+
+# Copy the source code into the container
+COPY . .
+
+# Install dependencies, including @sveltejs/adapter-node
+RUN npm install
+
+# Run the development server
+CMD ["npm", "run", "dev", "--", "--host"]
