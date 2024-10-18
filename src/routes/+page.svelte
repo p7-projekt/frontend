@@ -1,13 +1,11 @@
 <script>
-	import TestCase from "$components/Tests/TestCase.svelte";
-	import PrimaryButton from "../components/Buttons/PrimaryButton.svelte";
-	import SecondaryButton from "../components/Buttons/SecondaryButton.svelte";
-
+	import TestCase from '$components/Tests/TestCase.svelte';
+	import PrimaryButton from '../components/Buttons/PrimaryButton.svelte';
+	import SecondaryButton from '../components/Buttons/SecondaryButton.svelte';
 </script>
 
 <h1>Welcome to SvelteKit</h1>
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-
 
 <!-- <PrimaryButton text="Primary Button" />
 <PrimaryButton text="Secondary Button" /> -->
