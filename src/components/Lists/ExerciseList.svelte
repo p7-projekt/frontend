@@ -3,7 +3,7 @@
 	import ListBox from './ListBox.svelte';
 
 	export let added_exercise_list: { id: number; content: string }[] = [];
-	export let unadded_exercise_list: { id: number; content: string }[] = [];
+	export let remaining_exercise_list: { id: number; content: string }[] = [];
 
 	let receive_message: string = '';
 	let before_item: string = `
@@ -53,12 +53,12 @@
 			added_exercise_list = added_exercise_list.filter(
 				(item) => item.id !== receive_message.item_id
 			);
-			unadded_exercise_list = insertInSortedOrder(unadded_exercise_list, {
+			remaining_exercise_list = insertInSortedOrder(remaining_exercise_list, {
 				id: receive_message.item_id,
 				content: receive_message.item_content
 			});
 		} else if (receive_message.list_id === 2) {
-			unadded_exercise_list = unadded_exercise_list.filter(
+			remaining_exercise_list = remaining_exercise_list.filter(
 				(item) => item.id !== receive_message.item_id
 			);
 			added_exercise_list = insertInSortedOrder(added_exercise_list, {
@@ -73,8 +73,7 @@
 
 	function sendToParent() {
 		dispatch('message', {
-			added_exercise_list: added_exercise_list,
-			unadded_exercise_list: unadded_exercise_list
+			added_exercise_list: added_exercise_list
 		});
 	}
 </script>
@@ -90,7 +89,7 @@
 <ListBox
 	list_id={2}
 	list_title="Instructor"
-	list={unadded_exercise_list}
+	list={remaining_exercise_list}
 	{before_item}
 	on:message={handleMessage}
 />

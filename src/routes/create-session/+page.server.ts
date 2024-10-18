@@ -53,29 +53,58 @@ export const actions: Actions = {
 		const session_title = form.get('session-title');
 		const session_description = form.get('session-description');
 		const added_exercise_list = form.get('added-exercise-list');
-		const unadded_exercise_list = form.get('unadded-exercise-list');
 
 		// Parse the JSON strings back into arrays
-		let addedExercises = [];
-		let unaddedExercises = [];
+		let added_exercises = [];
 
 		try {
-			addedExercises = added_exercise_list ? JSON.parse(added_exercise_list.toString()) : [];
-			unaddedExercises = unadded_exercise_list ? JSON.parse(unadded_exercise_list.toString()) : [];
+			added_exercises = added_exercise_list ? JSON.parse(added_exercise_list.toString()) : [];
 		} catch (error) {
 			console.error('Error parsing exercise lists:', error);
 		}
-
-		// Log the parsed exercise lists to the console
-		console.log('Added exercises:', addedExercises);
-		console.log('Unadded exercises:', unaddedExercises);
 
 		// Check if session title is provided
 		if (!session_title) {
 			return fail(400, { sessionTitleMissing: true, session_description });
 		}
 
-		// Temporary redirect to the home page
+		const new_session = {
+			title: session_title,
+			description: session_description,
+			exercises: added_exercises
+		};
+
+		console.log(new_session);
+
+		// Make request to backend API with data (Not implemented)
+
+		// try {
+		// 	const response = await fetch('https://api.example.com/endpoint', {
+		// 		method: 'POST',
+		// 		headers: {
+		// 			'Content-Type': 'application/json',
+		// 			Authorization: 'Bearer your_token_here' // Add auth token if required
+		// 		},
+		// 		body: JSON.stringify(new_session)
+		// 	});
+
+		// 	if (!response.ok) {
+		// 		return fail(response.status, { error: 'Failed to post to external API' });
+		// 	}
+
+		// 	// Success: Process the response data
+		// 	const responseData = await response.json();
+
+		// 	console.log(responseData);
+
+		// 	// Temporary redirect
+		// 	throw redirect(303, '/');
+		// } catch (error) {
+		// 	console.error('Error posting to external API:', error);
+		// 	return fail(500, { error: 'Server error ' });
+		// }
+
+		// Temporary redirect (later we redirect to session_view)
 		throw redirect(303, '/');
 	}
 };

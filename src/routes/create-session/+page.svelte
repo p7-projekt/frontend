@@ -13,7 +13,7 @@
 	let receive_message: string = '';
 
 	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
-	let unadded_exercise_list = data.instructor_exercises.map(
+	let remaining_exercise_list = data.instructor_exercises.map(
 		(exercise: { id: number; title: string }) => ({
 			id: exercise.id,
 			content: exercise.title
@@ -23,7 +23,6 @@
 	function handleMessage(event) {
 		receive_message = event.detail;
 		added_exercise_list = receive_message.added_exercise_list;
-		unadded_exercise_list = receive_message.unadded_exercise_list;
 	}
 	$: session_description =
 		typeof form?.session_description === 'string' ? form.session_description : '';
@@ -57,13 +56,8 @@
 
 		<DescriptionBox description_name="session-description" value={form?.session_description} />
 		<div></div>
-		<ExerciseList {added_exercise_list} {unadded_exercise_list} on:message={handleMessage} />
+		<ExerciseList {added_exercise_list} {remaining_exercise_list} on:message={handleMessage} />
 		<input type="hidden" name="added-exercise-list" value={JSON.stringify(added_exercise_list)} />
-		<input
-			type="hidden"
-			name="unadded-exercise-list"
-			value={JSON.stringify(unadded_exercise_list)}
-		/>
 
 		<div></div>
 		<div class="flex justify-end">
