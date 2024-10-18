@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label/index.js';
+	export const title_name = '';
+
 	export let input_title: string = '';
 	export let input_name: string = '';
 	export let value: string = '';
