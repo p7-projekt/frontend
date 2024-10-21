@@ -1,8 +1,9 @@
 import type { PageServerLoad, Actions } from './$types.js';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
+import { DateTime } from 'luxon';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -24,19 +25,40 @@ export const actions: Actions = {
 
 		console.log('email', email);
 
-		// Make a POST request to backend
 		const response = await fetch(backendUrl + '/login', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ Email: email, Password: password })
+			body: JSON.stringify({ email: email, password: password })
 		});
 
-		// Handle the response
 		if (response.ok) {
-			const data = await response.json();
-			return setError(form, 'email', data?.detail || 'Ja det virkede det er bare dejligt');
+			const resJSON = await response.json();
+
+			// let expires_at_str: string = resJSON.expiresAt;
+
+			// if (!expires_at_str.endsWith('Z')) {
+			// 	expires_at_str = expires_at_str.concat('Z');
+			// }
+			const expires_at: Date = new Date(resJSON.expiresAt);
+
+			const { cookies } = event;
+			cookies.set('access_token', resJSON.token, {
+				path: '/',
+				httpOnly: true,
+				secure: true, // Use secure for HTTPS-only environments
+				sameSite: 'strict'
+			});
+
+			cookies.set('refresh_token', resJSON.refreshToken, {
+				path: '/',
+				expires: expires_at,
+				httpOnly: true,
+				secure: true, // Use secure for HTTPS-only environments
+				sameSite: 'strict'
+			});
+			throw redirect(303, '/');
 		} else {
 			const error = await response.json();
 			return setError(form, 'email', error?.detail || 'Login failed');
