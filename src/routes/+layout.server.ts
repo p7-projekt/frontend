@@ -1,8 +1,10 @@
+import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
+import { invalidateAll } from '$app/navigation';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-export const load: LayoutServerLoad = async ({ cookies }) => {
+export const load: LayoutServerLoad = async ({ cookies, event }) => {
 	const access_token = cookies.get('access_token');
 	const refresh_token = cookies.get('refresh_token');
 
@@ -28,6 +30,8 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 			user: user
 		};
 	}
+	// if response fails, probably due to invalid access token, use redirect token if redirect token exist
+	// else log user out
 	if (response.status === 401 && refresh_token) {
 		const res = await fetch(`${backendUrl}/refresh`, {
 			method: 'POST',
@@ -36,12 +40,12 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 			},
 			body: JSON.stringify({ refreshToken: refresh_token })
 		});
+		// if valid redirect token, then refresh access token; else log out user
 		if (res.ok) {
 			const resJSON = await res.json();
 
 			const expires_at: Date = new Date(resJSON.expiresAt);
 
-			console.log(resJSON);
 			cookies.set('access_token', resJSON.token, {
 				path: '/',
 				httpOnly: true,
@@ -57,6 +61,8 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 				sameSite: 'strict'
 			});
 
+			// TODO implement request backend for user information and return user
+			// Temporary redirect
 			const user = {
 				name: 'Kristian',
 				id: 1
@@ -65,8 +71,15 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 				user: user
 			};
 		} else {
-			cookies.delete('refresh_token', { path: '/' });
 			cookies.delete('access_token', { path: '/' });
+			cookies.delete('refresh_token', { path: '/' });
+
+			throw redirect(303, '/');
 		}
+	} else {
+		cookies.delete('access_token', { path: '/' });
+		cookies.delete('refresh_token', { path: '/' });
+
+		throw redirect(303, '/');
 	}
 };

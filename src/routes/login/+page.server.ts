@@ -3,7 +3,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
-import { DateTime } from 'luxon';
+import CryptoJS from 'crypto-js';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -20,11 +20,13 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
-		// Extract the email and password
 		const { email, password } = form.data;
 
-		console.log('email', email);
+		// Potentially encrypt password when sending to backend
+		// const hashedPassword = CryptoJS.SHA256(password).toString();
+		// console.log(hashedPassword);
 
+		// Make request login post request to backend
 		const response = await fetch(backendUrl + '/login', {
 			method: 'POST',
 			headers: {
@@ -36,11 +38,6 @@ export const actions: Actions = {
 		if (response.ok) {
 			const resJSON = await response.json();
 
-			// let expires_at_str: string = resJSON.expiresAt;
-
-			// if (!expires_at_str.endsWith('Z')) {
-			// 	expires_at_str = expires_at_str.concat('Z');
-			// }
 			const expires_at: Date = new Date(resJSON.expiresAt);
 
 			const { cookies } = event;
