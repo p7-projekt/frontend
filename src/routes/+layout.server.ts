@@ -12,7 +12,7 @@ export const load: LayoutServerLoad = async ({ cookies, event }) => {
 		return { user: null };
 	}
 
-	const response = await fetch(`${backendUrl}/secret`, {
+	const response = await fetch(`${backendUrl}/v1/users`, {
 		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${access_token}`
@@ -21,13 +21,12 @@ export const load: LayoutServerLoad = async ({ cookies, event }) => {
 	// console.log(response);
 
 	if (response.ok) {
-		// const user = await response.json();
+		const userRes = await response.json();
 		const user = {
-			name: 'Kristian',
-			id: 1
+			name: userRes.name
 		};
 		return {
-			user: user
+			user
 		};
 	}
 	// if response fails, probably due to invalid access token, use redirect token if redirect token exist
@@ -61,15 +60,7 @@ export const load: LayoutServerLoad = async ({ cookies, event }) => {
 				sameSite: 'strict'
 			});
 
-			// TODO implement request backend for user information and return user
-			// Temporary redirect
-			const user = {
-				name: 'Kristian',
-				id: 1
-			};
-			return {
-				user: user
-			};
+			throw redirect(303, '/');
 		} else {
 			cookies.delete('access_token', { path: '/' });
 			cookies.delete('refresh_token', { path: '/' });
