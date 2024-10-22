@@ -6,13 +6,13 @@
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { writable } from 'svelte/store';
 	import CircleAlert from 'lucide-svelte/icons/circle-alert';
-	import * as Alert from '$lib/components/ui/alert/index.js';
-	import { testCasesStore } from '$lib/testCasesStore';
+	import * as Alert from '$lib/components/ui/alert/index.js'; 
 	import { createEventDispatcher, onMount } from 'svelte';
+
+	export let testCasesStore: any;
 
 	export let Inputs: { type: string; value: string; argNumber: number; isInput: boolean }[] = [];
 	export let Outputs: { type: string; value: string; argNumber: number; isInput: boolean }[] = [];
-
 	export let isEditMode: boolean = false;
 	export let existingTestCase: { id: number; parameters: { input: any; output: any } } | null =
 		null;
@@ -85,9 +85,9 @@
 			$outputParameters.every((output) => output.type !== '');
 
 		if (validInputs && hasInputs && hasOutputs && hasType) {
-			testCasesStore.update((store) => {
+			testCasesStore.update((store:any) => {
 				if (isEditMode && existingTestCase) {
-					const updatedTestCases = store.testCases.map((tc) =>
+					const updatedTestCases = store.testCases.map((tc:any) =>
 						tc.id === existingTestCase.id
 							? { ...tc, parameters: { input: $inputParameters, output: $outputParameters } }
 							: tc

@@ -3,6 +3,7 @@
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import TestCase from './TestCase.svelte';
 
+	export let testCasesStore: any;
 	export let isEditMode: boolean = false;
 	export let existingTestCase: any = null;
 	export let open: boolean = false;
@@ -26,6 +27,7 @@
 			{existingTestCase}
 			on:cancel={handleCancel}
 			on:finishCreatingOrUpdating={handleFinish}
+			testCasesStore={testCasesStore}
 		/>
 	</Dialog.Content>
 </Dialog.Root>

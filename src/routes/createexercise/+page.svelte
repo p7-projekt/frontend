@@ -23,7 +23,7 @@
 				<Resizable.Handle />
 				<Resizable.Pane defaultSize={75}>
 					<div class="m-8 content">
-						<TestCaseList />
+						<TestCaseList testCasesStore={data.testCasesStore} />
 					</div>
 				</Resizable.Pane>
 			</Resizable.PaneGroup>

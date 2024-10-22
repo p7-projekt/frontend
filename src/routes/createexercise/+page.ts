@@ -1,8 +1,13 @@
 import { writable } from 'svelte/store';
+import type { PageLoad } from './$types';
 
 const testCasesStore = writable<{ idCounter: number; testCases: any[] }>({
 	idCounter: 0,
 	testCases: []
 });
 
-export { testCasesStore };
+export const load: PageLoad = () => {
+	 
+	return { testCasesStore };
+};
+ 

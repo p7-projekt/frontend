@@ -44,6 +44,7 @@
 	existingTestCase={selectedTestCase}
 	on:cancel={cancel}
 	on:finishCreatingOrUpdating={finishCreatingOrUpdating}
+	testCasesStore={testCasesStore}
 />
 
 <div class="space-y-2 w-full">
@@ -92,6 +93,7 @@
 			isEditMode={false}
 			on:cancel={cancel}
 			on:finishCreatingOrUpdating={finishCreatingOrUpdating}
+			testCasesStore={testCasesStore}
 		/>
 		<Button class="w-full text-white py-2 rounded-md bottom-1" on:click={() => (openCreate = true)}>
 			Create Test Case
