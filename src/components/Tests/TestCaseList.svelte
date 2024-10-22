@@ -1,15 +1,16 @@
 <script lang="ts">
-	import { testCasesStore } from '$lib/testCasesStore';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import TestCaseDialog from './TestCaseDialog.svelte';
 	import { Label } from '$lib/components/ui/label/index.js';
+
+	export let testCasesStore: any; 
 
 	let testCases: any[] = [];
 	let openCreate: boolean = false;
 	let openEdit: boolean = false;
 	let selectedTestCase: any;
 
-	testCasesStore.subscribe((store) => {
+	testCasesStore.subscribe((store: any) => {
 		testCases = store.testCases;
 	});
 
@@ -27,10 +28,10 @@
 
 	function removeTestCase(testCaseId: number) {
 		console.log(testCases);
-		testCasesStore.update((store) => {
+		testCasesStore.update((store: any) => {
 			return {
 				...store,
-				testCases: store.testCases.filter((tc) => tc.id !== testCaseId)
+				testCases: store.testCases.filter((tc: any) => tc.id !== testCaseId)
 			};
 		});
 		console.log(testCases);
