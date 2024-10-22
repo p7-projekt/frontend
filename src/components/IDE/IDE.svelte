@@ -3,9 +3,9 @@
 	import { StreamLanguage } from '@codemirror/language';
 	import { haskell } from '@codemirror/legacy-modes/mode/haskell';
 
-	let value = '';
+	export let codeSolutionText: string = '';
 
 	const extensions = [StreamLanguage.define(haskell)];
 </script>
 
-<CodeMirror class="w-full h-full" bind:value {extensions} />
+<CodeMirror class="w-full h-full" bind:value={codeSolutionText} {extensions} />
