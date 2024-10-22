@@ -16,14 +16,14 @@
 	}
 </script>
 
-<div class="flex w-full flex-col w-full overflow-hidden rounded-lg border-[1.5px]">
+<div class="flex flex-col w-full h-full rounded-lg border-[1.5px]">
 	<div class="table-header pl-1">
 		<div class="flex items-center h-12 font-medium">
 			{list_title} Exercises
 		</div>
 	</div>
-	<div class="text-sm font-medium">
-		<ol class="w-full max-h-64 overflow-y-auto scrollable-list">
+	<div class="text-sm font-medium overflow-y-auto scrollable-list">
+		<ol class="w-full">
 			{#if list.length !== 0}
 				{#each list as list_item}
 					<li

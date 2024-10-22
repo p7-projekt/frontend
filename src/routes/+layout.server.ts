@@ -1,8 +1,8 @@
 import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
-import { invalidateAll } from '$app/navigation';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const api_version = import.meta.env.VITE_V1;
 
 export const load: LayoutServerLoad = async ({ cookies, event }) => {
 	const access_token = cookies.get('access_token');
@@ -12,13 +12,12 @@ export const load: LayoutServerLoad = async ({ cookies, event }) => {
 		return { user: null };
 	}
 
-	const response = await fetch(`${backendUrl}/v1/users`, {
+	const response = await fetch(`${backendUrl}${api_version}/users`, {
 		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${access_token}`
 		}
 	});
-	// console.log(response);
 
 	if (response.ok) {
 		const userRes = await response.json();
@@ -29,6 +28,7 @@ export const load: LayoutServerLoad = async ({ cookies, event }) => {
 			user
 		};
 	}
+	console.log(response);
 	// if response fails, probably due to invalid access token, use redirect token if redirect token exist
 	// else log user out
 	if (response.status === 401 && refresh_token) {
@@ -70,6 +70,7 @@ export const load: LayoutServerLoad = async ({ cookies, event }) => {
 	} else {
 		cookies.delete('access_token', { path: '/' });
 		cookies.delete('refresh_token', { path: '/' });
+		console.log('lol');
 
 		throw redirect(303, '/');
 	}

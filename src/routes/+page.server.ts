@@ -41,7 +41,38 @@ export const load: PageServerLoad = () => {
 		{
 			id: 10,
 			title: 'Linked list'
+		},
+		{
+			id: 11,
+			title: 'Linked list'
+		},
+		{
+			id: 12,
+			title: 'Linked list'
+		},
+		{
+			id: 13,
+			title: 'Linked list'
+		},
+		{
+			id: 14,
+			title: 'Linked list'
+		},
+		{
+			id: 15,
+			title: 'Linked list'
 		}
 	];
-	return { instructor_exercises };
+
+	const sessions: { id: number; title: string }[] = [
+		// {
+		// 	id: 1,
+		// 	title: 'My Session'
+		// }
+	];
+
+	return {
+		instructor_exercises: instructor_exercises,
+		sessions: sessions && sessions.length > 0 ? sessions : null
+	};
 };
