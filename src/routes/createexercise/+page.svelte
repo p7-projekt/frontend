@@ -28,7 +28,7 @@
 	export { formSchema as form };
 
 	let superFormData: SuperValidated<Infer<FormSchema>> = {
-		data: {title: '', description: '', codeText: ''},
+		data: {title: '', description: '', codeText: '', testCases: [] },
 		errors: {},
 		valid: false,
         id: '',  
@@ -46,8 +46,13 @@
 		}
 	});
  
+	
+
   const { form: formData, enhance } = form;
 	
+  data.testCasesStore.subscribe((store: any) => {
+        $formData.testCases = store.testCases;
+    });
 
     async function postExercise() {
         let testCases: any[] = [];
