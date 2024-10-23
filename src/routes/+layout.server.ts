@@ -28,7 +28,6 @@ export const load: LayoutServerLoad = async ({ cookies, event }) => {
 			user
 		};
 	}
-	console.log(response);
 	// if response fails, probably due to invalid access token, use redirect token if redirect token exist
 	// else log user out
 	if (response.status === 401 && refresh_token) {
@@ -70,7 +69,6 @@ export const load: LayoutServerLoad = async ({ cookies, event }) => {
 	} else {
 		cookies.delete('access_token', { path: '/' });
 		cookies.delete('refresh_token', { path: '/' });
-		console.log('lol');
 
 		throw redirect(303, '/');
 	}

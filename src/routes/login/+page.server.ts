@@ -3,7 +3,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
-import CryptoJS from 'crypto-js';
+// import CryptoJS from 'crypto-js';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
