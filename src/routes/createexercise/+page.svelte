@@ -153,7 +153,7 @@
 								</Dialog.Content>
 							</Dialog.Root>
 
-							<TestCaseList testCasesStore={data.testCasesStore} />
+							<TestCaseList testCasesStore={data.testCasesStore} bind:testCaseTemplate={testCaseSchema} />
 						</div>
 					</Resizable.Pane>
 				</Resizable.PaneGroup>
