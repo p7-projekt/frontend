@@ -6,11 +6,48 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Resizable from '$lib/components/ui/resizable/index.js';
 	import type { PageData } from './$types';
+		import SuperDebug, {
+		type Infer,
+		type SuperValidated,
+		superForm
+	} from "sveltekit-superforms";
+	import { zodClient } from "sveltekit-superforms/adapters"; 
+	import { browser } from "$app/environment";
+	import * as Form from "$lib/components/ui/form/index.js";
+	import { Input } from "$lib/components/ui/input/index.js";
+	import { formSchema, type FormSchema } from './schema';
+ 
+
 
     export let exerciseTitle: string = '';
     export let exerciseDescription: string = '';
 	export let codeSolutionText = '';
 	export let data: PageData;
+	
+ 
+	export { formSchema as form };
+
+	let superFormData: SuperValidated<Infer<FormSchema>> = {
+		data: {title: '', description: '', codeText: ''},
+		errors: {},
+		valid: false,
+        id: '',  
+        posted: false  
+	};
+
+	const form = superForm(superFormData, {
+		validators: zodClient(formSchema),
+		onUpdated: ({ form: f }) => {
+		if (f.valid) {
+			console.log(`You submitted ${JSON.stringify(f.data, null, 2)}`);
+		} else {
+			console.log("Please fix the errors in the form.");
+		}
+		}
+	});
+ 
+  const { form: formData, enhance } = form;
+	
 
     async function postExercise() {
         let testCases: any[] = [];
@@ -36,18 +73,38 @@
     }
 </script>
 
+
+
+
+
+
+
 <main>
+<form action="/api/createexercise" method="POST" class="max-w max-h" use:enhance>
+
 	<Resizable.PaneGroup direction="horizontal" class="pane-group max-w max-h rounded-lg border">
 		<Resizable.Pane defaultSize={50} class="pane">
 			<Resizable.PaneGroup direction="vertical">
-				<Resizable.Pane defaultSize={25}>
+				<Resizable.Pane defaultSize={50}>
 					<div class="m-8 content">
-						<TitleInput bind:value={exerciseTitle} />
-                        <DescriptionBox bind:value={exerciseDescription} />
+						<Form.Field {form} name="title">
+							<Form.Control let:attrs> 
+							  <TitleInput bind:value={$formData.title} />
+							</Form.Control>
+							<Form.Description>This is the title of the exercise.</Form.Description>
+							<Form.FieldErrors />
+						  </Form.Field>
+						  <Form.Field {form} name="description">
+							<Form.Control let:attrs> 
+							  <DescriptionBox bind:value={$formData.description} />
+							</Form.Control>
+							<Form.Description>This is the exercise description.</Form.Description>
+							<Form.FieldErrors />
+						  </Form.Field>
 					</div>
 				</Resizable.Pane>
 				<Resizable.Handle />
-				<Resizable.Pane defaultSize={75}>
+				<Resizable.Pane defaultSize={50}>
 					<div class="m-8 content">
 						<TestCaseList testCasesStore={data.testCasesStore} />
 					</div>
@@ -58,15 +115,25 @@
 		<Resizable.Pane defaultSize={50} class="pane">
 			<div class="flex flex-col h-full items-center justify-center p-6 space-y-4 content">
 				<div class="ide-container w-full h-full">
-                    <Ide bind:codeSolutionText={codeSolutionText} />
+                    <Ide bind:codeSolutionText={$formData.codeText} />
 				</div>
 				<div class="flex space-x-4">
 					<Button variant="default">Validate</Button>
 					<Button variant="default" on:click={postExercise}>Confirm</Button>
+	  <Form.Button>Submit</Form.Button>
+	  {#if browser}
+	  <SuperDebug data={$formData} />
+	{/if}
 				</div>
 			</div>
+			
 		</Resizable.Pane>
 	</Resizable.PaneGroup>
+
+	
+	  
+	  
+	</form>
 </main>
 
 <style>
@@ -76,6 +143,11 @@
 		margin: 0;
 	}
 	main {
+		height: 80vh;
+		display: flex;
+		flex-direction: column;
+	}
+	form {
 		height: 80vh;
 		display: flex;
 		flex-direction: column;
