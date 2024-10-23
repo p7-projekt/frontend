@@ -109,6 +109,8 @@
 					<Resizable.Handle />
 					<Resizable.Pane defaultSize={40}>
 						<div class="m-8 content"> 
+							<p>Test Case Schema</p>
+
 							<div class="flex items-center justify-between p-2 border rounded-lg shadow-sm bg-gray-50">
 								<div class="flex items-center space-x-4 text-sm">
 									<div>
@@ -123,17 +125,18 @@
 											<span class="ml-1 text-gray-700">{output.type}: {output.value}</span>
 										{/each}
 									</div>
-								</div> 
-							</div>
- 
-							<Button
+									<Button
 								class="secondary"
 								on:click={() => {
 									open = true;
 								}}
 							>
-								Define/Update Test Case Template
+								Define/Update Test Case Schema
 							</Button>
+								</div> 
+							</div>
+ 
+							
 							<Dialog.Root bind:open>
 								<Dialog.Content class="sm:max-w-[425px]">
 									<Dialog.Header>
