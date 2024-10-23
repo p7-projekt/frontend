@@ -3,7 +3,7 @@
 	import TestCaseDialog from './TestCaseDialog.svelte';
 	import { Label } from '$lib/components/ui/label/index.js';
 
-	export let testCasesStore: any; 
+	export let testCasesStore: any;
 
 	let testCases: any[] = [];
 	let openCreate: boolean = false;
@@ -44,7 +44,7 @@
 	existingTestCase={selectedTestCase}
 	on:cancel={cancel}
 	on:finishCreatingOrUpdating={finishCreatingOrUpdating}
-	testCasesStore={testCasesStore}
+	{testCasesStore}
 />
 
 <div class="space-y-2 w-full">
@@ -93,7 +93,7 @@
 			isEditMode={false}
 			on:cancel={cancel}
 			on:finishCreatingOrUpdating={finishCreatingOrUpdating}
-			testCasesStore={testCasesStore}
+			{testCasesStore}
 		/>
 		<Button class="w-full text-white py-2 rounded-md bottom-1" on:click={() => (openCreate = true)}>
 			Create Test Case

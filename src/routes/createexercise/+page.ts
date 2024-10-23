@@ -6,10 +6,6 @@ const testCasesStore = writable<{ idCounter: number; testCases: any[] }>({
 	testCases: []
 });
 
-
-
 export const load: PageLoad = () => {
-	 
 	return { testCasesStore };
 };
- 

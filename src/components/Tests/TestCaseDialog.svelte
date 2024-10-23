@@ -27,7 +27,7 @@
 			{existingTestCase}
 			on:cancel={handleCancel}
 			on:finishCreatingOrUpdating={handleFinish}
-			testCasesStore={testCasesStore}
+			{testCasesStore}
 		/>
 	</Dialog.Content>
 </Dialog.Root>
