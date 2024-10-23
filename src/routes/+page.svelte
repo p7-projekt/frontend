@@ -29,19 +29,50 @@
 </script>
 
 {#if data.user}
-	<div class="container pl-6 w-full text-[#333]">
-		<div class="grid h-full grid-cols-1 gap-y-12">
-			<div></div>
-			<h1 class=" text-2xl font-semibold col-span-full">Instructor Home</h1>
-			<div class="flex justify-around">
-				<div class="flex items-center justify-center w-1/2 h-[19.3rem]">
-					<button
-						class="bg-[#1f2937] text-white hover:bg-transparent hover:text-[#1f2937] ease-in-out duration-300 p-6 rounded-lg shadow-lg text-xl py-6 px-12"
-						on:click={handleClick}>{active_session} Session</button
-					>
+	<div class="container pl-6 w-full text-[#333] grid grid-cols-1 gap-y-6">
+		<h1 class=" text-2xl font-semibold col-span-full">Instructor Home</h1>
+		<div class="flex gap-x-12 h-full">
+			<main class="flex flex-1 flex-col w-1/2 max-h-[35.5rem]">
+				<div class="flex items-center">
+					<!-- <h1 class="text-lg font-semibold md:text-2xl">Intructor Home</h1> -->
 				</div>
-				<div class=" max-h-[35.5rem] w-1/2">
-					<ListBox list={instructor_exercises} list_title="Private" {after_item}></ListBox>
+				<div
+					data-x-chunk-name="dashboard-02-chunk-1"
+					data-x-chunk-description="An empty state showing no products with a heading, description and a call to action to add a product."
+					class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
+				>
+					<div class="flex flex-col items-center gap-1 text-center">
+						<h3 class="text-2xl font-bold tracking-tight">You have no Sessions</h3>
+						<p class="text-muted-foreground text-sm">
+							You can start instructing as soon as you add a session.
+						</p>
+						<button
+							class="bg-[#1f2937] text-white hover:bg-transparent hover:text-[#1f2937] ease-in-out duration-300 p-6 rounded-lg shadow-lg text-xl py-6 px-12 mt-8"
+							on:click={handleClick}>{active_session} Session</button
+						>
+					</div>
+				</div>
+			</main>
+			<div class=" max-h-[35.5rem] w-1/2">
+				<ListBox list={instructor_exercises} list_title="Private" {after_item}></ListBox>
+				<div class="flex justify-end mr-1">
+					<div class="flex items-center space-x-4 mt-4">
+						<span class="text-[#333] font-medium text-[1.0625rem]">Create New Exercise</span>
+						<button
+							class="bg-[#1f2937] hover:bg-[#e9eaeb] hover:text-[#1f2937] flex items-center justify-center rounded-full w-7 h-7 text-white font-bold transition duration-300 ease-in-out hover:scale-110"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="#1f2937"
+								viewBox="0 0 24 24"
+								stroke-width="1.5"
+								stroke="currentColor"
+								class="size-5"
+							>
+								<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+							</svg>
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
