@@ -71,8 +71,9 @@
 		<Resizable.PaneGroup direction="horizontal" class="pane-group max-w max-h rounded-lg border">
 			<Resizable.Pane defaultSize={50} class="pane">
 				<Resizable.PaneGroup direction="vertical">
-					<Resizable.Pane defaultSize={50}>
+					<Resizable.Pane defaultSize={60}>
 						<div class="m-8 content">
+							 
 							<Form.Field {form} name="title">
 								<Form.Control let:attrs>
 									<TitleInput bind:value={$formData.title} />
@@ -90,7 +91,7 @@
 						</div>
 					</Resizable.Pane>
 					<Resizable.Handle />
-					<Resizable.Pane defaultSize={50}>
+					<Resizable.Pane defaultSize={40}>
 						<div class="m-8 content">
 							<TestCaseList testCasesStore={data.testCasesStore} />
 						</div>
