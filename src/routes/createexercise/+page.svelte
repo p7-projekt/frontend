@@ -11,14 +11,14 @@
 	import { browser } from '$app/environment';
 	import * as Form from '$lib/components/ui/form/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
-	import { formSchema, type FormSchema } from './schema'; 
+	import { formSchema, type FormSchema } from './schema';
 	import TestCaseTemplate from '$components/Tests/TestCaseTemplate.svelte';
-	import * as Dialog from '$lib/components/ui/dialog/index.js'; 
-	export let data: PageData; 
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	export let data: PageData;
 	export { formSchema as form };
 
 	let testTemplateCreated = false;
- 	let open: boolean = false;
+	let open: boolean = false;
 
 	function handleCancel() {
 		open = false;
@@ -48,7 +48,12 @@
 
 	const { form: formData, enhance } = form;
 
-	let testCaseSchema: any[] = [];
+	let testCaseSchema: { parameters: { input: { type: string, value: string }[], output: { type: string, value: string }[] } } = {
+		parameters: {
+			input: [],
+			output: []
+		}
+	};
 
 	data.testCasesStore.subscribe((store: any) => {
 		$formData.testCases = store.testCases;
@@ -85,7 +90,6 @@
 				<Resizable.PaneGroup direction="vertical">
 					<Resizable.Pane defaultSize={60}>
 						<div class="m-8 content">
-							 
 							<Form.Field {form} name="title">
 								<Form.Control let:attrs>
 									<TitleInput bind:value={$formData.title} />
@@ -104,26 +108,48 @@
 					</Resizable.Pane>
 					<Resizable.Handle />
 					<Resizable.Pane defaultSize={40}>
-						<div class="m-8 content">
-							<p>Define test case template</p>
+						<div class="m-8 content"> 
+							<div class="flex items-center justify-between p-2 border rounded-lg shadow-sm bg-gray-50">
+								<div class="flex items-center space-x-4 text-sm">
+									<div>
+										<strong class="font-medium">Input:</strong>
+										{#each testCaseSchema.parameters.input as input}
+											<span class="ml-1 text-gray-700">{input.type}: {input.value}</span>
+										{/each}
+									</div>
+									<div>
+										<strong class="font-medium">Output:</strong>
+										{#each testCaseSchema.parameters.output as output}
+											<span class="ml-1 text-gray-700">{output.type}: {output.value}</span>
+										{/each}
+									</div>
+								</div> 
+							</div>
+ 
+							<Button
+								class="secondary"
+								on:click={() => {
+									open = true;
+								}}
+							>
+								Define/Update Test Case Template
+							</Button>
 							<Dialog.Root bind:open>
 								<Dialog.Content class="sm:max-w-[425px]">
 									<Dialog.Header>
-										<Dialog.Title>{testTemplateCreated ? 'Edit Test Case' : 'Create Test Case'}</Dialog.Title>
+										<Dialog.Title
+											>{testTemplateCreated ? 'Edit Test Case' : 'Create Test Case'}</Dialog.Title
+										>
 									</Dialog.Header>
 									<TestCaseTemplate
 										isEditMode={testTemplateCreated}
-										testCaseTemplate={testCaseSchema}
+										bind:testCaseTemplate={testCaseSchema}
 										on:cancel={handleCancel}
 										on:finishCreatingOrUpdatingTestTemplate={handleFinish}
 									/>
 								</Dialog.Content>
 							</Dialog.Root>
 
-
-
-
-							<TestCaseTemplate bind:testCaseTemplate={testCaseSchema} />
 							<TestCaseList testCasesStore={data.testCasesStore} />
 						</div>
 					</Resizable.Pane>

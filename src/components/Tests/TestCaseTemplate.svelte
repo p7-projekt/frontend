@@ -8,10 +8,10 @@
 	import CircleAlert from 'lucide-svelte/icons/circle-alert';
 	import * as Alert from '$lib/components/ui/alert/index.js';
 	import { createEventDispatcher, onMount } from 'svelte';
-  
+
 	export let Inputs: { type: string; value: string; argNumber: number; isInput: boolean }[] = [];
 	export let Outputs: { type: string; value: string; argNumber: number; isInput: boolean }[] = [];
-	export let isEditMode: boolean = false; 
+	export let isEditMode: boolean = false;
 	export let testCaseTemplate: any | null = null;
 
 	let inputParameters = writable(Inputs);
@@ -36,7 +36,7 @@
 	function cancel() {
 		dispatch('cancel');
 	}
- 
+
 	function addInput() {
 		inputParameters.update((inputs) => [
 			...inputs,
@@ -65,11 +65,10 @@
 		});
 	}
 
-	function createOrUpdateTestTemplate() { 
-			testCaseTemplate.parameters = { input: $inputParameters, output: $outputParameters }   
-			dispatch('finishCreatingOrUpdatingTestTemplate'); 
+	function createOrUpdateTestTemplate() {
+		testCaseTemplate.parameters = { input: $inputParameters, output: $outputParameters };
+		dispatch('finishCreatingOrUpdatingTestTemplate');
 	}
- 
 </script>
 
 <Card.Root class="w-[350px]">
@@ -95,7 +94,7 @@
 									</Select.Group>
 								</Select.Content>
 								<Select.Input name="inputType" />
-							</Select.Root> 
+							</Select.Root>
 							<Button type="button" on:click={() => removeInput(index)}>Remove</Button>
 						</div>
 					{/each}
@@ -120,7 +119,7 @@
 									</Select.Group>
 								</Select.Content>
 								<Select.Input name="outputType" />
-							</Select.Root> 
+							</Select.Root>
 							<Button type="button" on:click={() => removeOutput(index)}>Remove</Button>
 						</div>
 					{/each}
@@ -131,7 +130,8 @@
 	</Card.Content>
 	<Card.Footer class="flex justify-between">
 		<Button variant="outline" on:click={cancel}>Cancel</Button>
-		<Button type="button" on:click={createOrUpdateTestTemplate}>{isEditMode ? 'Update' : 'Create'}</Button>
+		<Button type="button" on:click={createOrUpdateTestTemplate}
+			>{isEditMode ? 'Update' : 'Create'}</Button
+		>
 	</Card.Footer>
 </Card.Root>
- 
