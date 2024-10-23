@@ -12,11 +12,21 @@
 	import * as Form from '$lib/components/ui/form/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { formSchema, type FormSchema } from './schema'; 
-	
-	export let data: PageData;
-
+	import TestCaseTemplate from '$components/Tests/TestCaseTemplate.svelte';
+	import * as Dialog from '$lib/components/ui/dialog/index.js'; 
+	export let data: PageData; 
 	export { formSchema as form };
 
+	let testTemplateCreated = false;
+ 	let open: boolean = false;
+
+	function handleCancel() {
+		open = false;
+	}
+
+	function handleFinish() {
+		open = false;
+	}
 	let superFormData: SuperValidated<Infer<FormSchema>> = {
 		data: { title: '', description: '', codeText: '', testCases: [] },
 		errors: {},
@@ -37,6 +47,8 @@
 	});
 
 	const { form: formData, enhance } = form;
+
+	let testCaseSchema: any[] = [];
 
 	data.testCasesStore.subscribe((store: any) => {
 		$formData.testCases = store.testCases;
@@ -93,6 +105,25 @@
 					<Resizable.Handle />
 					<Resizable.Pane defaultSize={40}>
 						<div class="m-8 content">
+							<p>Define test case template</p>
+							<Dialog.Root bind:open>
+								<Dialog.Content class="sm:max-w-[425px]">
+									<Dialog.Header>
+										<Dialog.Title>{testTemplateCreated ? 'Edit Test Case' : 'Create Test Case'}</Dialog.Title>
+									</Dialog.Header>
+									<TestCaseTemplate
+										isEditMode={testTemplateCreated}
+										testCaseTemplate={testCaseSchema}
+										on:cancel={handleCancel}
+										on:finishCreatingOrUpdatingTestTemplate={handleFinish}
+									/>
+								</Dialog.Content>
+							</Dialog.Root>
+
+
+
+
+							<TestCaseTemplate bind:testCaseTemplate={testCaseSchema} />
 							<TestCaseList testCasesStore={data.testCasesStore} />
 						</div>
 					</Resizable.Pane>
