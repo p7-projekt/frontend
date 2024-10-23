@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidateAll } from '$app/navigation';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 </script>
 
@@ -23,8 +24,16 @@
 		<DropdownMenu.Group>
 			<DropdownMenu.Label>My Account</DropdownMenu.Label>
 			<DropdownMenu.Separator />
-			<DropdownMenu.Item>Profile</DropdownMenu.Item>
-			<DropdownMenu.Item>Log out</DropdownMenu.Item>
+			<DropdownMenu.Item class="cursor-pointer">Profile</DropdownMenu.Item>
+			<DropdownMenu.Item
+				class="cursor-pointer"
+				on:click={async () => {
+					const response = await fetch('/api/logout', { method: 'POST' });
+					if (response.ok) {
+						invalidateAll();
+					}
+				}}>Log out</DropdownMenu.Item
+			>
 		</DropdownMenu.Group>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
