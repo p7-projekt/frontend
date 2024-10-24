@@ -2,6 +2,7 @@
 	import DescriptionBox from '$components/Textarea/DescriptionBox.svelte';
 	import TitleInput from '$components/Input/TitleInput.svelte';
 	import ExerciseList from '$components/Lists/ExerciseList.svelte';
+	import DateTime from '$components/DateTime/DateTime.svelte';
 	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
 
@@ -54,7 +55,7 @@
 		</div>
 
 		<DescriptionBox description_name="session-description" value={form?.session_description} />
-		<div></div>
+		<DateTime></DateTime>
 		<ExerciseList {added_exercise_list} {remaining_exercise_list} on:message={handleMessage} />
 		<input type="hidden" name="added-exercise-list" value={JSON.stringify(added_exercise_list)} />
 
