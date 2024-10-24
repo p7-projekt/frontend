@@ -1,5 +1,6 @@
 <!-- ListBox.svelte (Child Component) -->
 <script lang="ts">
+	import { Item } from '$lib/components/ui/dropdown-menu';
 	import { createEventDispatcher } from 'svelte';
 	import { fly, slide } from 'svelte/transition';
 
@@ -26,11 +27,11 @@
 	<div class="text-sm font-medium overflow-y-auto scrollable-list">
 		<ol class="w-full">
 			{#if list.length !== 0}
-				{#each list as list_item}
+				{#each list as list_item (list_item.id)}
 					<li
 						in:fly={{ y: 20 }}
 						out:slide
-						class="pl-1 pr-2 w-[675px] h-[52px] border-b-[1.5px] flex items-center hover-effect w-full justify-between"
+						class="pl-1 pr-2 w-[675px] h-[52px] border-b-[1.5px] flex items-center hover:bg-muted/50 w-full justify-between"
 					>
 						{#if before_item}
 							<button type="button" on:click={() => sendToParent(list_item.id, list_item.content)}>
@@ -55,13 +56,7 @@
 	.table-header {
 		background-color: #0000000d;
 	}
-	.hover-effect {
-		overflow: hidden;
-	}
-	.hover-effect:hover,
-	.hover-effect:active {
-		background-color: #0000000d;
-	}
+
 	.scrollable-list::-webkit-scrollbar {
 		width: 2px; /* Make scrollbar width smaller */
 	}
