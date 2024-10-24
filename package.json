@@ -49,6 +49,7 @@
 		"clsx": "^2.1.1",
 		"crypto-js": "^4.2.0",
 		"formsnap": "^1.0.1",
+		"jwt-decode": "^4.0.0",
 		"lucide-svelte": "^0.451.0",
 		"luxon": "^3.5.0",
 		"prismjs": "^1.29.0",

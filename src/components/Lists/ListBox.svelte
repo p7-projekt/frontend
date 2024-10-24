@@ -1,6 +1,7 @@
 <!-- ListBox.svelte (Child Component) -->
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import { fly, slide } from 'svelte/transition';
 
 	export let list_id: number;
 	export let list_title: string = '';
@@ -27,6 +28,8 @@
 			{#if list.length !== 0}
 				{#each list as list_item}
 					<li
+						in:fly={{ y: 20 }}
+						out:slide
 						class="pl-1 pr-2 w-[675px] h-[52px] border-b-[1.5px] flex items-center hover-effect w-full justify-between"
 					>
 						{#if before_item}

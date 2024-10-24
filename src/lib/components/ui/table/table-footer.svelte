@@ -2,12 +2,12 @@
 	import type { HTMLAttributes } from "svelte/elements";
 	import { cn } from "$lib/utils.js";
 
-	type $$Props = HTMLAttributes<HTMLDivElement>;
+	type $$Props = HTMLAttributes<HTMLTableSectionElement>;
 
 	let className: $$Props["class"] = undefined;
 	export { className as class };
 </script>
 
-<div class={cn("flex items-center p-6 pt-0", className)} {...$$restProps}>
+<tfoot class={cn("bg-primary text-primary-foreground font-medium", className)} {...$$restProps}>
 	<slot />
-</div>
+</tfoot>

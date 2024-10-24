@@ -2,10 +2,9 @@
 	import type { PageData } from './$types';
 	import ListBox from '$components/Lists/ListBox.svelte';
 	import { goto } from '$app/navigation';
+	import CardTable from '$components/CardTable/CardTable.svelte';
 
 	export let data: PageData;
-
-	let active_session = data.sessions ? 'View' : 'Create';
 
 	let instructor_exercises = data.instructor_exercises.map(
 		(exercise: { id: number; title: string }) => ({
@@ -19,39 +18,38 @@
 </svg>
 `;
 
-	async function handleClick() {
-		if (data.sessions) {
-			goto('/');
-		} else {
-			goto('/create-session');
-		}
+	async function handleClickCreateSession() {
+		goto('/create-session');
 	}
 </script>
 
 {#if data.user}
-	<div class="container pl-6 w-full text-[#333] grid grid-cols-1 gap-y-6">
+	<div class="container pl-6 w-full text-[#333] grid grid-cols-1 gap-y-8">
 		<h1 class=" text-2xl font-semibold col-span-full">Instructor Home</h1>
 		<div class="flex gap-x-12 h-full">
 			<main class="flex flex-1 flex-col w-1/2 max-h-[35.5rem]">
-				<div class="flex items-center">
-					<!-- <h1 class="text-lg font-semibold md:text-2xl">Intructor Home</h1> -->
-				</div>
-				<div
-					data-x-chunk-name="dashboard-02-chunk-1"
-					data-x-chunk-description="An empty state showing no products with a heading, description and a call to action to add a product."
-					class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
-				>
-					<div class="flex flex-col items-center gap-1 text-center">
-						<h3 class="text-2xl font-bold tracking-tight">You have no Sessions</h3>
-						<p class="text-muted-foreground text-sm">
-							You can start instructing as soon as you add a session.
-						</p>
-						<button
-							class="bg-[#1f2937] text-white hover:bg-transparent hover:text-[#1f2937] ease-in-out duration-300 p-6 rounded-lg shadow-lg text-xl py-6 px-12 mt-8"
-							on:click={handleClick}>{active_session} Session</button
-						>
+				{#if !data.sessions}
+					<div
+						class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
+					>
+						<div class="flex flex-col items-center gap-1 text-center">
+							<h3 class="text-2xl font-bold tracking-tight">You have no Sessions</h3>
+							<p class="text-muted-foreground text-sm">
+								You can start instructing as soon as you add a session.
+							</p>
+							<button
+								class="bg-[#1f2937] text-white hover:bg-transparent hover:text-[#1f2937] ease-in-out duration-300 p-6 rounded-lg shadow-lg text-xl py-6 px-12 mt-8"
+								on:click={handleClickCreateSession}>Session</button
+							>
+						</div>
 					</div>
-				</div>
+				{:else}
+					<div class="flex flex-1 justify-center rounded-lg border border-dashed shadow-sm">
+						<main class="w-full">
+							<CardTable></CardTable>
+						</main>
+					</div>
+				{/if}
 			</main>
 			<div class=" max-h-[35.5rem] w-1/2">
 				<ListBox list={instructor_exercises} list_title="Private" {after_item}></ListBox>

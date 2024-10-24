@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Label } from '$lib/components/ui/label/index.js';
 	import DescriptionBox from '$components/Textarea/DescriptionBox.svelte';
 	import TitleInput from '$components/Input/TitleInput.svelte';
 	import ExerciseList from '$components/Lists/ExerciseList.svelte';
