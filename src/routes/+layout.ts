@@ -7,6 +7,13 @@ export const load: LayoutLoad = ({ data, url }) => {
 	if (user && url.pathname === '/login') {
 		throw redirect(307, '/');
 	}
+	if (!user && url.pathname === '/create-session') {
+		throw redirect(307, '/login');
+	}
+	if (!user && url.pathname === '/createexercise') {
+		throw redirect(307, '/login');
+	}
+
 	return {
 		user
 	};
