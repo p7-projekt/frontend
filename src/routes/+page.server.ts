@@ -65,10 +65,10 @@ export const load: PageServerLoad = () => {
 	];
 
 	const sessions: { id: number; title: string }[] = [
-		// {
-		// 	id: 1,
-		// 	title: 'My Session'
-		// }
+		{
+			id: 1,
+			title: 'My Session'
+		}
 	];
 
 	return {

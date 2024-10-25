@@ -1,4 +1,5 @@
 import { redirect } from '@sveltejs/kit';
+import { jwtDecode } from 'jwt-decode';
 import type { LayoutServerLoad } from './$types';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -12,12 +13,24 @@ export const load: LayoutServerLoad = async ({ cookies, event }) => {
 		return { user: null };
 	}
 
-	const response = await fetch(`${backendUrl}${api_version}/users`, {
+	// Decode access token to get id of user
+	let decoded_token: string = '';
+	try {
+		decoded_token = jwtDecode(access_token) as {
+			'http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata': string;
+		};
+	} catch (error) {
+		console.log(error);
+	}
+	const user_id = decoded_token['http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'];
+
+	const response = await fetch(`${backendUrl}${api_version}/users/${user_id}`, {
 		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${access_token}`
 		}
 	});
+	// console.log(response);
 
 	if (response.ok) {
 		const userRes = await response.json();
