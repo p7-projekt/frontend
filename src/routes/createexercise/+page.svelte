@@ -16,8 +16,7 @@
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	export let data: PageData;
 	export { formSchema as form };
-
-	let testTemplateCreated = false;
+ 
 	let open: boolean = false;
 
 	function handleCancel() {
@@ -141,11 +140,10 @@
 								<Dialog.Content class="sm:max-w-[425px]">
 									<Dialog.Header>
 										<Dialog.Title
-											>{testTemplateCreated ? 'Edit Test Case' : 'Create Test Case'}</Dialog.Title
+											>{testCaseSchema != null ? 'Edit Test Case Template' : 'Create Test Case Template'}</Dialog.Title
 										>
 									</Dialog.Header>
-									<TestCaseTemplate
-										isEditMode={testTemplateCreated}
+									<TestCaseTemplate 
 										bind:testCaseTemplate={testCaseSchema}
 										on:cancel={handleCancel}
 										on:finishCreatingOrUpdatingTestTemplate={handleFinish}

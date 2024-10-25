@@ -10,8 +10,7 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 
 	export let Inputs: { type: string; value: string; argNumber: number; isInput: boolean }[] = [];
-	export let Outputs: { type: string; value: string; argNumber: number; isInput: boolean }[] = [];
-	export let isEditMode: boolean = false;
+	export let Outputs: { type: string; value: string; argNumber: number; isInput: boolean }[] = []; 
 	export let testCaseTemplate: any | null = null;
 
 	let inputParameters = writable(Inputs);
@@ -27,7 +26,7 @@
 	];
 
 	onMount(() => {
-		if (isEditMode && testCaseTemplate) {
+		if (testCaseTemplate) {
 			inputParameters.set(testCaseTemplate.parameters.input);
 			outputParameters.set(testCaseTemplate.parameters.output);
 		}
@@ -131,7 +130,7 @@
 	<Card.Footer class="flex justify-between">
 		<Button variant="outline" on:click={cancel}>Cancel</Button>
 		<Button type="button" on:click={createOrUpdateTestTemplate}
-			>{isEditMode ? 'Update' : 'Create'}</Button
+			>{testCaseTemplate ? 'Update' : 'Create'}</Button
 		>
 	</Card.Footer>
 </Card.Root>
