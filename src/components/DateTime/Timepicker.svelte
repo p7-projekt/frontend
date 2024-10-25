@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	let timeOptions: { hour: string; minute: string; period: string }[] = [];
 	let selectedTime: string = '';
 	let isTimepickerOpen: boolean = false;
 	let timepickerContainer: HTMLDivElement;
 	let timepickerInput: HTMLDivElement;
+	let dispatch = createEventDispatcher();
 
 	// Generate time options with an interval (e.g., 30 minutes)
 	function generateTimeOptions(interval: number) {
@@ -31,6 +33,8 @@
 	function selectTime(option: { hour: string; minute: string; period: string }) {
 		selectedTime = `${option.hour}:${option.minute} ${option.period}`;
 		isTimepickerOpen = false;
+
+		dispatch('selectedTime', selectedTime);
 	}
 
 	// Toggle timepicker visibility
