@@ -15,8 +15,9 @@
     export let isEditMode: boolean = false;
     export let existingTestCase: { id: number; parameters: { input: any; output: any } } | null = null;
 
-    let inputParameters = writable(testCaseTemplate.parameters.input);
-    let outputParameters = writable(testCaseTemplate.parameters.output);
+    let inputParameters = writable(JSON.parse(JSON.stringify(testCaseTemplate.parameters.input)));
+    let outputParameters = writable(JSON.parse(JSON.stringify(testCaseTemplate.parameters.output)));
+   
     const dispatch = createEventDispatcher();
 
     let showAlert = writable(false);
@@ -111,7 +112,11 @@
                                     <Select.Group>
                                         <Select.Label>Types</Select.Label>
                                         {#each types as type}
-                                            <Select.Item on:click={() => (input.type = type.value)} value={type.value}>
+                                            <Select.Item 
+                                                on:click={() => { if (!isEditMode) input.type = type.value }} 
+                                                value={type.value} 
+                                                disabled={isEditMode}
+                                            >
                                                 {type.label}
                                             </Select.Item>
                                         {/each}
@@ -144,7 +149,11 @@
                                     <Select.Group>
                                         <Select.Label>Types</Select.Label>
                                         {#each types as type}
-                                            <Select.Item on:click={() => (output.type = type.value)} value={type.value}>
+                                            <Select.Item 
+                                                on:click={() => { if (!isEditMode) output.type = type.value }} 
+                                                value={type.value} 
+                                                disabled={isEditMode}
+                                            >
                                                 {type.label}
                                             </Select.Item>
                                         {/each}
