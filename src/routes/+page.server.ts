@@ -4,13 +4,9 @@ import type { PageServerLoad } from './$types';
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const api_version = import.meta.env.VITE_V1;
 
-export const load: PageServerLoad = async ({ cookies }) => {
+export const load: PageServerLoad = async ({ cookies, fetch }) => {
 	const access_token = cookies.get('access_token');
 	const refresh_token = cookies.get('refresh_token');
-
-	if (!access_token) {
-		throw redirect(303, '/');
-	}
 
 	const instructor_exercises = [
 		{
@@ -75,16 +71,26 @@ export const load: PageServerLoad = async ({ cookies }) => {
 		}
 	];
 
-	const response = await fetch(`${backendUrl}${api_version}/sessions`, {
-		method: 'GET',
-		headers: {
-			Authorization: `Bearer ${access_token}`
-		}
-	});
-
 	let sessions;
-	if (response.ok) {
-		sessions = await response.json();
+	if (access_token) {
+		const response = await fetch(`${backendUrl}${api_version}/sessions`, {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${access_token}`
+			}
+		});
+
+		if (response.ok) {
+			// if response fails, probably due to invalid access token, use redirect token if redirect token exist
+			// else log user out
+			if (response.status === 401 && refresh_token) {
+				const response = await fetch('/api/refresh', { method: 'POST' });
+				if (response.ok) {
+					throw redirect(303, '/');
+				}
+			}
+			sessions = await response.json();
+		}
 	}
 	return {
 		instructor_exercises: instructor_exercises,

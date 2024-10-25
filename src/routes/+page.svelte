@@ -6,8 +6,8 @@
 
 	export let data: PageData;
 
-	let session_id: number = data.sessions[0].id;
-	let session_title: string = data.sessions[0].title;
+	let session_id = data.sessions ? data.sessions[0].id : undefined;
+	let session_title = data.sessions ? data.sessions[0].title : undefined;
 
 	let instructor_exercises = data.instructor_exercises.map(
 		(exercise: { id: number; title: string }) => ({
