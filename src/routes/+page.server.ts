@@ -1,6 +1,17 @@
+import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = () => {
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const api_version = import.meta.env.VITE_V1;
+
+export const load: PageServerLoad = async ({ cookies }) => {
+	const access_token = cookies.get('access_token');
+	const refresh_token = cookies.get('refresh_token');
+
+	if (!access_token) {
+		throw redirect(303, '/');
+	}
+
 	const instructor_exercises = [
 		{
 			id: 1,
@@ -64,13 +75,17 @@ export const load: PageServerLoad = () => {
 		}
 	];
 
-	const sessions: { id: number; title: string }[] = [
-		{
-			id: 1,
-			title: 'My Session'
+	const response = await fetch(`${backendUrl}${api_version}/sessions`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${access_token}`
 		}
-	];
+	});
 
+	let sessions;
+	if (response.ok) {
+		sessions = await response.json();
+	}
 	return {
 		instructor_exercises: instructor_exercises,
 		sessions: sessions && sessions.length > 0 ? sessions : null

@@ -15,7 +15,6 @@ export const load: LayoutServerLoad = async ({ cookies, fetch }) => {
 
 	// Decode access token to get id of user
 	let decoded_token;
-	let response;
 	try {
 		decoded_token = jwtDecode(access_token) as {
 			'http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata': string;
@@ -30,7 +29,7 @@ export const load: LayoutServerLoad = async ({ cookies, fetch }) => {
 
 		// const test_token = 'LOL';
 
-		response = await fetch(`${backendUrl}${api_version}/users/${user_id}`, {
+		const response = await fetch(`${backendUrl}${api_version}/users/${user_id}`, {
 			method: 'GET',
 			headers: {
 				Authorization: `Bearer ${access_token}`

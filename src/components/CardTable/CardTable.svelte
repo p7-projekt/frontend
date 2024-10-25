@@ -1,6 +1,8 @@
 <script>
 	import * as Card from '$lib/components/ui/card';
 	import { onMount } from 'svelte';
+
+	export let session_id;
 	export let session_title = 'My session';
 	export let hours_remaining = 1;
 
@@ -33,7 +35,8 @@
 </Card.Header>
 <Card.Content>
 	<section class="w-full caption-bottom text-sm">
-		<header class="border-b flex justify-between hover:bg-muted/50">
+		<header class="border-b grid grid-cols-4 hover:bg-muted/50">
+			<div class="flex items-center text-muted-foreground h-12 px-4 font-medium">Session ID</div>
 			<div class="flex items-center justify-center text-muted-foreground h-12 px-4 font-medium">
 				Title
 			</div>
@@ -43,7 +46,8 @@
 			</div>
 			<div></div>
 		</header>
-		<div class="border-b flex justify-between hover:bg-muted/50">
+		<div class="border-b grid grid-cols-4 hover:bg-muted/50">
+			<div class="flex items-center h-12 px-4 font-medium">{session_id}</div>
 			<div class="flex items-center justify-center h-12 px-4 font-medium">
 				{session_title}
 			</div>
@@ -104,8 +108,6 @@
 					</button> -->
 				</div>
 			</div>
-
-			<!-- <div class="flex items-center justify-center h-12 px-4 font-medium">2023-07-12 10:42 AM</div> -->
 		</div>
 	</section>
 </Card.Content>
