@@ -45,43 +45,54 @@
     }
 
     function submitTestCase() {
-        const validInputs =
-            $inputParameters.every(validateIntegerValue) && $outputParameters.every(validateIntegerValue);
-        const hasInputs = $inputParameters.length > 0;
-        const hasOutputs = $outputParameters.length > 0;
-        const hasType =
-            $inputParameters.every((input: any) => input.type !== '') &&
-            $outputParameters.every((output: any) => output.type !== '');
+    testCasesStore.subscribe((store: any) => {
+        let testCases = store.testCases;
+        console.log(testCases);
+    });
 
-        if (validInputs && hasInputs && hasOutputs && hasType) {
-            testCasesStore.update((store: any) => {
-                if (isEditMode && existingTestCase) {
-                    const updatedTestCases = store.testCases.map((tc: any) =>
-                        tc.id === existingTestCase.id
-                            ? { ...tc, parameters: { input: $inputParameters, output: $outputParameters } }
-                            : tc
-                    );
-                    return { ...store, testCases: updatedTestCases };
-                } else {
-                    const newTestCase = {
-                        id: store.idCounter + 1,
-                        parameters: {
-                            input: $inputParameters,
-                            output: $outputParameters
+    const validInputs =
+        $inputParameters.every(validateIntegerValue) && $outputParameters.every(validateIntegerValue);
+    const hasInputs = $inputParameters.length > 0;
+    const hasOutputs = $outputParameters.length > 0;
+    const hasType =
+        $inputParameters.every((input: any) => input.type !== '') &&
+        $outputParameters.every((output: any) => output.type !== '');
+
+    if (validInputs && hasInputs && hasOutputs && hasType) {
+        testCasesStore.update((store: any) => {
+            if (isEditMode && existingTestCase) {
+                const updatedTestCases = store.testCases.map((tc: any) =>
+                    tc.id === existingTestCase.id
+                        ? {
+                            ...tc,
+                            parameters: {
+                                input: JSON.parse(JSON.stringify($inputParameters)),
+                                output: JSON.parse(JSON.stringify($outputParameters))
+                            }
                         }
-                    };
-                    return {
-                        idCounter: store.idCounter + 1,
-                        testCases: [...store.testCases, newTestCase]
-                    };
-                }
-            });
-            showAlert.set(false);
-            dispatch('finishCreatingOrUpdating');
-        } else {
-            showAlert.set(true);
-        }
+                        : tc
+                );
+                return { ...store, testCases: updatedTestCases };
+            } else {
+                const newTestCase = {
+                    id: store.idCounter + 1,
+                    parameters: {
+                        input: JSON.parse(JSON.stringify($inputParameters)),
+                        output: JSON.parse(JSON.stringify($outputParameters))
+                    }
+                };
+                return {
+                    idCounter: store.idCounter + 1,
+                    testCases: [...store.testCases, newTestCase]
+                };
+            }
+        });
+        showAlert.set(false);
+        dispatch('finishCreatingOrUpdating');
+    } else {
+        showAlert.set(true);
     }
+}
 </script>
 
 <Card.Root class="w-[350px]">
