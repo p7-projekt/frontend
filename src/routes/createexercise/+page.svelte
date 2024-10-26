@@ -145,6 +145,7 @@
 									</Dialog.Header>
 									<TestCaseTemplate 
 										bind:testCaseTemplate={testCaseSchema}
+										testCasesStore={data.testCasesStore}
 										on:cancel={handleCancel}
 										on:finishCreatingOrUpdatingTestTemplate={handleFinish}
 									/>
