@@ -23,8 +23,8 @@
     let showAlert = writable(false);
 
     const types = [
-        { value: 'String', label: 'String' },
-        { value: 'Integer', label: 'Integer' }
+        { value: 'string', label: 'String' },
+        { value: 'int', label: 'Int' }
     ];
 
     function cancel() {
