@@ -142,9 +142,9 @@
                         <Button variant="default" on:click={createBoilerplate}>Create Boilerplate</Button>
                         <Button variant="default">Validate</Button>
                         <Form.Button>Confirm</Form.Button>
-                        {#if browser}
+                        <!-- {#if browser}
                             <SuperDebug data={$formData} />
-                        {/if}
+                        {/if} -->
                     </div>
                 </div>
             </Resizable.Pane>

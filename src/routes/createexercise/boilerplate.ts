@@ -1,4 +1,5 @@
 import { haskell } from "@codemirror/legacy-modes/mode/haskell";
+import { string } from "zod";
 
 
 
@@ -11,6 +12,8 @@ export function setIDEBoilerPlate(testTemplate: { parameters: { input: { type: s
 }
 
 function createHaskellBoilerplate(testTemplate: { parameters: { input: { type: string, value: string }[], output: { type: string, value: string }[] } }) {
+    let module = `module Solution where`; 
+
     let functionSignature = `solution :: ${testTemplate.parameters.input.map((input) => {
         return `${input.type}`;
     }).join(" -> ")} -> ${testTemplate.parameters.output.map((output) => {
@@ -23,5 +26,5 @@ function createHaskellBoilerplate(testTemplate: { parameters: { input: { type: s
         return `output${index}`;
     }).join(" ")}`;
 
-    return `${functionSignature}\n${functionBody}`;    
+    return `${module}\n${functionSignature}\n${functionBody}`;    
 }
