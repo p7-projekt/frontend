@@ -14,9 +14,10 @@
     import TestCaseTemplate from '$components/Tests/TestCaseTemplate.svelte';
     import * as Dialog from '$lib/components/ui/dialog/index.js';
     import { setIDEBoilerPlate } from './boilerplate'
-    export let data: PageData;
     export { formSchema as form };
  
+    export let data: PageData;
+
     let open: boolean = false;
 
     function handleCancel() {
@@ -26,25 +27,13 @@
     function handleFinish() {
         open = false;
     }
-    let superFormData: SuperValidated<Infer<FormSchema>> = {
-        data: { title: '', description: '', codeText: '', testCases: [] },
-        errors: {},
-        valid: false,
-        id: '',
-        posted: false
-    };
+    
+	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form.data.form;
 
     const form = superForm(superFormData, {
-        validators: zodClient(formSchema),
-        onUpdated: ({ form: f }) => {
-            if (f.valid) {
-                console.log(`You submitted ${JSON.stringify(f.data, null, 2)}`);
-            } else {
-                console.log('Please fix the errors in the form.');
-                console.log('Form Errors:', f.errors);
-            }
-        }
-    });
+        validators: zodClient(formSchema)
+        } 
+    );
 
     const { form: formData, enhance, errors } = form;
 
@@ -73,14 +62,14 @@
                         <div class="m-8 content">
                             <Form.Field {form} name="title">
                                 <Form.Control let:attrs>
-                                    <TitleInput bind:value={$formData.title} />
+                                    <TitleInput {...attrs} bind:value={$formData.title} />
                                 </Form.Control>
                                 <Form.Description>This is the title of the exercise.</Form.Description>
 								{#if $errors.title}<span class="invalid">{$errors.title}</span>{/if} 
                             </Form.Field>
                             <Form.Field {form} name="description">
                                 <Form.Control let:attrs>
-                                    <DescriptionBox bind:value={$formData.description} />
+                                    <DescriptionBox {...attrs} bind:value={$formData.description} />
                                 </Form.Control>
                                 <Form.Description>This is the exercise description.</Form.Description>
                             </Form.Field>

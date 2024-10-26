@@ -33,25 +33,7 @@ export const actions: Actions = {
 
         if (response.ok) {
             const resJSON = await response.json();
-
-            const expires_at: Date = new Date(resJSON.expiresAt);
-
-            const { cookies } = event;
-            cookies.set('access_token', resJSON.token, {
-                path: '/',
-                httpOnly: true,
-                secure: true, // Use secure for HTTPS-only environments
-                sameSite: 'strict'
-            });
-
-            cookies.set('refresh_token', resJSON.refreshToken, {
-                path: '/',
-                expires: expires_at,
-                httpOnly: true,
-                secure: true, // Use secure for HTTPS-only environments
-                sameSite: 'strict'
-            });
-            throw redirect(303, '/');
+ 
         } else {
             const error = await response.json();
             return setError(form, 'email', error?.detail || 'Login failed');
