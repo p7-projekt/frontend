@@ -31,7 +31,8 @@
 	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form.data.form;
 
     const form = superForm(superFormData, {
-        validators: zodClient(formSchema)
+        validators: zodClient(formSchema),
+		dataType: "json",
         } 
     );
 
@@ -54,7 +55,7 @@
 </script>
 
 <main>
-    <form method="POST" class="max-w max-h" use:enhance>
+    <form method="POST" use:enhance class="max-w max-h" >
         <Resizable.PaneGroup direction="horizontal" class="pane-group max-w max-h rounded-lg border">
             <Resizable.Pane defaultSize={50} class="pane">
                 <Resizable.PaneGroup direction="vertical">
