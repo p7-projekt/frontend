@@ -125,7 +125,7 @@
                             </Dialog.Root>
 
                             <TestCaseList testCasesStore={data.testCasesStore} bind:testCaseTemplate={testCaseSchema} />
-							{#if $errors.testCases}<span class="invalid">{$errors.testCases}</span>{/if}
+							{#if $errors.testCases}<span class="invalid">{$errors.testCases._errors}</span>{/if}
 							
 						</div>
                     </Resizable.Pane>
@@ -138,6 +138,7 @@
                         <Ide bind:codeSolutionText={$formData.codeText} />
                     </div>
 					{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
+                    {#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
                     <div class="flex space-x-4">
                         <Button variant="default" on:click={createBoilerplate}>Create Boilerplate</Button>
                         <Button variant="default">Validate</Button>
