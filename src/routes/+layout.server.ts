@@ -32,10 +32,10 @@ async function fetchUserData(
 export const load: LayoutServerLoad = async ({ cookies, fetch }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;
 	const api_version = import.meta.env.VITE_V1;
-	const access_token = cookies.get('access_token') || '';
-	const refresh_token = cookies.get('refresh_token') || '';
+	const access_token: string = cookies.get('access_token') || '';
+	const refresh_token: string = cookies.get('refresh_token') || '';
 
-	if (!access_token) {
+	if (!access_token && !refresh_token) {
 		return { user: null };
 	}
 

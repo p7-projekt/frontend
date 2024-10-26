@@ -10,8 +10,8 @@ export async function handleAuthenticatedRequest(
 ): Promise<any> {
 	let response = await requestFunction(access_token);
 
+	// In case of invalid access token we want to try to refresh it
 	if ((response.status === 401 || response.status === 404) && refresh_token) {
-		// Use the provided `fetch` here
 		const refreshResponse = await fetch('/api/refresh', { method: 'POST' });
 
 		if (refreshResponse.ok) {
@@ -24,7 +24,13 @@ export async function handleAuthenticatedRequest(
 		}
 		cookies.delete('access_token', { path: '/' });
 		cookies.delete('refresh_token', { path: '/' });
-		throw redirect(303, '/');
+		throw redirect(303, '/login');
+	}
+	// If refresh token is invalid, log user out
+	if (response.status === 401 || response.status === 404) {
+		cookies.delete('access_token', { path: '/' });
+		cookies.delete('refresh_token', { path: '/' });
+		throw redirect(303, '/login');
 	}
 
 	if (response.ok) {
