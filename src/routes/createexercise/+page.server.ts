@@ -5,7 +5,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
-const apiVersion = import.meta.env.VITE_APIVERSION;
+const apiVersion = import.meta.env.VITE_V1;
 
 export const load: PageServerLoad = async () => {
     return {
@@ -39,23 +39,30 @@ export const actions: Actions = {
 
         // Convert form data to API format
         const apiData = convertFormData(form.data);
+        const access_token = event.cookies.get('access_token');
+
 
         // Make request login post request to backend
-        const response = await fetch(`${backendUrl}/${apiVersion}/exercises`, {
+        const response = await fetch(`${backendUrl}${apiVersion}/exercises`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}` // Append the Bearer token
+				'Authorization': `Bearer ${access_token}` // Append the Bearer token
             },
             body: JSON.stringify(apiData)
         });
 
         if (response.ok) {
             const resJSON = await response.json();
-			console.log('great success: Form Data:', form.data);
-			
+            console.log('great success: Form Data:', form.data);
         } else {
-            const error = await response.json();
+            const errorText = await response.text(); // Read the response as text
+            let error;
+            try {
+                error = JSON.parse(errorText); // Try to parse the error as JSON
+            } catch (e) {
+                error = { detail: errorText }; // If parsing fails, use the text as the error detail
+            }
             return setError(form, error?.detail || 'Create Exercise failed on the server');
         }
     }
