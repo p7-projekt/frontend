@@ -53,17 +53,32 @@ export const actions: Actions = {
         });
 
         if (response.ok) {
-            const resJSON = await response.json();
-            console.log('great success: Form Data:', form.data);
+            const responseBody = await response.text(); // Read the response as text
+            let resJSON;
+            if (responseBody) {
+                try {
+                    resJSON = JSON.parse(responseBody); // Try to parse the response as JSON
+                } catch (e) {
+                    console.error('Failed to parse response JSON:', e);
+                    resJSON = { detail: responseBody }; // If parsing fails, use the text as the response detail
+                }
+            } else {
+                resJSON = { detail: 'No response body' }; // Handle empty response body
+            }
+            console.log('great success: Form Data:', form.data, 'Response:', resJSON);
         } else {
             const errorText = await response.text(); // Read the response as text
             let error;
-            try {
-                error = JSON.parse(errorText); // Try to parse the error as JSON
-            } catch (e) {
-                error = { detail: errorText }; // If parsing fails, use the text as the error detail
+            if (errorText) {
+                try {
+                    error = JSON.parse(errorText); // Try to parse the error as JSON
+                } catch (e) {
+                    error = { detail: errorText }; // If parsing fails, use the text as the error detail
+                }
+            } else {
+                error = { detail: 'An unknown error occurred' }; // Handle empty response body
             }
-            return setError(form, error?.detail || 'Create Exercise failed on the server');
+            return setError(form, 'codeText', error.detail || 'An error occurred on the server');
         }
     }
 };
