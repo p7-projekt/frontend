@@ -6,9 +6,9 @@
 
 	export let data: PageData;
 
-	let session_id = data.sessions ? data.sessions[0].id : undefined;
-	let session_title = data.sessions ? data.sessions[0].title : undefined;
-
+	// let session_id = data.sessions ? data.sessions[0].id : undefined;
+	// let session_title = data.sessions ? data.sessions[0].title : undefined;
+	let sessionData = data.sessions;
 	let instructor_exercises = data.instructor_exercises.map(
 		(exercise: { id: number; title: string }) => ({
 			id: exercise.id,
@@ -60,7 +60,7 @@
 				{:else}
 					<div class="flex flex-1 justify-center rounded-lg border border-dashed shadow-sm">
 						<main class="w-full">
-							<CardTable {session_id} {session_title} />
+							<CardTable {sessionData} />
 						</main>
 					</div>
 				{/if}
