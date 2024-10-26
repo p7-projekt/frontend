@@ -115,7 +115,7 @@
                                             <Select.Item 
                                                 on:click={() => { if (!isEditMode) input.type = type.value }} 
                                                 value={type.value} 
-                                                disabled={isEditMode}
+                                                disabled={true}
                                             >
                                                 {type.label}
                                             </Select.Item>
@@ -152,7 +152,7 @@
                                             <Select.Item 
                                                 on:click={() => { if (!isEditMode) output.type = type.value }} 
                                                 value={type.value} 
-                                                disabled={isEditMode}
+                                                disabled={true}
                                             >
                                                 {type.label}
                                             </Select.Item>
