@@ -1,16 +1,19 @@
 <script lang="ts">
-	import { Label } from '$lib/components/ui/label/index.js';
 	import DescriptionBox from '$components/Textarea/DescriptionBox.svelte';
 	import TitleInput from '$components/Input/TitleInput.svelte';
 	import ExerciseList from '$components/Lists/ExerciseList.svelte';
+	import DateTime from '$components/DateTime/DateTime.svelte';
 	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
+	import { type DateValue } from '@internationalized/date';
+	import { invalidateAll } from '$app/navigation';
 
 	export let data: PageData;
 	export let form: ActionData;
 
 	let added_exercise_list: { id: number; content: string }[] = [];
 	let receive_message: string = '';
+	let datetime: { datetime: DateValue; time: string };
 
 	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
 	let remaining_exercise_list = data.instructor_exercises.map(
@@ -24,6 +27,11 @@
 		receive_message = event.detail;
 		added_exercise_list = receive_message.added_exercise_list;
 	}
+
+	function datetimeSelected(event) {
+		datetime = event.detail;
+	}
+
 	$: session_description =
 		typeof form?.session_description === 'string' ? form.session_description : '';
 </script>
@@ -55,7 +63,13 @@
 		</div>
 
 		<DescriptionBox description_name="session-description" value={form?.session_description} />
-		<div></div>
+		<div>
+			<DateTime on:selectedDateTime={datetimeSelected} />
+			{#if form?.datetimeInThePast}
+				<p style="color:red; margin-bottom:0;">You must pick a date and time in the future</p>
+			{/if}
+		</div>
+		<input type="hidden" name="selected_datetime" value={JSON.stringify(datetime)} />
 		<ExerciseList {added_exercise_list} {remaining_exercise_list} on:message={handleMessage} />
 		<input type="hidden" name="added-exercise-list" value={JSON.stringify(added_exercise_list)} />
 

@@ -1,8 +1,9 @@
 import type { PageServerLoad, Actions } from './$types.js';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
+// import CryptoJS from 'crypto-js';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -19,24 +20,42 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
-		// Extract the email and password
 		const { email, password } = form.data;
 
-		console.log('email', email);
+		// Potentially encrypt password when sending to backend
+		// const hashedPassword = CryptoJS.SHA256(password).toString();
+		// console.log(hashedPassword);
 
-		// Make a POST request to backend
+		// Make request login post request to backend
 		const response = await fetch(backendUrl + '/login', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ Email: email, Password: password })
+			body: JSON.stringify({ email: email, password: password })
 		});
 
-		// Handle the response
 		if (response.ok) {
-			const data = await response.json();
-			return setError(form, 'email', data?.detail || 'Ja det virkede det er bare dejligt');
+			const resJSON = await response.json();
+
+			const expires_at: Date = new Date(resJSON.expiresAt);
+
+			const { cookies } = event;
+			cookies.set('access_token', resJSON.token, {
+				path: '/',
+				httpOnly: true,
+				secure: true, // Use secure for HTTPS-only environments
+				sameSite: 'strict'
+			});
+
+			cookies.set('refresh_token', resJSON.refreshToken, {
+				path: '/',
+				expires: expires_at,
+				httpOnly: true,
+				secure: true, // Use secure for HTTPS-only environments
+				sameSite: 'strict'
+			});
+			throw redirect(303, '/');
 		} else {
 			const error = await response.json();
 			return setError(form, 'email', error?.detail || 'Login failed');

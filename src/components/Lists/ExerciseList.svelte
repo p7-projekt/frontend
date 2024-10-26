@@ -78,18 +78,21 @@
 	}
 </script>
 
-<ListBox
-	list_id={1}
-	list_title="Added"
-	list={added_exercise_list}
-	{after_item}
-	on:message={handleMessage}
-/>
-
-<ListBox
-	list_id={2}
-	list_title="Instructor"
-	list={remaining_exercise_list}
-	{before_item}
-	on:message={handleMessage}
-/>
+<div class="h-[19.3rem]">
+	<ListBox
+		list_id={1}
+		list_title="Added"
+		list={added_exercise_list}
+		{after_item}
+		on:message={handleMessage}
+	/>
+</div>
+<div class="h-[19.3rem]">
+	<ListBox
+		list_id={2}
+		list_title="Instructor"
+		list={remaining_exercise_list}
+		{before_item}
+		on:message={handleMessage}
+	/>
+</div>
