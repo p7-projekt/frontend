@@ -124,7 +124,6 @@ export const actions: Actions = {
 			body: JSON.stringify({ new_session })
 		});
 
-		// console.log(response);
 		if (!response.ok) {
 			if (response.status === 401) {
 				throw redirect(303, '/create-session');

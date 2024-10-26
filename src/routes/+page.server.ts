@@ -1,4 +1,3 @@
-import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 
@@ -7,13 +6,6 @@ export const load: PageServerLoad = async ({ cookies, fetch }) => {
 	const api_version = import.meta.env.VITE_V1;
 	const access_token = cookies.get('access_token') || '';
 	const refresh_token = cookies.get('refresh_token') || '';
-
-	if (!access_token && !refresh_token) {
-		return {
-			instructor_exercises: null,
-			sessions: null
-		};
-	}
 
 	const instructor_exercises = [
 		{
@@ -77,6 +69,12 @@ export const load: PageServerLoad = async ({ cookies, fetch }) => {
 			title: 'Linked list'
 		}
 	];
+	if (!access_token && !refresh_token) {
+		return {
+			instructor_exercises: instructor_exercises,
+			sessions: null
+		};
+	}
 
 	const sessions = await handleAuthenticatedRequest(
 		(token) => fetchSessionsData(backendUrl, api_version, token),
@@ -86,31 +84,10 @@ export const load: PageServerLoad = async ({ cookies, fetch }) => {
 		fetch
 	);
 
-	if (access_token) {
-		// const response = await fetch(`${backendUrl}${api_version}/sessions`, {
-		// 	method: 'GET',
-		// 	headers: {
-		// 		Authorization: `Bearer ${access_token}`
-		// 	}
-		// });
-
-		// 	if (response.ok) {
-		// 		// if response fails, probably due to invalid access token, use redirect token if redirect token exist
-		// 		// else log user out
-		// 		if (response.status === 401 && refresh_token) {
-		// 			const response = await fetch('/api/refresh', { method: 'POST' });
-		// 			if (response.ok) {
-		// 				throw redirect(303, '/');
-		// 			}
-		// 		}
-		// 		sessions = await response.json();
-		// 	}
-		// }
-		return {
-			instructor_exercises: instructor_exercises,
-			sessions: sessions && sessions.length > 0 ? sessions : null
-		};
-	}
+	return {
+		instructor_exercises: instructor_exercises,
+		sessions: sessions && sessions.length > 0 ? sessions : null
+	};
 };
 
 async function fetchSessionsData(

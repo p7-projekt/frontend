@@ -1,4 +1,4 @@
-import { redirect, type Cookies } from '@sveltejs/kit';
+import { redirect, type Cookies, json } from '@sveltejs/kit';
 
 // Run request function; if access_token is expired, refresh and rerun the request function
 export async function handleAuthenticatedRequest(
@@ -34,7 +34,9 @@ export async function handleAuthenticatedRequest(
 	}
 
 	if (response.ok) {
-		return await response.json();
+		// Check if response has a body
+		const text = await response.text();
+		return text ? JSON.parse(text) : json({ message: 'Session deleted' }, { status: 200 }); // Return parsed JSON or null if no body
 	}
 
 	throw new Error('Request failed');

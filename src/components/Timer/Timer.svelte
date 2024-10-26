@@ -5,8 +5,9 @@
 
 	let remaining_time = seconds_remaining;
 
+	let interval;
 	function startTimer() {
-		const interval = setInterval(() => {
+		interval = setInterval(() => {
 			if (remaining_time > 0) {
 				remaining_time--;
 			} else {
