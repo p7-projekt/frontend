@@ -13,6 +13,7 @@
 	import { formSchema, type FormSchema } from './schema';
 	import TestCaseTemplate from '$components/Tests/TestCaseTemplate.svelte';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import { setIDEBoilerPlate } from './boilerplate'
 	export let data: PageData;
 	export { formSchema as form };
  
@@ -57,32 +58,13 @@
 		$formData.testCases = store.testCases;
 	});
 
-	// async function postExercise() {
-	//     let testCases: any[] = [];
-
-	//     data.testCasesStore.subscribe((store: any) => {
-	//         testCases = store.testCases;
-	//     });
-
-	//     const exerciseData = {
-	//         title: exerciseTitle,
-	//         description: exerciseDescription,
-	//         codeText: codeSolutionText,
-	//         testCases: testCases
-	//     };
-
-	//     const exerciseDataJson = JSON.stringify(exerciseData, null, 2);
-
-	//     try {
-	//         console.log('Exercise posted successfully:', exerciseDataJson);
-	//     } catch (error) {
-	//         console.error('Error posting exercise:', exerciseDataJson);
-	//     }
-	// }
+	function createBoilerplate() {
+		$formData.codeText = setIDEBoilerPlate(testCaseSchema);
+	}
 </script>
 
 <main>
-	<form action="/api/createexercise" method="POST" class="max-w max-h" use:enhance>
+	<form method="POST" class="max-w max-h" use:enhance>
 		<Resizable.PaneGroup direction="horizontal" class="pane-group max-w max-h rounded-lg border">
 			<Resizable.Pane defaultSize={50} class="pane">
 				<Resizable.PaneGroup direction="vertical">
@@ -163,6 +145,7 @@
 						<Ide bind:codeSolutionText={$formData.codeText} />
 					</div>
 					<div class="flex space-x-4">
+						<Button variant="default" on:click={createBoilerplate}>Create Boilerplate</Button>
 						<Button variant="default">Validate</Button>
 						<Form.Button>Confirm</Form.Button>
 						{#if browser}
