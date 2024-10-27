@@ -12,7 +12,8 @@ export async function handleAuthenticatedRequest(
 
 	// In case of invalid access token we want to try to refresh it
 	if ((response.status === 401 || response.status === 404) && refresh_token) {
-		const refreshResponse = await fetch('/api/refresh', { method: 'POST' });
+		const baseUrl = import.meta.env.VITE_FRONTEND_URL || '';
+		const refreshResponse = await fetch(`${baseUrl}/api/refresh`, { method: 'POST' });
 
 		if (refreshResponse.ok) {
 			const newAccessToken = cookies.get('access_token') || '';
