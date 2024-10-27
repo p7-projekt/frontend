@@ -2,18 +2,17 @@
 	import type { PageData } from './$types';
 	import ListBox from '$components/Lists/ListBox.svelte';
 	import CardTable from '$components/CardTable/CardTable.svelte';
-	import { sessionDataStore } from '../stores/sessionStore'; // Import the store
 	import { goto } from '$app/navigation';
 
 	export let data: PageData;
+	console.log(data.instructor_exercises);
 
-	// Reactive assignment to update the store whenever `data.sessions` changes
-	$: sessionDataStore.set(data.sessions);
+	const sessionData = data.sessions;
 
 	let instructor_exercises = data.instructor_exercises.map(
-		(exercise: { id: number; title: string }) => ({
+		(exercise: { id: number; name: string }) => ({
 			id: exercise.id,
-			content: exercise.title
+			content: exercise.name
 		})
 	);
 
@@ -30,7 +29,7 @@
 	<div class="container pl-6 w-full text-[#333] grid grid-cols-1 gap-y-8">
 		<h1 class="text-2xl font-semibold col-span-full">Instructor Home</h1>
 		<div class="flex gap-x-12 h-full">
-			<main class="flex flex-1 flex-col w-1/2 max-h-[35.5rem]">
+			<main class="flex flex-1 flex-col w-1/2 h-[35.5rem]">
 				{#if !data.sessions}
 					<div
 						class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
@@ -49,12 +48,12 @@
 				{:else}
 					<div class="flex flex-1 justify-center rounded-lg border border-dashed shadow-sm">
 						<main class="w-full">
-							<CardTable />
+							<CardTable {sessionData} />
 						</main>
 					</div>
 				{/if}
 			</main>
-			<div class=" max-h-[35.5rem] w-1/2">
+			<div class=" h-[35.5rem] w-1/2">
 				<ListBox list={instructor_exercises} list_title="Private" {after_item}></ListBox>
 				<div class="flex justify-end mr-1">
 					<div class="flex items-center space-x-4 mt-4">

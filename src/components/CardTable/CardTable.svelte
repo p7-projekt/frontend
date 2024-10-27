@@ -1,26 +1,15 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
 	import Timer from '$components/Timer/Timer.svelte';
-	import { sessionDataStore } from '../../stores/sessionStore'; // Import the store
-	import { invalidateAll } from '$app/navigation';
 	import { slide } from 'svelte/transition';
+	export let sessionData: { id: number; title: string; expiresInMinutes: string }[] = [];
 
-	// Subscribe to the store
-	let sessions;
-	$: {
-		const storeData = $sessionDataStore;
-		if (storeData && Array.isArray(storeData)) {
-			// Only map if storeData is an array
-			sessions = storeData.map((session) => ({
-				id: session.id,
-				title: session.title,
-				expiresInSeconds: parseInt(session.expiresInMinutes) * 60,
-				interval: null
-			}));
-		} else {
-			sessions = []; // Fallback to an empty array if storeData is null or not an array
-		}
-	}
+	let sessions = sessionData.map((session) => ({
+		id: session.id,
+		title: session.title,
+		expiresInSeconds: parseInt(session.expiresInMinutes) * 60,
+		interval: null
+	}));
 
 	const deleteSession = async (sessionId: number) => {
 		const response = await fetch('/api/delete-session', {
@@ -32,7 +21,7 @@
 		});
 
 		if (response.ok) {
-			await invalidateAll();
+			sessions = sessions.filter((session) => session.id !== sessionId);
 		}
 	};
 </script>
