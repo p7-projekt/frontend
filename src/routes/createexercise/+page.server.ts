@@ -65,7 +65,14 @@ export const actions: Actions = {
             } else {
                 resJSON = { detail: 'No response body' }; // Handle empty response body
             }
-            console.log('great success: Form Data:', form.data, 'Response:', resJSON);
+            
+            if (resJSON.isFailed) { 
+                const errorMessages = resJSON.errors.map((err: any) => err.message).join('\n'); 
+                console.log('Epic fail from server:', resJSON); 
+                return setError(form, 'codeText', errorMessages || 'An error occurred on the server'); 
+            } else {
+                console.log('Epic Win:', resJSON); 
+            } 
         } else {
             const errorText = await response.text(); // Read the response as text
             let error;

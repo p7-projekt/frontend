@@ -125,7 +125,7 @@
                             </Dialog.Root>
 
                             <TestCaseList testCasesStore={data.testCasesStore} bind:testCaseTemplate={testCaseSchema} />
-							{#if $errors.testCases}<span class="invalid">{$errors.testCases._errors}</span>{/if}
+                            {#if $errors.testCases && $errors.testCases._errors}<span class="invalid">{$errors.testCases._errors}</span>{/if}
 							
 						</div>
                     </Resizable.Pane>
