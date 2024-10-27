@@ -72,6 +72,8 @@ export const actions: Actions = {
                 return setError(form, 'codeText', errorMessages || 'An error occurred on the server'); 
             } else {
                 console.log('Epic Win:', resJSON); 
+    			throw redirect(303, '/');
+
             } 
         } else {
             const errorText = await response.text(); // Read the response as text
