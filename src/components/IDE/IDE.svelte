@@ -4,8 +4,18 @@
 	import { haskell } from '@codemirror/legacy-modes/mode/haskell';
 
 	export let codeSolutionText: string = '';
+	export let solutionLanguage: string = 'haskell';
 
-	const extensions = [StreamLanguage.define(haskell)];
+	const haskellExtension = [StreamLanguage.define(haskell)];
+
+	function getExtension() {
+		switch (solutionLanguage) {
+			case 'haskell':
+				return haskellExtension;
+			default:
+				return [];
+		}
+	}
 </script>
 
-<CodeMirror class="w-full h-full" bind:value={codeSolutionText} {extensions} />
+<CodeMirror class="w-full h-full" bind:value={codeSolutionText} extensions={getExtension()} />
