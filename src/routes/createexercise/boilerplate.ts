@@ -15,9 +15,10 @@ function createHaskellBoilerplate(testTemplate: { parameters: { input: { type: s
     let module = `module Solution where`; 
 
     let functionSignature = `solution :: ${testTemplate.parameters.input.map((input) => {
-        return `${input.type}`;
-    }).join(" -> ")} -> ${testTemplate.parameters.output.map((output) => {
-        return `${output.type}`;
+        return convertType(input.type);
+        }).join(" -> ")} -> ${testTemplate.parameters.output.map((output) => {
+        return convertType(output.type);
+    
     }).join(" -> ")}`;
 
     let functionBody = `solution ${testTemplate.parameters.input.map((input, index) => {
@@ -27,4 +28,15 @@ function createHaskellBoilerplate(testTemplate: { parameters: { input: { type: s
     }).join(" ")}`;
 
     return `${module}\n${functionSignature}\n${functionBody}`;    
+}
+
+function convertType(type: string): string {
+    switch (type) {
+        case "int":
+            return "Int";
+        case "string":
+            return "String";
+        default:
+            return type;
+    }
 }
