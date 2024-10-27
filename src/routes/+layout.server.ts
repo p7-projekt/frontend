@@ -40,8 +40,7 @@ export const load: LayoutServerLoad = async ({ cookies, fetch }) => {
 	}
 
 	const userData = await handleAuthenticatedRequest(
-		(token) => fetchUserData(backendUrl, api_version, token),
-		access_token,
+		() => fetchUserData(backendUrl, api_version, access_token),
 		refresh_token,
 		cookies,
 		fetch

@@ -15,16 +15,14 @@ export const load: PageServerLoad = async ({ cookies, fetch }) => {
 	}
 
 	const instructor_exercises = await handleAuthenticatedRequest(
-		(token) => fetchExerciseData(backendUrl, api_version, token),
-		access_token,
+		() => fetchExerciseData(backendUrl, api_version, access_token),
 		refresh_token,
 		cookies,
 		fetch
 	);
 
 	const sessions = await handleAuthenticatedRequest(
-		(token) => fetchSessionsData(backendUrl, api_version, token),
-		access_token,
+		() => fetchSessionsData(backendUrl, api_version, access_token),
 		refresh_token,
 		cookies,
 		fetch

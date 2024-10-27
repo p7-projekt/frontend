@@ -3,12 +3,11 @@ import { redirect, type Cookies, json } from '@sveltejs/kit';
 // Run request function; if access_token is expired, refresh and rerun the request function
 export async function handleAuthenticatedRequest(
 	requestFunction: (access_token: string) => Promise<Response>,
-	access_token: string,
 	refresh_token: string | undefined,
 	cookies: Cookies,
 	fetch: typeof globalThis.fetch // Accept `fetch` as an argument
 ): Promise<any> {
-	let response = await requestFunction(access_token);
+	let response = await requestFunction();
 
 	// In case of invalid access token we want to try to refresh it
 	if ((response.status === 401 || response.status === 404) && refresh_token) {

@@ -1,4 +1,4 @@
-import { redirect, json } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 // Internal API endpoint to log the user out

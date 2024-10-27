@@ -6,7 +6,6 @@
 	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
 	import { type DateValue } from '@internationalized/date';
-	import { invalidateAll } from '$app/navigation';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -62,7 +61,7 @@
 			{/if}
 		</div>
 
-		<DescriptionBox description_name="session-description" value={form?.session_description} />
+		<DescriptionBox description_name="session-description" value={session_description} />
 		<div>
 			<DateTime on:selectedDateTime={datetimeSelected} />
 			{#if form?.datetimeInThePast}

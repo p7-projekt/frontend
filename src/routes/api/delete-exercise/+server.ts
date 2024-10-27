@@ -3,7 +3,7 @@ import type { RequestHandler } from './$types';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 
 // Internal API endpoint to log the user out
-export const POST: RequestHandler = async ({ request, cookies, event }) => {
+export const POST: RequestHandler = async ({ request, cookies }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;
 	const api_version = import.meta.env.VITE_V1;
 	const access_token = cookies.get('access_token') || '';
@@ -14,8 +14,7 @@ export const POST: RequestHandler = async ({ request, cookies, event }) => {
 
 	// Use the exercise_id in the authenticated request handler
 	const response = await handleAuthenticatedRequest(
-		(token) => fetchDeleteExercise(backendUrl, api_version, token, exercise_id),
-		access_token,
+		() => fetchDeleteExercise(backendUrl, api_version, access_token, exercise_id),
 		refresh_token,
 		cookies,
 		fetch

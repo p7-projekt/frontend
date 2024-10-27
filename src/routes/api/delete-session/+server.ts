@@ -14,8 +14,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
 	// Use the session_id in the authenticated request handler
 	const response = await handleAuthenticatedRequest(
-		(token) => fetchDeleteSession(backendUrl, api_version, token, session_id),
-		access_token,
+		() => fetchDeleteSession(backendUrl, api_version, access_token, session_id),
 		refresh_token,
 		cookies,
 		fetch
