@@ -21,7 +21,6 @@
 </script>
 
 <main>
-	<form method="GET" use:enhance class="max-w max-h">
 		<Resizable.PaneGroup direction="horizontal" class="pane-group max-w max-h rounded-lg border">
 			<Resizable.Pane defaultSize={50} class="pane">
 				<Resizable.PaneGroup direction="vertical">
@@ -43,7 +42,12 @@
 			<Resizable.Pane defaultSize={50} class="pane">
 				<form method="POST" use:enhance class="max-w max-h">
 					<div class="flex flex-col h-full items-center justify-center p-6 space-y-4 content">
-						<Ide />
+						<div class="ide-container w-full h-full">
+							<Ide bind:codeSolutionText={$formData.codeText} />
+						</div> 
+						{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
+						{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
+
 						<div class="flex space-x-4">
 							<Button variant="default">Validate</Button>
 							<Form.Button>Confirm</Form.Button>
@@ -52,7 +56,6 @@
 				</form>
 			</Resizable.Pane>
 		</Resizable.PaneGroup>
-	</form>
 </main>
 
 <style>
