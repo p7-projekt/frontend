@@ -33,9 +33,7 @@ export const actions: Actions = {
         if (!form.valid) {
             return fail(400, { form });
         }
-
-        // Log the form data
-        console.log('Form Data:', form.data);
+ 
 
         // Convert form data to API format
         const apiData = convertFormData(form.data);
@@ -65,6 +63,8 @@ export const actions: Actions = {
             } else {
                 resJSON = { detail: 'No response body' }; // Handle empty response body
             }
+
+            console.log('resJSON:', resJSON); 
             
             if (resJSON.isFailed) { 
                 const errorMessages = resJSON.errors.map((err: any) => err.message).join('\n'); 
@@ -76,18 +76,23 @@ export const actions: Actions = {
 
             } 
         } else {
-            const errorText = await response.text(); // Read the response as text
+            const responseBody = await response.text(); // Read the response as text
             let error;
-            if (errorText) {
+            if (responseBody) {
                 try {
-                    error = JSON.parse(errorText); // Try to parse the error as JSON
+                    error = JSON.parse(responseBody); // Try to parse the error as JSON
                 } catch (e) {
-                    error = { detail: errorText }; // If parsing fails, use the text as the error detail
+                    error = { detail: responseBody }; // If parsing fails, use the text as the error detail
                 }
             } else {
                 error = { detail: 'An unknown error occurred' }; // Handle empty response body
             }
-            return setError(form, 'codeText', error.detail || 'An error occurred on the server');
+
+            const resJSON = JSON.parse(responseBody); // Try to parse the response as JSON
+            const errorMessages = resJSON.errors.map((err: any) => err.message).join('\n'); 
+
+
+            return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
         }
     }
 };
