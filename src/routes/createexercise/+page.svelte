@@ -45,7 +45,7 @@
         }
     };
 
-    data.testCasesStore.subscribe((store: any) => {
+    data.testCasesStore.subscribe((store) => {
         $formData.testCases = store.testCases;
     });
 

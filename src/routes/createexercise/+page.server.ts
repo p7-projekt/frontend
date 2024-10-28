@@ -13,7 +13,7 @@ export const load: PageServerLoad = async () => {
     };
 };
 
-const convertFormData = (formData: any) => {
+const convertFormData = (formData) => {
     return {
         name: formData.title,
         description: formData.description,
@@ -67,7 +67,7 @@ export const actions: Actions = {
             console.log('resJSON:', resJSON); 
             
             if (resJSON.isFailed) { 
-                const errorMessages = resJSON.errors.map((err: any) => err.message).join('\n'); 
+                const errorMessages = resJSON.errors.map((err) => err.message).join('\n'); 
                 console.log('Epic fail from server:', resJSON); 
                 return setError(form, 'codeText', errorMessages || 'An error occurred on the server'); 
             } else {
@@ -89,7 +89,7 @@ export const actions: Actions = {
             }
 
             const resJSON = JSON.parse(responseBody); // Try to parse the response as JSON
-            const errorMessages = resJSON.errors.map((err: any) => err.message).join('\n'); 
+            const errorMessages = resJSON.errors.map((err) => err.message).join('\n'); 
 
 
             return setError(form, 'codeText', errorMessages || 'An error occurred on the server');

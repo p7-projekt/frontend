@@ -11,8 +11,8 @@
 
     export let Inputs: { type: string; value: string; argNumber: number; isInput: boolean }[] = [];
     export let Outputs: { type: string; value: string; argNumber: number; isInput: boolean }[] = []; 
-    export let testCaseTemplate: any | null = null;
-	export let testCasesStore: any;
+    export let testCaseTemplate = null;
+	export let testCasesStore;
 
     let inputParameters = writable(Inputs);
     let outputParameters = writable(Outputs);
@@ -76,7 +76,7 @@
     }
 
     function handleConfirm() {
-        testCasesStore.update((store: any)  => {
+        testCasesStore.update((store)  => {
             return {
                 idCounter: 0,
                 testCases: []

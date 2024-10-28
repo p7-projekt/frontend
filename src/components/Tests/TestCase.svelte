@@ -9,11 +9,11 @@
     import * as Alert from '$lib/components/ui/alert/index.js';
     import { createEventDispatcher, onMount } from 'svelte';
 
-    export let testCasesStore: any;
-    export let testCaseTemplate: any;
+    export let testCasesStore;
+    export let testCaseTemplate;
 
     export let isEditMode: boolean = false;
-    export let existingTestCase: { id: number; parameters: { input: any; output: any } } | null = null;
+    export let existingTestCase: { id: number; parameters: { input; output } } | null = null;
 
     let inputParameters = writable(JSON.parse(JSON.stringify(testCaseTemplate.parameters.input)));
     let outputParameters = writable(JSON.parse(JSON.stringify(testCaseTemplate.parameters.output)));
@@ -38,7 +38,7 @@
         }
     });
 
-    function validateIntegerValue(input: any) {
+    function validateIntegerValue(input) {
         if (input.type === 'Integer') {
             return /^\d+$/.test(input.value);
         }
@@ -46,7 +46,7 @@
     }
 
     function submitTestCase() {
-    testCasesStore.subscribe((store: any) => {
+    testCasesStore.subscribe((store) => {
         let testCases = store.testCases;
         console.log(testCases);
     });
@@ -56,13 +56,13 @@
     const hasInputs = $inputParameters.length > 0;
     const hasOutputs = $outputParameters.length > 0;
     const hasType =
-        $inputParameters.every((input: any) => input.type !== '') &&
-        $outputParameters.every((output: any) => output.type !== '');
+        $inputParameters.every((input) => input.type !== '') &&
+        $outputParameters.every((output) => output.type !== '');
 
     if (validInputs && hasInputs && hasOutputs && hasType) {
-        testCasesStore.update((store: any) => {
+        testCasesStore.update((store) => {
             if (isEditMode && existingTestCase) {
-                const updatedTestCases = store.testCases.map((tc: any) =>
+                const updatedTestCases = store.testCases.map((tc) =>
                     tc.id === existingTestCase.id
                         ? {
                             ...tc,

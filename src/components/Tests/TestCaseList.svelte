@@ -3,15 +3,15 @@
     import TestCaseDialog from './TestCaseDialog.svelte';
     import { Label } from '$lib/components/ui/label/index.js';
 
-    export let testCasesStore: any;
-    export let testCaseTemplate: any;
+    export let testCasesStore;
+    export let testCaseTemplate;
 
-    let testCases: any[] = [];
+    let testCases= [];
     let openCreate: boolean = false;
     let openEdit: boolean = false;
-    let selectedTestCase: any;
+    let selectedTestCase;
 
-    testCasesStore.subscribe((store: any) => {
+    testCasesStore.subscribe((store) => {
         testCases = store.testCases;
     });
 
@@ -28,10 +28,10 @@
     }
 
     function removeTestCase(testCaseId: number) {
-        testCasesStore.update((store: any) => {
+        testCasesStore.update((store) => {
             return {
                 ...store,
-                testCases: store.testCases.filter((tc: any) => tc.id !== testCaseId)
+                testCases: store.testCases.filter((tc) => tc.id !== testCaseId)
             };
         });
     }
