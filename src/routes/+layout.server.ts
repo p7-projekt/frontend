@@ -1,33 +1,5 @@
-import { jwtDecode } from 'jwt-decode';
 import type { LayoutServerLoad } from './$types';
-import { handleAuthenticatedRequest } from '$lib/requestHandler';
-
-async function fetchUserData(
-	backendUrl: string,
-	api_version: string,
-	access_token: string
-): Promise<Response> {
-	let decoded_token;
-	try {
-		decoded_token = jwtDecode(access_token) as {
-			'http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata': string;
-		};
-	} catch (error) {
-		console.error('Invalid token:', error.message);
-		decoded_token = null;
-	}
-	let user_id;
-	if (decoded_token) {
-		user_id = decoded_token['http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'];
-	}
-
-	return await fetch(`${backendUrl}${api_version}/users/${user_id}`, {
-		method: 'GET',
-		headers: {
-			Authorization: `Bearer ${access_token}`
-		}
-	});
-}
+import { handleAuthenticatedRequest, fetchUserData } from '$lib/requestHandler';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;

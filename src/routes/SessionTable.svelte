@@ -2,6 +2,7 @@
 	import * as Card from '$lib/components/ui/card';
 	import Timer from '$components/Timer/Timer.svelte';
 	import { slide } from 'svelte/transition';
+	import { invalidate } from '$app/navigation';
 	export let sessionData: { id: number; title: string; expiresInMinutes: string }[] = [];
 
 	let sessions = sessionData.map((session) => ({
@@ -22,6 +23,9 @@
 
 		if (response.ok) {
 			sessions = sessions.filter((session) => session.id !== sessionId);
+			if (sessions.length === 0) {
+				invalidate('data:sessions');
+			}
 		}
 	};
 </script>

@@ -2,7 +2,7 @@
 	import DescriptionBox from '$components/Textarea/DescriptionBox.svelte';
 	import TitleInput from '$components/Input/TitleInput.svelte';
 	import ExerciseList from '$components/Lists/ExerciseList.svelte';
-	import DateTime from '$components/DateTime/DateTime.svelte';
+	import Select from '$components/Select/Select.svelte';
 	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
 	import { type DateValue } from '@internationalized/date';
@@ -13,12 +13,15 @@
 	let added_exercise_list: { id: number; content: string }[] = [];
 	let receive_message: string = '';
 	let datetime: { datetime: DateValue; time: string };
+	let select_title: string = 'Expires in';
+	let select_options: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+	let selected_option: string = '';
 
 	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
 	let remaining_exercise_list = data.instructor_exercises.map(
-		(exercise: { id: number; title: string }) => ({
+		(exercise: { id: number; name: string }) => ({
 			id: exercise.id,
-			content: exercise.title
+			content: exercise.name
 		})
 	);
 
@@ -27,8 +30,8 @@
 		added_exercise_list = receive_message.added_exercise_list;
 	}
 
-	function datetimeSelected(event) {
-		datetime = event.detail;
+	function optionSelected(event) {
+		selected_option = event.detail.chosen_option;
 	}
 
 	$: session_description =
@@ -62,13 +65,13 @@
 		</div>
 
 		<DescriptionBox description_name="session-description" value={session_description} />
-		<div>
-			<DateTime on:selectedDateTime={datetimeSelected} />
-			{#if form?.datetimeInThePast}
-				<p style="color:red; margin-bottom:0;">You must pick a date and time in the future</p>
+		<div class="flex items-center gap-4">
+			<Select {select_title} {select_options} on:message={optionSelected}></Select>
+			{#if form?.expirationMissing}
+				<p style="color:red; margin-bottom:0;">Expiration time required</p>
 			{/if}
+			<input type="hidden" name="selected-expiration" value={selected_option} />
 		</div>
-		<input type="hidden" name="selected_datetime" value={JSON.stringify(datetime)} />
 		<ExerciseList {added_exercise_list} {remaining_exercise_list} on:message={handleMessage} />
 		<input type="hidden" name="added-exercise-list" value={JSON.stringify(added_exercise_list)} />
 

@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { handleAuthenticatedRequest } from '$lib/requestHandler';
+import { handleAuthenticatedRequest, fetchDeleteSession } from '$lib/requestHandler';
 
 // Internal API endpoint to log the user out
 export const POST: RequestHandler = async ({ request, cookies }) => {
@@ -27,18 +27,3 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		return json({ error: 'Failed to delete session' }, { status: 500 });
 	}
 };
-
-// Helper function to delete the session
-async function fetchDeleteSession(
-	backendUrl: string,
-	api_version: string,
-	access_token: string,
-	session_id: number
-): Promise<Response> {
-	return await fetch(`${backendUrl}${api_version}/sessions/${session_id}`, {
-		method: 'DELETE',
-		headers: {
-			Authorization: `Bearer ${access_token}`
-		}
-	});
-}
