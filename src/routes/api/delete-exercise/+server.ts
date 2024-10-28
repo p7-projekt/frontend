@@ -14,7 +14,8 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
 	// Use the exercise_id in the authenticated request handler
 	const response = await handleAuthenticatedRequest(
-		() => fetchDeleteExercise(backendUrl, api_version, access_token, exercise_id),
+		(token) => fetchDeleteExercise(backendUrl, api_version, token, exercise_id),
+		access_token,
 		refresh_token,
 		cookies
 	);
