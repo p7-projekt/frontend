@@ -16,8 +16,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 	const response = await handleAuthenticatedRequest(
 		() => fetchDeleteExercise(backendUrl, api_version, access_token, exercise_id),
 		refresh_token,
-		cookies,
-		fetch
+		cookies
 	);
 
 	// Ensure that a response is returned in all cases

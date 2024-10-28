@@ -25,7 +25,7 @@
 		goto('/create-session');
 	}
 
-	const deleteExercise = async (event) => {
+	const deleteExercise = async (event: CustomEvent) => {
 		const exerciseId = event.detail.item_id;
 		console.log(exerciseId);
 		const response = await fetch('/api/delete-exercise', {
@@ -57,8 +57,8 @@
 								You can start instructing as soon as you add a session.
 							</p>
 							<button
-								class="bg-[#1f2937] text-white hover:bg-transparent hover:text-[#1f2937] ease-in-out duration-300 p-6 rounded-lg shadow-lg text-xl py-6 px-12 mt-8"
-								on:click={handleClickCreateSession}>Session</button
+								class="bg-[#1f2937] text-white hover:bg-transparent hover:text-[#1f2937] ease-in-out duration-300 p-6 rounded-lg shadow-lg text-xl py-5 px-10 mt-8"
+								on:click={handleClickCreateSession}>Create Session</button
 							>
 						</div>
 					</div>

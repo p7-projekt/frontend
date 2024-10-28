@@ -35,11 +35,11 @@ export const POST: RequestHandler = async ({ cookies }) => {
 			sameSite: 'strict'
 		});
 
-		return json({ message: 'Access token refreshed successfully' }, { status: 200 });
+		return json(
+			{ access_token: resJSON.token, refresh_token: resJSON.refresh_token },
+			{ status: 200 }
+		);
 	} else {
-		cookies.delete('access_token', { path: '/' });
-		cookies.delete('refresh_token', { path: '/' });
-
-		throw redirect(303, '/');
+		return json({ message: 'failed to refresh token' }, { status: 500 });
 	}
 };

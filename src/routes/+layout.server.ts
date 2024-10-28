@@ -29,7 +29,7 @@ async function fetchUserData(
 	});
 }
 
-export const load: LayoutServerLoad = async ({ cookies, fetch }) => {
+export const load: LayoutServerLoad = async ({ cookies }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;
 	const api_version = import.meta.env.VITE_V1;
 	const access_token: string = cookies.get('access_token') || '';
@@ -42,8 +42,7 @@ export const load: LayoutServerLoad = async ({ cookies, fetch }) => {
 	const userData = await handleAuthenticatedRequest(
 		() => fetchUserData(backendUrl, api_version, access_token),
 		refresh_token,
-		cookies,
-		fetch
+		cookies
 	);
 
 	const user = {

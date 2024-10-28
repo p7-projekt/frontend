@@ -1,7 +1,7 @@
 import type { PageServerLoad } from './$types';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 
-export const load: PageServerLoad = async ({ cookies, fetch }) => {
+export const load: PageServerLoad = async ({ cookies }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;
 	const api_version = import.meta.env.VITE_V1;
 	const access_token = cookies.get('access_token') || '';
@@ -17,15 +17,13 @@ export const load: PageServerLoad = async ({ cookies, fetch }) => {
 	const instructor_exercises = await handleAuthenticatedRequest(
 		() => fetchExerciseData(backendUrl, api_version, access_token),
 		refresh_token,
-		cookies,
-		fetch
+		cookies
 	);
 
 	const sessions = await handleAuthenticatedRequest(
 		() => fetchSessionsData(backendUrl, api_version, access_token),
 		refresh_token,
-		cookies,
-		fetch
+		cookies
 	);
 
 	return {
