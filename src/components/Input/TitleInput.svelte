@@ -10,5 +10,5 @@
 
 <div class="grid gap-1.5">
 	<Label class="text-base pl-1" for="message">{input_title} Title</Label>
-	<Input name={input_name} {value} />
+	<Input name={input_name} bind:value />
 </div>
