@@ -68,13 +68,13 @@
                         <div class="m-8 content">
                             <Form.Field {form} name="title">
                                 <Form.Control let:attrs>
-                                    <TitleInput {...attrs} bind:value={$formData.title} />
+                                    <TitleInput placeholder="Write your exercise title here" {...attrs} bind:value={$formData.title} />
                                 </Form.Control> 
                                 {#if $errors.title}<span class="invalid">{$errors.title}</span>{/if} 
                             </Form.Field>
                             <Form.Field {form} name="description">
                                 <Form.Control let:attrs>
-                                    <DescriptionBox {...attrs} bind:value={$formData.description} />
+                                    <DescriptionBox placeholder="Write your exercise description here" {...attrs} bind:value={$formData.description} />
                                 </Form.Control> 
                             </Form.Field>
                             {#if $errors.description}<span class="invalid">{$errors.description}</span>{/if}

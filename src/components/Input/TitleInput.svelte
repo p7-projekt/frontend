@@ -6,9 +6,10 @@
 	export let input_title: string = '';
 	export let input_name: string = '';
 	export let value: string = '';
+	export let placeholder: string = '';
 </script>
 
 <div class="grid gap-1.5">
 	<Label class="text-base pl-1" for="message">{input_title} Title</Label>
-	<Input name={input_name} bind:value />
+	<Input name={input_name} bind:value placeholder={placeholder}/>
 </div>
