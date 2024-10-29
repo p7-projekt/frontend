@@ -4,8 +4,9 @@
 	import { haskell } from '@codemirror/legacy-modes/mode/haskell';
 
 	export let codeSolutionText: string = '';
+	export let editable: boolean = true;
 
 	const extensions = [StreamLanguage.define(haskell)];
 </script>
 
-<CodeMirror class="w-full h-full" bind:value={codeSolutionText} {extensions} />
+<CodeMirror editable={editable} class="w-full h-full" bind:value={codeSolutionText} {extensions} />

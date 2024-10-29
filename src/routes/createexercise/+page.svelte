@@ -28,11 +28,11 @@
         open = false;
     }
     
-	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form.data.form;
+    export let superFormData: SuperValidated<Infer<FormSchema>> = data.form.data.form;
 
     const form = superForm(superFormData, {
         validators: zodClient(formSchema),
-		dataType: "json",
+        dataType: "json",
         } 
     );
 
@@ -48,6 +48,11 @@
     data.testCasesStore.subscribe((store) => {
         $formData.testCases = store.testCases;
     });
+
+    // Reactive statement to call createBoilerplate when testCaseSchema is set
+    $: if (testCaseSchema.parameters.input.length > 0 || testCaseSchema.parameters.output.length > 0) {
+        createBoilerplate();
+    }
 
     function createBoilerplate() {
         $formData.codeText = setIDEBoilerPlate(testCaseSchema);
@@ -66,7 +71,7 @@
                                     <TitleInput {...attrs} bind:value={$formData.title} />
                                 </Form.Control>
                                 <Form.Description>This is the title of the exercise.</Form.Description>
-								{#if $errors.title}<span class="invalid">{$errors.title}</span>{/if} 
+                                {#if $errors.title}<span class="invalid">{$errors.title}</span>{/if} 
                             </Form.Field>
                             <Form.Field {form} name="description">
                                 <Form.Control let:attrs>
@@ -74,7 +79,7 @@
                                 </Form.Control>
                                 <Form.Description>This is the exercise description.</Form.Description>
                             </Form.Field>
-							{#if $errors.description}<span class="invalid">{$errors.description}</span>{/if}
+                            {#if $errors.description}<span class="invalid">{$errors.description}</span>{/if}
                         </div>
                     </Resizable.Pane>
                     <Resizable.Handle />
@@ -126,8 +131,8 @@
 
                             <TestCaseList testCasesStore={data.testCasesStore} bind:testCaseTemplate={testCaseSchema} />
                             {#if $errors.testCases && $errors.testCases._errors}<span class="invalid">{$errors.testCases._errors}</span>{/if}
-							
-						</div>
+                            
+                        </div>
                     </Resizable.Pane>
                 </Resizable.PaneGroup>
             </Resizable.Pane>
@@ -135,17 +140,13 @@
             <Resizable.Pane defaultSize={50} class="pane">
                 <div class="flex flex-col h-full items-center justify-center p-6 space-y-4 content">
                     <div class="ide-container w-full h-full">
-                        <Ide bind:codeSolutionText={$formData.codeText} />
-                    </div>
-					{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
+                        <Ide bind:codeSolutionText={$formData.codeText} editable={!(testCaseSchema.parameters.input.length === 0 && testCaseSchema.parameters.output.length === 0)} />
+					</div>
+					{#if (testCaseSchema.parameters.input.length === 0 && testCaseSchema.parameters.output.length === 0)}<span class="invalid">Set a Test Case Schema before you can start creating your solution</span>{/if}
+                    {#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
                     {#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
-                    <div class="flex space-x-4">
-                        <Button variant="default" on:click={createBoilerplate}>Create Boilerplate</Button>
-                        <Button variant="default">Validate</Button>
-                        <Form.Button>Confirm</Form.Button>
-                        <!-- {#if browser}
-                            <SuperDebug data={$formData} />
-                        {/if} -->
+                    <div class="flex space-x-4">  
+                        <Form.Button>Confirm</Form.Button> 
                     </div>
                 </div>
             </Resizable.Pane>
@@ -187,7 +188,7 @@
         overflow: auto;
     }
 
-	.invalid {
-		color: red;
-	}
+    .invalid {
+        color: red;
+    }
 </style>
