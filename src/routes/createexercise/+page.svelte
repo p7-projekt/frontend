@@ -69,15 +69,13 @@
                             <Form.Field {form} name="title">
                                 <Form.Control let:attrs>
                                     <TitleInput {...attrs} bind:value={$formData.title} />
-                                </Form.Control>
-                                <Form.Description>This is the title of the exercise.</Form.Description>
+                                </Form.Control> 
                                 {#if $errors.title}<span class="invalid">{$errors.title}</span>{/if} 
                             </Form.Field>
                             <Form.Field {form} name="description">
                                 <Form.Control let:attrs>
                                     <DescriptionBox {...attrs} bind:value={$formData.description} />
-                                </Form.Control>
-                                <Form.Description>This is the exercise description.</Form.Description>
+                                </Form.Control> 
                             </Form.Field>
                             {#if $errors.description}<span class="invalid">{$errors.description}</span>{/if}
                         </div>
@@ -89,17 +87,17 @@
 
                             <div class="flex items-center justify-between p-2 border rounded-lg shadow-sm bg-gray-50">
                                 <div class="flex items-center space-x-4 text-sm">
-                                    <div>
-                                        <strong class="font-medium">Input:</strong>
-                                        {#each testCaseSchema.parameters.input as input}
-                                            <span class="ml-1 text-gray-700">{input.type}: {input.value}</span>
-                                        {/each}
-                                    </div>
-                                    <div>
-                                        <strong class="font-medium">Output:</strong>
-                                        {#each testCaseSchema.parameters.output as output}
-                                            <span class="ml-1 text-gray-700">{output.type}: {output.value}</span>
-                                        {/each}
+									<div>
+										<strong class="font-medium">Input:</strong>
+										{#each testCaseSchema.parameters.input as input, index (index)}
+											<span class="ml-1 text-gray-700">{input.type}{#if index < testCaseSchema.parameters.input.length - 1}, {/if}</span>
+										{/each}
+									</div>
+									<div>
+										<strong class="font-medium">Output:</strong>
+										{#each testCaseSchema.parameters.output as output, index (index)}
+											<span class="ml-1 text-gray-700">{output.type}{#if index < testCaseSchema.parameters.output.length - 1}, {/if}</span>
+										{/each} 
                                     </div>
                                     <Button
                                 class="secondary"
