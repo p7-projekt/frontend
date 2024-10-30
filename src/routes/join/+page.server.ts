@@ -1,6 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
-import { jwtDecode } from 'jwt-decode';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -25,7 +24,6 @@ const sessionCodeSchema = z.object({
 export const actions = {
 	join: async ({ request, cookies }) => {
 		const form = await request.formData();
-		const access_token = cookies.get('access_token');
 
 		const sessionCode = form.get('sessionCode');
 		const validation = sessionCodeSchema.safeParse({ sessionCode });
@@ -42,8 +40,7 @@ export const actions = {
 			const response = await fetch(`${backendUrl}/join`, {
 				method: 'POST',
 				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${access_token}`
+					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(joinCode)
 			});
