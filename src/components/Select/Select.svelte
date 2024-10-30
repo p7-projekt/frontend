@@ -4,6 +4,7 @@
 
 	export let select_title = '';
 	export let select_options: string[] = [];
+	export let post_option_str = '';
 
 	const dispatch = createEventDispatcher();
 
@@ -18,7 +19,9 @@
 	</Select.Trigger>
 	<Select.Content>
 		{#each select_options as option}
-			<Select.Item value={option} on:click={() => sendToParent(option)}>{option}</Select.Item>
+			<Select.Item value={option} on:click={() => sendToParent(option)}
+				>{option} {post_option_str}</Select.Item
+			>
 		{/each}
 	</Select.Content>
 </Select.Root>

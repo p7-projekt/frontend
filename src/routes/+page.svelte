@@ -7,6 +7,7 @@
 	export let data: PageData;
 
 	const sessionData = data.sessions;
+
 	let instructor_exercises;
 	if (data.instructor_exercises) {
 		instructor_exercises = data.instructor_exercises.map(

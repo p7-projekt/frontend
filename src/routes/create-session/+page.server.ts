@@ -46,7 +46,6 @@ export const actions: Actions = {
 
 		// Parse the JSON strings back into arrays
 		let added_exercises: { id: number; title: string }[] = [];
-		let date_time = {};
 
 		try {
 			added_exercises = added_exercise_list ? JSON.parse(added_exercise_list.toString()) : [];

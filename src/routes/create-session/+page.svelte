@@ -16,6 +16,7 @@
 	let select_title: string = 'Expires in';
 	let select_options: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 	let selected_option: string = '';
+	let post_option_str = 'hour(s)';
 
 	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
 	let remaining_exercise_list = data.instructor_exercises.map(
@@ -66,7 +67,8 @@
 
 		<DescriptionBox description_name="session-description" value={session_description} />
 		<div class="flex items-center gap-4">
-			<Select {select_title} {select_options} on:message={optionSelected}></Select>
+			<Select {select_title} {select_options} {post_option_str} on:message={optionSelected}
+			></Select>
 			{#if form?.expirationMissing}
 				<p style="color:red; margin-bottom:0;">Expiration time required</p>
 			{/if}
