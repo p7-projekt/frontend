@@ -24,7 +24,10 @@
 
 	const types = [
 		{ value: 'string', label: 'String' },
-		{ value: 'int', label: 'Int' }
+		{ value: 'int', label: 'Int' },
+		{ value: 'char', label: 'Char' },
+		{ value: 'float', label: 'Float' },
+		{ value: 'bool', label: 'Bool' },
 	];
 
 	function cancel() {
