@@ -1,5 +1,5 @@
 import type { PageServerLoad, Actions } from './$types.js';
-import { fail, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
@@ -77,24 +77,18 @@ export const actions: Actions = {
 			}
 		} else {
 			const responseBody = await response.text(); // Read the response as text
-			console.log(responseBody);
-			let error;
-			if (responseBody) {
-				try {
-					error = JSON.parse(responseBody); // Try to parse the error as JSON
-				} catch (e) {
-					error = { detail: responseBody }; // If parsing fails, use the text as the error detail
-				}
-			} else {
-				error = { detail: 'An unknown error occurred' }; // Handle empty response body
-			}
+			console.log(responseBody); 
 
 			const resJSON = JSON.parse(responseBody); // Try to parse the response as JSON
 
-			// Collect error messages from the errors object
-			const errorMessages = Object.values(resJSON.errors).flat().join('\n');
-
-			return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
+            if (resJSON.type) {
+                const errorMessages = Object.values(resJSON.errors).flat().join('\n'); 
+                return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
+            } else {
+                const errorMessages = resJSON.errors.map((err) => err.message).join('\n');
+                return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
+            }
+ 
 		}
 	}
 };
