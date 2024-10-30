@@ -9,4 +9,4 @@
 	const extensions = [StreamLanguage.define(haskell)];
 </script>
 
-<CodeMirror editable={editable} class="w-full h-full" bind:value={codeSolutionText} {extensions} />
+<CodeMirror {editable} class="w-full h-full" bind:value={codeSolutionText} {extensions} />

@@ -9,20 +9,20 @@ declare global {
 		// interface Platform {}
 
 		interface ITestCase {
-            id: number;
-            parameters: {
-                input: Array<Parameter>;
-                output: Array<Parameter>;
-            };
-            publicVisible: boolean;
-        }
+			id: number;
+			parameters: {
+				input: Array<Parameter>;
+				output: Array<Parameter>;
+			};
+			publicVisible: boolean;
+		}
 
-        interface IParameter {
-            type: string;
-            value: string;
-            argNumber: number;
-            isInput: boolean;
-        }
+		interface IParameter {
+			type: string;
+			value: string;
+			argNumber: number;
+			isInput: boolean;
+		}
 	}
 }
 
