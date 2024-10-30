@@ -47,7 +47,19 @@ export const actions = {
                 return fail(400, { error: responseData.errors?.SessionCode?.[0] || 'Invalid code'});
             }
             const token = responseData.token
-            const decodedToken = jwtDecode(token);
+            if (!token) {
+                return fail(500, { message: 'Server error. Please try again later.' });
+            }
+            let decodedToken
+            try {
+                decodedToken = jwtDecode(token);
+            }
+            catch (error) {
+                decodedToken = null
+            }
+            if (!decodedToken) {
+                return fail(500, { message: 'Server error. Please try again later.' });
+            }
             const expires_at: Date = new Date(decodedToken.exp);
             cookies.set('anon_token', token, {
                 path: '/',
