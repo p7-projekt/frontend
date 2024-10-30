@@ -53,7 +53,7 @@
 }
 
 .form-text {
-	font-size: large;
+	font-size: x-large;
 	margin-bottom: 12px;
 	color: #333;
 }
