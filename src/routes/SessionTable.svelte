@@ -3,11 +3,11 @@
 	import { invalidate } from '$app/navigation';
 	import FlexTable from '$components/FlexTable/index';
 	import Timer from '$components/Timer/Timer.svelte';
-	// import FlexTable from '$components/FlexTable/FlexTable.svelte';
 
 	export let sessionData: { id: number; title: string; expiresInMinutes: string }[] = [];
 
 	let sessions = sessionData;
+	console.log(sessions);
 
 	const deleteSession = async (sessionId) => {
 		const response = await fetch('/api/delete-session', {
