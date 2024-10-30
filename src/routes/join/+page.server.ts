@@ -1,5 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
+import { jwtDecode } from 'jwt-decode';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -45,9 +46,17 @@ export const actions = {
             if (!response.ok) {
                 return fail(400, { error: responseData.errors?.SessionCode?.[0] || 'Invalid code'});
             }
-            else {
-                throw redirect(303, '/session')
-            }
+            const token = responseData.token
+            const decodedToken = jwtDecode(token);
+            const expires_at: Date = new Date(decodedToken.exp);
+            cookies.set('anon_token', token, {
+                path: '/',
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict",
+                expires: expires_at
+            })
+            throw redirect(303, '/session');
 
         } catch (error) {
             console.error("Error joining Session:", error)
@@ -55,4 +64,5 @@ export const actions = {
         }
     }
 };
+
 
