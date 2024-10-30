@@ -3,15 +3,14 @@
     import TestCaseDialog from './TestCaseDialog.svelte';
     import { Label } from '$lib/components/ui/label/index.js';
     import { Checkbox } from "$lib/components/ui/checkbox/index.js"; 
-    import { ITestCase } from "app.d.ts";
 
     export let testCasesStore;
     export let testCaseTemplate;
 
-    let testCases: ITestCase[] = [];
+    let testCases= [];
     let openCreate: boolean = false;
     let openEdit: boolean = false;
-    let selectedTestCase: ITestCase;
+    let selectedTestCase: ITest;
 
     testCasesStore.subscribe((store) => {
         testCases = store.testCases;
@@ -29,11 +28,15 @@
         selectedTestCase = null;
     }
 
-    function setTestCaseAsPublic(testCase) {
-        testCase.publicVisible = !testCase.publicVisible;   
-        testCasesStore.store.testCases = testCases;
+    function setTestCaseAsPublic(testCaseId: number, isPublic: boolean) {
+        console.log(testCaseId, isPublic);
+        testCasesStore.update((store: any) => {
+            const updatedTestCases = store.testCases.map((tc: TestCase) =>
+                tc.id === testCaseId ? { ...tc, publicVisible: isPublic } : tc
+            );
+            return { ...store, testCases: updatedTestCases };
+        });
     }
-
     function removeTestCase(testCaseId: number) {
         testCasesStore.update((store) => {
             return {
@@ -79,7 +82,10 @@
  
 
                     <div class="flex items-center space-x-2">
-                        <Checkbox id="terms" bind:checked={testCase.publicVisible} aria-labelledby="terms-label" />
+                        <Checkbox checked={testCase.publicVisible} onCheckedChange={(e) => {
+                            console.log('Checkbox change event:', e);
+                            setTestCaseAsPublic(testCase.id, e);
+                        }} />    
                         <Label
                           id="terms-label"
                           for="terms"
