@@ -6,7 +6,8 @@ import { formSchema } from './schema';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
-const apiVersion = import.meta.env.VITE_V1;
+const api_version = import.meta.env.VITE_V1;
+
 
 export const load: PageServerLoad = async () => {
 	return {
@@ -31,36 +32,32 @@ const convertFormData = (formData) => {
 	};
 };
 
-// function hejesben() {
-// 	return {
+// async function hejesben(apiData, access_token) {
+// 	return await fetch(`${backendUrl}${api_version}/exercises`, {
 // 		method: 'POST',
 // 		headers: {
 // 			'Content-Type': 'application/json',
 // 			Authorization: `Bearer ${access_token}` // Append the Bearer token
 // 		},
 // 		body: JSON.stringify(apiData)
-// 	}
+// 	});
 // }
 
 
 export const actions: Actions = {
 	default: async (event) => {
+		const access_token: string = event.cookies.get('access_token') || '';
+		const refresh_token: string = event.cookies.get('refresh_token') || '';
+ 
 		const form = await superValidate(event, zod(formSchema));
 		if (!form.valid) {
 			return fail(400, { form });
 		}
-
-
-		// Convert form data to API format
-		const apiData = convertFormData(form.data);
-		const access_token = event.cookies.get('access_token');
-
-        console.log('kristian:', JSON.stringify(apiData));
-        // console.log('kristian:', apiData.testcases[0].inputParams);
-
-
+  
+		const apiData = convertFormData(form.data) 
+	  
 		// Make request login post request to backend
-		const response = await fetch(`${backendUrl}${apiVersion}/exercises`, {
+		const response = await fetch(`${backendUrl}${api_version}/exercises`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -68,9 +65,7 @@ export const actions: Actions = {
 			},
 			body: JSON.stringify(apiData)
 		});
-
-        
-
+ 
 		if (response.ok) {
 			const responseBody = await response.text(); // Read the response as text
 			let resJSON;
