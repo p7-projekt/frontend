@@ -64,9 +64,9 @@
 					</div>
 				{:else}
 					<div class="flex flex-1 justify-center rounded-lg border border-dashed shadow-sm">
-						<main class="w-full">
+						<div class="w-full">
 							<SessionTable {sessionData} />
-						</main>
+						</div>
 					</div>
 				{/if}
 			</main>
