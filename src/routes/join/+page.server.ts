@@ -54,7 +54,6 @@ export const actions = {
 				return fail(500, { message: 'Server error. Please try again later.' });
 			}
 			const token_expiration = responseData.expiresAt;
-			console.log(responseData);
 
 			const expires_at: Date = new Date(token_expiration);
 			cookies.set('anon_token', token, {

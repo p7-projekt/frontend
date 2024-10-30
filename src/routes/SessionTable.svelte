@@ -7,7 +7,6 @@
 	export let sessionData: { id: number; title: string; expiresInMinutes: string }[] = [];
 
 	let sessions = sessionData;
-	console.log(sessions);
 
 	const deleteSession = async (sessionId) => {
 		const response = await fetch('/api/delete-session', {
