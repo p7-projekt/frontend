@@ -80,7 +80,8 @@
                     parameters: {
                         input: JSON.parse(JSON.stringify($inputParameters)),
                         output: JSON.parse(JSON.stringify($outputParameters))
-                    }
+                    },
+                    publicVisible: false
                 };
                 return {
                     idCounter: store.idCounter + 1,

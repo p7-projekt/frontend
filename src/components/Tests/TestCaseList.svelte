@@ -2,14 +2,16 @@
     import { Button } from '$lib/components/ui/button/index.js';
     import TestCaseDialog from './TestCaseDialog.svelte';
     import { Label } from '$lib/components/ui/label/index.js';
+    import { Checkbox } from "$lib/components/ui/checkbox/index.js"; 
+    import { ITestCase } from "app.d.ts";
 
     export let testCasesStore;
     export let testCaseTemplate;
 
-    let testCases= [];
+    let testCases: ITestCase[] = [];
     let openCreate: boolean = false;
     let openEdit: boolean = false;
-    let selectedTestCase;
+    let selectedTestCase: ITestCase;
 
     testCasesStore.subscribe((store) => {
         testCases = store.testCases;
@@ -25,6 +27,11 @@
         openCreate = false;
         openEdit = false;
         selectedTestCase = null;
+    }
+
+    function setTestCaseAsPublic(testCase) {
+        testCase.publicVisible = !testCase.publicVisible;   
+        testCasesStore.store.testCases = testCases;
     }
 
     function removeTestCase(testCaseId: number) {
@@ -69,7 +76,17 @@
                             {/each}
                         </div>
                     </div>
-                    <div class="flex space-x-2">
+ 
+
+                    <div class="flex items-center space-x-2">
+                        <Checkbox id="terms" bind:checked={testCase.publicVisible} aria-labelledby="terms-label" />
+                        <Label
+                          id="terms-label"
+                          for="terms"
+                          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          Set as Public
+                        </Label>
                         <Button
                             class="secondary"
                             on:click={() => {
@@ -83,6 +100,7 @@
                             Remove
                         </Button>
                     </div>
+                    
                 </div>
             {/each}
         </div>

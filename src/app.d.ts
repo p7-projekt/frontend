@@ -7,6 +7,22 @@ declare global {
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
+
+		interface ITestCase {
+            id: number;
+            parameters: {
+                input: Array<Parameter>;
+                output: Array<Parameter>;
+            };
+            publicVisible: boolean;
+        }
+
+        interface IParameter {
+            type: string;
+            value: string;
+            argNumber: number;
+            isInput: boolean;
+        }
 	}
 }
 
