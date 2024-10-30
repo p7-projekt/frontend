@@ -4,12 +4,18 @@ import type { LayoutLoad } from './$types';
 // Redirect to the home page, if the a logged in user access the /login endpoint
 export const load: LayoutLoad = ({ data, url }) => {
 	const { user } = data || {};
-	if (user && url.pathname === '/login') {
-		throw redirect(303, '/');
+	const urlp = url.pathname
+	if (user && urlp === '/login') {
+		throw redirect(303, urlp);
 	}
 
-	if (!user && url.pathname !== '/login' && url.pathname !== '/') {
-		throw redirect(303, '/login');
+	if (!user && urlp !== '/join' 
+		&& urlp !== '/session' 
+		&& urlp !== '/login' 
+		&& urlp !== '/') 
+		
+		{
+		throw redirect(303, '/')
 	}
 
 	return {

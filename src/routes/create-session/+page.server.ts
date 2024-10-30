@@ -60,7 +60,6 @@ export const actions: Actions = {
 			});
 		}
 		if (!expires_in_hours) {
-			console.log('LOL');
 			return fail(400, {
 				sessionTitleMissing: false,
 				session_description,
