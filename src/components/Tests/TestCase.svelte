@@ -9,12 +9,11 @@
 	import * as Alert from '$lib/components/ui/alert/index.js';
 	import { createEventDispatcher, onMount } from 'svelte';
 
-	export let testCasesStore: any;
-	export let testCaseTemplate: any;
+	export let testCasesStore;
+	export let testCaseTemplate;
 
 	export let isEditMode: boolean = false;
-	export let existingTestCase: { id: number; parameters: { input: any; output: any } } | null =
-		null;
+	export let existingTestCase: { id: number; parameters: { input; output } } | null = null;
 
 	let inputParameters = writable(JSON.parse(JSON.stringify(testCaseTemplate.parameters.input)));
 	let outputParameters = writable(JSON.parse(JSON.stringify(testCaseTemplate.parameters.output)));
@@ -25,7 +24,10 @@
 
 	const types = [
 		{ value: 'string', label: 'String' },
-		{ value: 'int', label: 'Int' }
+		{ value: 'int', label: 'Int' },
+		{ value: 'char', label: 'Char' },
+		{ value: 'float', label: 'Float' },
+		{ value: 'bool', label: 'Bool' }
 	];
 
 	function cancel() {
@@ -39,31 +41,61 @@
 		}
 	});
 
-	function validateIntegerValue(input: any) {
-		if (input.type === 'Integer') {
-			return /^\d+$/.test(input.value);
+	function validateIntegerValue(input) {
+		return /^\d+$/.test(input.value);
+	}
+
+	function validateStringValue(input) {
+		return typeof input.value === 'string';
+	}
+
+	function validateCharValue(input) {
+		return typeof input.value === 'string' && input.value.length === 1;
+	}
+
+	function validateFloatValue(input) {
+        return /^-?\d+(\.\d+)?$/.test(input.value);
+    }
+
+	function validateBoolValue(input) {
+		return input.value === 'true' || input.value === 'false';
+	}
+
+	function validateInput(input) {
+		switch (input.type) {
+			case 'int':
+				return validateIntegerValue(input);
+			case 'string':
+				return validateStringValue(input);
+			case 'char':
+				return validateCharValue(input);
+			case 'float':
+				return validateFloatValue(input);
+			case 'bool':
+				return validateBoolValue(input);
+			default:
+				return true;
 		}
-		return true;
 	}
 
 	function submitTestCase() {
-		testCasesStore.subscribe((store: any) => {
+		testCasesStore.subscribe((store) => {
 			let testCases = store.testCases;
 			console.log(testCases);
 		});
 
 		const validInputs =
-			$inputParameters.every(validateIntegerValue) && $outputParameters.every(validateIntegerValue);
+			$inputParameters.every(validateInput) && $outputParameters.every(validateInput);
 		const hasInputs = $inputParameters.length > 0;
 		const hasOutputs = $outputParameters.length > 0;
 		const hasType =
-			$inputParameters.every((input: any) => input.type !== '') &&
-			$outputParameters.every((output: any) => output.type !== '');
+			$inputParameters.every((input) => input.type !== '') &&
+			$outputParameters.every((output) => output.type !== '');
 
 		if (validInputs && hasInputs && hasOutputs && hasType) {
-			testCasesStore.update((store: any) => {
+			testCasesStore.update((store) => {
 				if (isEditMode && existingTestCase) {
-					const updatedTestCases = store.testCases.map((tc: any) =>
+					const updatedTestCases = store.testCases.map((tc) =>
 						tc.id === existingTestCase.id
 							? {
 									...tc,
@@ -81,7 +113,8 @@
 						parameters: {
 							input: JSON.parse(JSON.stringify($inputParameters)),
 							output: JSON.parse(JSON.stringify($outputParameters))
-						}
+						},
+						publicVisible: false
 					};
 					return {
 						idCounter: store.idCounter + 1,
@@ -104,7 +137,7 @@
 				<div class="flex flex-col space-y-1.5">
 					<Label>Input Parameters</Label>
 					{#each $inputParameters as input, index}
-						<div class="flex space-x-2 items-center">
+						<div class="flex space-x-2 items-center" key={index}>
 							<Select.Root portal={null}>
 								<Select.Trigger class="w-[120px]">
 									<Select.Value placeholder={input.type ? input.type : 'Type'} />
@@ -130,12 +163,10 @@
 							<Input
 								bind:value={input.value}
 								placeholder="Value"
-								class={input.type === 'Integer' && !/^\d+$/.test(input.value)
-									? 'border-red-500'
-									: ''}
+								class={validateInput(input) ? '' : 'border-red-500'}
 							/>
-							{#if input.type === 'Integer' && !/^\d+$/.test(input.value)}
-								<span class="text-red-500">Invalid Integer</span>
+							{#if !validateInput(input)}
+								<span class="text-red-500">Invalid {input.type}</span>
 							{/if}
 						</div>
 					{/each}
@@ -143,7 +174,7 @@
 				<div class="flex flex-col space-y-1.5">
 					<Label>Output Parameters</Label>
 					{#each $outputParameters as output, index}
-						<div class="flex space-x-2 items-center">
+						<div class="flex space-x-2 items-center" key={index}>
 							<Select.Root portal={null}>
 								<Select.Trigger class="w-[120px]">
 									<Select.Value placeholder={output.type ? output.type : 'Type'} />
@@ -169,12 +200,10 @@
 							<Input
 								bind:value={output.value}
 								placeholder="Value"
-								class={output.type === 'Integer' && !/^\d+$/.test(output.value)
-									? 'border-red-500'
-									: ''}
+								class={validateInput(output) ? '' : 'border-red-500'}
 							/>
-							{#if output.type === 'Integer' && !/^\d+$/.test(output.value)}
-								<span class="text-red-500">Invalid Integer</span>
+							{#if !validateInput(output)}
+								<span class="text-red-500">Invalid {output.type}</span>
 							{/if}
 						</div>
 					{/each}
@@ -193,8 +222,8 @@
 		<CircleAlert class="h-4 w-4" />
 		<Alert.Title>Error</Alert.Title>
 		<Alert.Description>
-			Invalid input: Please ensure all integers are valid numbers, each parameter has a type, and at
-			least one input and one output are provided.
+			Invalid input: Please ensure all types are valid, each parameter has a type, and at least one
+			input and one output are provided.
 		</Alert.Description>
 		<Button on:click={() => showAlert.set(false)}>X</Button>
 	</Alert.Root>

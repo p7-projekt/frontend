@@ -23,27 +23,48 @@ function createHaskellBoilerplate(testTemplate: {
 		output: { type: string; value: string }[];
 	};
 }) {
-	let module = `module Solution where`;
-
 	let functionSignature = `solution :: ${testTemplate.parameters.input
 		.map((input) => {
-			return `${input.type}`;
+			return convertType(input.type);
 		})
-		.join(' -> ')} -> ${testTemplate.parameters.output
-		.map((output) => {
-			return `${output.type}`;
-		})
-		.join(' -> ')}`;
+		.join(' -> ')} -> ${convertOutputTypes(testTemplate.parameters.output)}`;
 
 	let functionBody = `solution ${testTemplate.parameters.input
 		.map((input, index) => {
 			return `input${index}`;
 		})
-		.join(' ')} = ${testTemplate.parameters.output
-		.map((output, index) => {
-			return `output${index}`;
-		})
-		.join(' ')}`;
+		.join(' ')} = ${convertOutputValues(testTemplate.parameters.output)}`;
 
-	return `${module}\n${functionSignature}\n${functionBody}`;
+	return `${functionSignature}\n${functionBody}`;
+}
+
+function convertType(type: string): string {
+	switch (type) {
+		case 'int':
+			return 'Int';
+		case 'string':
+			return 'String';
+		case 'char':
+			return 'Char';
+		case 'float':
+			return 'Float';
+		case 'bool':
+			return 'Bool';
+		default:
+			return type;
+	}
+}
+
+function convertOutputTypes(outputs: { type: string; value: string }[]): string {
+	if (outputs.length === 1) {
+		return convertType(outputs[0].type);
+	}
+	return `(${outputs.map((output) => convertType(output.type)).join(', ')})`;
+}
+
+function convertOutputValues(outputs: { type: string; value: string }[]): string {
+	if (outputs.length === 1) {
+		return `output0`;
+	}
+	return `(${outputs.map((output, index) => `output${index}`).join(', ')})`;
 }

@@ -2,16 +2,17 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import TestCaseDialog from './TestCaseDialog.svelte';
 	import { Label } from '$lib/components/ui/label/index.js';
+	import { Checkbox } from '$lib/components/ui/checkbox/index.js';
 
-	export let testCasesStore: any;
-	export let testCaseTemplate: any;
+	export let testCasesStore;
+	export let testCaseTemplate;
 
-	let testCases: any[] = [];
+	let testCases = [];
 	let openCreate: boolean = false;
 	let openEdit: boolean = false;
-	let selectedTestCase: any;
+	let selectedTestCase: ITest;
 
-	testCasesStore.subscribe((store: any) => {
+	testCasesStore.subscribe((store) => {
 		testCases = store.testCases;
 	});
 
@@ -27,11 +28,20 @@
 		selectedTestCase = null;
 	}
 
-	function removeTestCase(testCaseId: number) {
+	function setTestCaseAsPublic(testCaseId: number, isPublic: boolean) {
+		console.log(testCaseId, isPublic);
 		testCasesStore.update((store: any) => {
+			const updatedTestCases = store.testCases.map((tc: TestCase) =>
+				tc.id === testCaseId ? { ...tc, publicVisible: isPublic } : tc
+			);
+			return { ...store, testCases: updatedTestCases };
+		});
+	}
+	function removeTestCase(testCaseId: number) {
+		testCasesStore.update((store) => {
 			return {
 				...store,
-				testCases: store.testCases.filter((tc: any) => tc.id !== testCaseId)
+				testCases: store.testCases.filter((tc) => tc.id !== testCaseId)
 			};
 		});
 	}
@@ -69,7 +79,22 @@
 							{/each}
 						</div>
 					</div>
-					<div class="flex space-x-2">
+
+					<div class="flex items-center space-x-2">
+						<Checkbox
+							checked={testCase.publicVisible}
+							onCheckedChange={(e) => {
+								console.log('Checkbox change event:', e);
+								setTestCaseAsPublic(testCase.id, e);
+							}}
+						/>
+						<Label
+							id="terms-label"
+							for="terms"
+							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+						>
+							Set as Public
+						</Label>
 						<Button
 							class="secondary"
 							on:click={() => {

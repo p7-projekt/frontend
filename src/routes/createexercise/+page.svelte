@@ -49,9 +49,17 @@
 		}
 	};
 
-	data.testCasesStore.subscribe((store: any) => {
+	data.testCasesStore.subscribe((store) => {
 		$formData.testCases = store.testCases;
 	});
+
+	// Reactive statement to call createBoilerplate when testCaseSchema is set
+	$: if (
+		testCaseSchema.parameters.input.length > 0 ||
+		testCaseSchema.parameters.output.length > 0
+	) {
+		createBoilerplate();
+	}
 
 	function createBoilerplate() {
 		$formData.codeText = setIDEBoilerPlate(testCaseSchema);
@@ -67,16 +75,22 @@
 						<div class="m-8 content">
 							<Form.Field {form} name="title">
 								<Form.Control let:attrs>
-									<TitleInput {...attrs} bind:value={$formData.title} />
+									<TitleInput
+										placeholder="Write your exercise title here"
+										{...attrs}
+										bind:value={$formData.title}
+									/>
 								</Form.Control>
-								<Form.Description>This is the title of the exercise.</Form.Description>
 								{#if $errors.title}<span class="invalid">{$errors.title}</span>{/if}
 							</Form.Field>
 							<Form.Field {form} name="description">
 								<Form.Control let:attrs>
-									<DescriptionBox {...attrs} bind:value={$formData.description} />
+									<DescriptionBox
+										placeholder="Write your exercise description here"
+										{...attrs}
+										bind:value={$formData.description}
+									/>
 								</Form.Control>
-								<Form.Description>This is the exercise description.</Form.Description>
 							</Form.Field>
 							{#if $errors.description}<span class="invalid">{$errors.description}</span>{/if}
 						</div>
@@ -92,14 +106,20 @@
 								<div class="flex items-center space-x-4 text-sm">
 									<div>
 										<strong class="font-medium">Input:</strong>
-										{#each testCaseSchema.parameters.input as input}
-											<span class="ml-1 text-gray-700">{input.type}: {input.value}</span>
+										{#each testCaseSchema.parameters.input as input, index (index)}
+											<span class="ml-1 text-gray-700"
+												>{input.type}{#if index < testCaseSchema.parameters.input.length - 1},
+												{/if}</span
+											>
 										{/each}
 									</div>
 									<div>
 										<strong class="font-medium">Output:</strong>
-										{#each testCaseSchema.parameters.output as output}
-											<span class="ml-1 text-gray-700">{output.type}: {output.value}</span>
+										{#each testCaseSchema.parameters.output as output, index (index)}
+											<span class="ml-1 text-gray-700"
+												>{output.type}{#if index < testCaseSchema.parameters.output.length - 1},
+												{/if}</span
+											>
 										{/each}
 									</div>
 									<Button
@@ -135,7 +155,9 @@
 								testCasesStore={data.testCasesStore}
 								bind:testCaseTemplate={testCaseSchema}
 							/>
-							{#if $errors.testCases}<span class="invalid">{$errors.testCases._errors}</span>{/if}
+							{#if $errors.testCases && $errors.testCases._errors}<span class="invalid"
+									>{$errors.testCases._errors}</span
+								>{/if}
 						</div>
 					</Resizable.Pane>
 				</Resizable.PaneGroup>
@@ -144,18 +166,24 @@
 			<Resizable.Pane defaultSize={50} class="pane">
 				<div class="flex flex-col h-full items-center justify-center p-6 space-y-4 content">
 					<div class="ide-container w-full h-full">
-						<Ide bind:codeSolutionText={$formData.codeText} />
+						<Ide
+							bind:codeSolutionText={$formData.codeText}
+							editable={!(
+								testCaseSchema.parameters.input.length === 0 &&
+								testCaseSchema.parameters.output.length === 0
+							)}
+						/>
 					</div>
+					{#if testCaseSchema.parameters.input.length === 0 && testCaseSchema.parameters.output.length === 0}<span
+							class="invalid"
+							>Set a Test Case Schema before you can start creating your solution</span
+						>{/if}
 					{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
 					{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
 					<div class="flex space-x-4">
-						<Button variant="default" on:click={createBoilerplate}>Create Boilerplate</Button>
-						<Button variant="default">Validate</Button>
 						<Form.Button>Confirm</Form.Button>
-						<!-- {#if browser}
-                            <SuperDebug data={$formData} />
-                        {/if} -->
 					</div>
+					<!-- <SuperDebug data={$formData} /> -->
 				</div>
 			</Resizable.Pane>
 		</Resizable.PaneGroup>

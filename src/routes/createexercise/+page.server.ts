@@ -1,11 +1,12 @@
 import type { PageServerLoad, Actions } from './$types.js';
-import { fail, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
+import { handleAuthenticatedRequest } from '$lib/requestHandler';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
-const apiVersion = import.meta.env.VITE_V1;
+const api_version = import.meta.env.VITE_V1;
 
 export const load: PageServerLoad = async () => {
 	return {
@@ -13,36 +14,46 @@ export const load: PageServerLoad = async () => {
 	};
 };
 
-const convertFormData = (formData: any) => {
+const convertFormData = (formData) => {
 	return {
 		name: formData.title,
 		description: formData.description,
 		solution: formData.codeText,
-		inputParameterType: formData.testCases[0].parameters.input.map((param: any) => param.type),
+		inputParameterType: formData.testCases[0].parameters.input.map((param) => param.type),
 		outputParamaterType: formData.testCases[0].parameters.output.map((param: any) => param.type),
 		testcases: formData.testCases.map((testCase: any) => ({
 			inputParams: testCase.parameters.input.map((param: any) => param.value),
-			outputParams: testCase.parameters.output.map((param: any) => param.value)
+			outputParams: testCase.parameters.output.map((param: any) => param.value),
+			publicVisible: testCase.publicVisible
 		}))
 	};
 };
 
+// async function hejesben(apiData, access_token) {
+// 	return await fetch(`${backendUrl}${api_version}/exercises`, {
+// 		method: 'POST',
+// 		headers: {
+// 			'Content-Type': 'application/json',
+// 			Authorization: `Bearer ${access_token}` // Append the Bearer token
+// 		},
+// 		body: JSON.stringify(apiData)
+// 	});
+// }
+
 export const actions: Actions = {
 	default: async (event) => {
+		const access_token: string = event.cookies.get('access_token') || '';
+		const refresh_token: string = event.cookies.get('refresh_token') || '';
+
 		const form = await superValidate(event, zod(formSchema));
 		if (!form.valid) {
 			return fail(400, { form });
 		}
 
-		// Log the form data
-		console.log('Form Data:', form.data);
-
-		// Convert form data to API format
 		const apiData = convertFormData(form.data);
-		const access_token = event.cookies.get('access_token');
 
 		// Make request login post request to backend
-		const response = await fetch(`${backendUrl}${apiVersion}/exercises`, {
+		const response = await fetch(`${backendUrl}${api_version}/exercises`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -64,20 +75,30 @@ export const actions: Actions = {
 			} else {
 				resJSON = { detail: 'No response body' }; // Handle empty response body
 			}
-			console.log('great success: Form Data:', form.data, 'Response:', resJSON);
-		} else {
-			const errorText = await response.text(); // Read the response as text
-			let error;
-			if (errorText) {
-				try {
-					error = JSON.parse(errorText); // Try to parse the error as JSON
-				} catch (e) {
-					error = { detail: errorText }; // If parsing fails, use the text as the error detail
-				}
+
+			console.log('resJSON:', resJSON);
+
+			if (resJSON.isFailed) {
+				const errorMessages = resJSON.errors.map((err) => err.message).join('\n');
+				console.log('Epic fail from server:', resJSON);
+				return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
 			} else {
-				error = { detail: 'An unknown error occurred' }; // Handle empty response body
+				console.log('Epic Win:', resJSON);
+				throw redirect(303, '/');
 			}
-			return setError(form, 'codeText', error.detail || 'An error occurred on the server');
+		} else {
+			const responseBody = await response.text(); // Read the response as text
+			console.log(responseBody);
+
+			const resJSON = JSON.parse(responseBody); // Try to parse the response as JSON
+
+			if (resJSON.type) {
+				const errorMessages = Object.values(resJSON.errors).flat().join('\n');
+				return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
+			} else {
+				const errorMessages = resJSON.errors.map((err) => err.message).join('\n');
+				return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
+			}
 		}
 	}
 };

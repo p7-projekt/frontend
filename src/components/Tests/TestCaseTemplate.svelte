@@ -10,8 +10,8 @@
 
 	export let Inputs: { type: string; value: string; argNumber: number; isInput: boolean }[] = [];
 	export let Outputs: { type: string; value: string; argNumber: number; isInput: boolean }[] = [];
-	export let testCaseTemplate: any | null = null;
-	export let testCasesStore: any;
+	export let testCaseTemplate = null;
+	export let testCasesStore;
 
 	let inputParameters = writable(Inputs);
 	let outputParameters = writable(Outputs);
@@ -23,7 +23,10 @@
 
 	const types = [
 		{ value: 'string', label: 'String' },
-		{ value: 'int', label: 'Int' }
+		{ value: 'int', label: 'Int' },
+		{ value: 'char', label: 'Char' },
+		{ value: 'float', label: 'Float' },
+		{ value: 'bool', label: 'Bool' }
 	];
 
 	onMount(() => {
@@ -75,7 +78,7 @@
 	}
 
 	function handleConfirm() {
-		testCasesStore.update((store: any) => {
+		testCasesStore.update((store) => {
 			return {
 				idCounter: 0,
 				testCases: []

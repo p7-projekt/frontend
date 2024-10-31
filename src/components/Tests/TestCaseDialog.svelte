@@ -3,11 +3,11 @@
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import TestCase from './TestCase.svelte';
 
-	export let testCasesStore: any;
+	export let testCasesStore;
 	export let isEditMode: boolean = false;
-	export let existingTestCase: any = null;
+	export let existingTestCase = null;
 	export let open: boolean = false;
-	export let testCaseTemplate: any;
+	export let testCaseTemplate;
 
 	function handleCancel() {
 		open = false;
