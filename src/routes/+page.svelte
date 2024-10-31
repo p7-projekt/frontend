@@ -1,12 +1,15 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import ListBox from '$components/Lists/ListBox.svelte';
-	import SessionTable from './SessionTable.svelte';
+	import SessionDisplay from './SessionDisplay.svelte';
 	import { goto } from '$app/navigation';
+	import { toast } from 'svelte-sonner';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 
 	export let data: PageData;
 
 	const sessionData = data.sessions;
+	console.log(sessionData);
 
 	let instructor_exercises;
 	if (data.instructor_exercises) {
@@ -18,29 +21,50 @@
 		);
 	}
 
-	const after_item = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#1f2937" class="size-6">
-							<path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
-						</svg>`;
+	let selected_exercise_id: number | null;
+	let selected_exercise_title: string | null;
+	let isDialogOpen = false;
+
+	const after_item = `<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="#1f2937"
+						class="size-6"
+					>
+						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+					</svg>`;
 
 	async function handleClickCreateSession() {
 		goto('/create-session');
 	}
 
-	const deleteExercise = async (event: CustomEvent) => {
-		const exerciseId = event.detail.item_id;
-		console.log(exerciseId);
+	const deleteExercise = async () => {
 		const response = await fetch('/api/delete-exercise', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ exercise_id: exerciseId })
+			body: JSON.stringify({ exercise_id: selected_exercise_id })
 		});
 
 		if (response.ok) {
-			instructor_exercises = instructor_exercises.filter((exercise) => exercise.id !== exerciseId);
+			instructor_exercises = instructor_exercises.filter(
+				(exercise) => exercise.id !== selected_exercise_id
+			);
+			toast('Exercise Deleted');
+			isDialogOpen = false;
+			selected_exercise_id = null;
+			selected_exercise_title = null;
 		}
 	};
+
+	function openDeleteDialog(event) {
+		selected_exercise_id = event.detail.item_id;
+		selected_exercise_title = event.detail.item_content;
+		isDialogOpen = true;
+	}
 </script>
 
 {#if data.user}
@@ -64,11 +88,7 @@
 						</div>
 					</div>
 				{:else}
-					<div class="flex flex-1 justify-center rounded-lg border border-dashed shadow-sm">
-						<div class="w-full">
-							<SessionTable {sessionData} />
-						</div>
-					</div>
+					<SessionDisplay {sessionData} />
 				{/if}
 			</main>
 			<div class=" h-[35.5rem] w-1/2">
@@ -76,8 +96,27 @@
 					list={instructor_exercises}
 					list_title="Private"
 					{after_item}
-					on:message={deleteExercise}
-				></ListBox>
+					on:message={openDeleteDialog}
+				/>
+				<!-- Create a alert dialog that forces user to confirm deletion of exercise -->
+				<AlertDialog.Root open={isDialogOpen} on:close={() => (isDialogOpen = false)}>
+					<AlertDialog.Content>
+						<AlertDialog.Header>
+							<AlertDialog.Title
+								>Are you sure you want to delete {selected_exercise_title}?</AlertDialog.Title
+							>
+							<AlertDialog.Description>
+								This action cannot be undone. This will permanently delete the exercise.
+							</AlertDialog.Description>
+						</AlertDialog.Header>
+						<AlertDialog.Footer>
+							<AlertDialog.Cancel on:click={() => (isDialogOpen = false)}>Cancel</AlertDialog.Cancel
+							>
+							<AlertDialog.Action on:click={deleteExercise}>Delete</AlertDialog.Action>
+						</AlertDialog.Footer>
+					</AlertDialog.Content>
+				</AlertDialog.Root>
+
 				<div class="flex justify-end mr-1">
 					<div class="flex items-center space-x-4 mt-4">
 						<span class="text-[#333] font-medium text-[1.0625rem]">Create New Exercise</span>

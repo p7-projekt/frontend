@@ -56,7 +56,7 @@
 				</svg>
 			</a>
 		</div>
-		<h1 class=" text-2xl font-semibold col-span-full">Create Session</h1>
+		<h1 class=" text-2xl font-medium col-span-full">Create Session</h1>
 
 		<div class="w-1/4 col-span-full">
 			<TitleInput input_name="session-title" />
