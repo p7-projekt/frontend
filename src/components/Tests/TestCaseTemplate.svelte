@@ -26,7 +26,7 @@
 		{ value: 'int', label: 'Int' },
 		{ value: 'char', label: 'Char' },
 		{ value: 'float', label: 'Float' },
-		{ value: 'bool', label: 'Bool' },
+		{ value: 'bool', label: 'Bool' }
 	];
 
 	onMount(() => {

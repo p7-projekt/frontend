@@ -8,7 +8,6 @@ import { handleAuthenticatedRequest } from '$lib/requestHandler';
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const api_version = import.meta.env.VITE_V1;
 
-
 export const load: PageServerLoad = async () => {
 	return {
 		form: await superValidate(zod(formSchema))
@@ -20,9 +19,7 @@ const convertFormData = (formData) => {
 		name: formData.title,
 		description: formData.description,
 		solution: formData.codeText,
-		inputParameterType: formData.testCases[0].parameters.input.map(
-			(param) => param.type
-		),
+		inputParameterType: formData.testCases[0].parameters.input.map((param) => param.type),
 		outputParamaterType: formData.testCases[0].parameters.output.map((param: any) => param.type),
 		testcases: formData.testCases.map((testCase: any) => ({
 			inputParams: testCase.parameters.input.map((param: any) => param.value),
@@ -43,19 +40,18 @@ const convertFormData = (formData) => {
 // 	});
 // }
 
-
 export const actions: Actions = {
 	default: async (event) => {
 		const access_token: string = event.cookies.get('access_token') || '';
 		const refresh_token: string = event.cookies.get('refresh_token') || '';
- 
+
 		const form = await superValidate(event, zod(formSchema));
 		if (!form.valid) {
 			return fail(400, { form });
 		}
-  
-		const apiData = convertFormData(form.data) 
-	  
+
+		const apiData = convertFormData(form.data);
+
 		// Make request login post request to backend
 		const response = await fetch(`${backendUrl}${api_version}/exercises`, {
 			method: 'POST',
@@ -65,7 +61,7 @@ export const actions: Actions = {
 			},
 			body: JSON.stringify(apiData)
 		});
- 
+
 		if (response.ok) {
 			const responseBody = await response.text(); // Read the response as text
 			let resJSON;
@@ -92,18 +88,17 @@ export const actions: Actions = {
 			}
 		} else {
 			const responseBody = await response.text(); // Read the response as text
-			console.log(responseBody); 
+			console.log(responseBody);
 
 			const resJSON = JSON.parse(responseBody); // Try to parse the response as JSON
 
-            if (resJSON.type) {
-                const errorMessages = Object.values(resJSON.errors).flat().join('\n'); 
-                return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
-            } else {
-                const errorMessages = resJSON.errors.map((err) => err.message).join('\n');
-                return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
-            }
- 
+			if (resJSON.type) {
+				const errorMessages = Object.values(resJSON.errors).flat().join('\n');
+				return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
+			} else {
+				const errorMessages = resJSON.errors.map((err) => err.message).join('\n');
+				return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
+			}
 		}
 	}
 };
