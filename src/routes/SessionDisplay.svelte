@@ -6,6 +6,7 @@
 	import { slide } from 'svelte/transition';
 	import { toast } from 'svelte-sonner';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import * as Card from '$lib/components/ui/card/index.js';
 
 	export let sessionData: { id: number; title: string; expiresInSeconds: number }[] = [];
 
@@ -63,39 +64,46 @@
 	};
 </script>
 
-<div class="grid grid-cols-1 gap-4 overflow-y-auto scrollable-list">
-	{#each sessions as session (session.id)}
-		<div class="rounded-[1.5rem] p-[1.5rem] border-[1.5px]" use:setObserver out:slide>
-			<h2 class="text-[1.5rem] mb-2 font-medium relative">
-				{session.title}
-				<button class="absolute right-0 top-0" on:click={() => openDeleteDialog(session)}>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke-width="1.5"
-						stroke="#1f2937"
-						class="size-6"
-					>
-						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-					</svg>
-				</button>
-			</h2>
-			<div class="grid grid-cols-2">
-				<div>
-					<Label class="text-base font-medium">Invite Code</Label>
-					<CopyToClipboard textToCopy={session.sessionCode}></CopyToClipboard>
-				</div>
-				<div class="relative">
-					<div class="absolute right-0 bottom-0 flex gap-1">
-						<span class="font-medium">Expires in:</span>
-						<Timer seconds_remaining={session.expiresInSeconds}></Timer>
+<Card.Header>
+	<Card.Title class="text-[1.25rem]">Sessions</Card.Title>
+</Card.Header>
+<Card.Content>
+	<div class="grid grid-cols-1 gap-4 overflow-y-auto scrollable-list">
+		{#each sessions as session (session.id)}
+			<div class="rounded-[1.5rem] p-[1.5rem] border-[1.5px]" use:setObserver out:slide>
+				<h2 class="text-[1.375rem] mb-2 font-medium relative">
+					<a href="/session/{session.id}">
+						{session.title}
+					</a>
+					<button class="absolute right-0 top-0" on:click={() => openDeleteDialog(session)}>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="#1f2937"
+							class="size-6"
+						>
+							<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+						</svg>
+					</button>
+				</h2>
+				<div class="grid grid-cols-2">
+					<div>
+						<Label class="text-base font-medium">Invite Code</Label>
+						<CopyToClipboard textToCopy={session.sessionCode}></CopyToClipboard>
+					</div>
+					<div class="relative">
+						<div class="absolute right-0 bottom-0 flex gap-1">
+							<span class="font-medium">Expires in:</span>
+							<Timer seconds_remaining={session.expiresInSeconds}></Timer>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	{/each}
-</div>
+		{/each}
+	</div>
+</Card.Content>
 
 <!-- Create a alert dialog that forces user to confirm deletion of session -->
 <AlertDialog.Root open={isDialogOpen} on:close={() => (isDialogOpen = false)}>
@@ -116,13 +124,6 @@
 		</AlertDialog.Footer>
 	</AlertDialog.Content>
 </AlertDialog.Root>
-
-<!-- <Card.Header>
-	<Card.Title>Sessions</Card.Title>
-</Card.Header>
-<Card.Content>
-
-</Card.Content> -->
 
 <style>
 	.scrollable-list > div {
