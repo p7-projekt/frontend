@@ -54,8 +54,8 @@
 	}
 
 	function validateFloatValue(input) {
-		return !isNaN(parseFloat(input.value));
-	}
+        return /^-?\d+(\.\d+)?$/.test(input.value);
+    }
 
 	function validateBoolValue(input) {
 		return input.value === 'true' || input.value === 'false';
