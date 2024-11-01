@@ -9,11 +9,9 @@ export async function handleAuthenticatedRequest(
 	refresh_token: string,
 	cookies: Cookies
 ): Promise<any> {
-	let response = await requestFunction(access_token);
+	const response = await requestFunction(access_token);
 	if (response.ok) {
-		// Check if response has a body
-		const text = await response.text();
-		return text ? JSON.parse(text) : json({ message: 'Session deleted' }, { status: 200 }); // Return parsed JSON or null if no body
+		return response;
 	}
 	// In case of invalid access token we want to try to refresh it
 	else if ((response.status === 401 || response.status === 404) && refresh_token) {
@@ -45,12 +43,8 @@ export async function handleAuthenticatedRequest(
 				sameSite: 'strict'
 			});
 
-			response = await requestFunction(resJSON.token);
-
-			if (response.ok) {
-				const text = await response.text();
-				return text ? JSON.parse(text) : json({ message: 'Success' }, { status: 200 });
-			}
+			// Return new response after refresh
+			return await requestFunction(resJSON.token);
 		} else {
 			cookies.delete('access_token', { path: '/' });
 			cookies.delete('refresh_token', { path: '/' });
@@ -63,8 +57,7 @@ export async function handleAuthenticatedRequest(
 		cookies.delete('refresh_token', { path: '/' });
 		throw redirect(303, '/login');
 	} else {
-		console.log(response);
-		throw new Error('Request failed');
+		return response;
 	}
 }
 
@@ -90,6 +83,19 @@ export async function fetchSessionsData(
 	access_token: string
 ): Promise<Response> {
 	return await fetch(`${backendUrl}${api_version}/sessions`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${access_token}`
+		}
+	});
+}
+export async function fetchSpecificSession(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	session_id: number
+): Promise<Response> {
+	return await fetch(`${backendUrl}${api_version}/sessions/${session_id}`, {
 		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${access_token}`

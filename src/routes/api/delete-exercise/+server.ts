@@ -21,7 +21,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 	);
 
 	// Ensure that a response is returned in all cases
-	if (response && response.ok) {
+	if (response.ok) {
 		return json({ message: 'Exercise deleted' }, { status: 200 });
 	} else {
 		return json({ error: 'Failed to delete exercise' }, { status: 500 });

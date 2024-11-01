@@ -20,19 +20,29 @@ export const load: PageServerLoad = async ({ cookies, depends }) => {
 		};
 	}
 
-	const instructor_exercises = await handleAuthenticatedRequest(
+	let response = await handleAuthenticatedRequest(
 		(token) => fetchExerciseData(backendUrl, api_version, token),
 		access_token,
 		refresh_token,
 		cookies
 	);
 
-	const sessions = await handleAuthenticatedRequest(
+	let instructor_exercises;
+	if (response.ok) {
+		instructor_exercises = await response.json();
+	}
+
+	response = await handleAuthenticatedRequest(
 		(token) => fetchSessionsData(backendUrl, api_version, token),
 		access_token,
 		refresh_token,
 		cookies
 	);
+
+	let sessions;
+	if (response.ok) {
+		sessions = await response.json();
+	}
 
 	return {
 		instructor_exercises: instructor_exercises,
