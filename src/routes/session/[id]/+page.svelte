@@ -12,7 +12,6 @@
 		sessionExpiresUtc: string;
 		exercises: { id: number; name: string; solved: boolean };
 	} = data.session;
-	console.log(session);
 </script>
 
 <div class="container grid grid-cols-1 gap-y-8 pl-6 w-full text-[#333] mt-3">
