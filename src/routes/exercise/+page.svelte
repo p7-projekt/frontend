@@ -11,6 +11,8 @@
 
 	export let data: PageData;
 	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form;
+	export let exerciseData = data.exerciseData;
+
 
 	const form = superForm(superFormData, {
 		validators: zodClient(formSchema),
@@ -18,6 +20,8 @@
 	});
 
 	const { form: formData, enhance, errors } = form;
+ 
+
 </script>
 
 <main>
@@ -26,15 +30,25 @@
 				<Resizable.PaneGroup direction="vertical">
 					<Resizable.Pane defaultSize={60}>
 						<div class="m-8 content">
-							<h1 class=" text-2xl font-semibold col-span-full">Exercise Title</h1>
-							<p class="text-muted-foreground text-sm">Exercise Description</p>
+							<h1 class=" text-2xl font-semibold col-span-full">{exerciseData.title}</h1>
+							<p class="text-muted-foreground text-sm">{exerciseData.description}</p>
 						</div>
+						
 					</Resizable.Pane>
 					<Resizable.Handle />
 					<Resizable.Pane defaultSize={40}>
 						<div class="m-8 content">
 							<h1 class=" text-2xl font-semibold col-span-full">Example Test Cases</h1>
-						</div>
+							<ul>
+								{#each exerciseData.testCases as testCase}
+									<li>
+										<p>Input: {testCase.inputParams.join(', ')}</p>
+										<p>Output: {testCase.outputParams.join(', ')}</p> 
+									</li>
+								{/each}
+							</ul>
+						</div> 
+                        
 					</Resizable.Pane>
 				</Resizable.PaneGroup>
 			</Resizable.Pane>

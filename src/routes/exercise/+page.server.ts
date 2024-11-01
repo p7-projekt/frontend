@@ -9,11 +9,10 @@ import { fetchExerciseData } from '$lib/requestHandler';
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const api_version = import.meta.env.VITE_V1;
 
-export const load: PageServerLoad = async ({ cookies }) => {
+export const load: PageServerLoad = async ({ cookies, url }) => {
 	const access_token: string = cookies.get('access_token') || '';
 	const refresh_token: string = cookies.get('refresh_token') || '';
-	const exerciseId = new URLSearchParams(window.location.search).get('id') || 'XXX';
-
+	const exerciseId = url.searchParams.get('id') || 'XXX';
 
 	const response = await fetch(`${backendUrl}${api_version}/exercises/${exerciseId}`, {
 		method: 'GET',
@@ -24,10 +23,11 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 	const responseBody = await response.text();
 	const jsonResponse = JSON.parse(responseBody)
+	delete jsonResponse.solution;
 	console.log(jsonResponse)
 	
 	return {
-		form: await superValidate(zod(formSchema)), jsonResponse
+		form: await superValidate(zod(formSchema)), exerciseData: jsonResponse
 	};
 };
 
