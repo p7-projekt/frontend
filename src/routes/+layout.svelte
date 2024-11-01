@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.css';
-	import { invalidateAll } from '$app/navigation';
+	import { Toaster } from 'svelte-sonner';
 	import Header from '$components/Layout/Header.svelte';
 	import Footer from '$components/Layout/Footer.svelte';
 	import type { LayoutData } from './$types';
@@ -11,6 +11,7 @@
 <div class="grid grid-rows-[auto_1fr_auto] min-h-screen">
 	<Header user={data.user} />
 	<main>
+		<Toaster />
 		<slot />
 	</main>
 	<Footer />

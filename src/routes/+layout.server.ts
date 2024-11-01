@@ -11,12 +11,17 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 		return { user: null };
 	}
 
-	const userData = await handleAuthenticatedRequest(
+	const response = await handleAuthenticatedRequest(
 		(token) => fetchUserData(backendUrl, api_version, token),
 		access_token,
 		refresh_token,
 		cookies
 	);
+
+	let userData;
+	if (response.ok) {
+		userData = await response.json();
+	}
 
 	const user = {
 		name: userData.name
