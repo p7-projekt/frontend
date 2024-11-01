@@ -1,4 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
+import { jwtDecode } from 'jwt-decode';
 import { z } from 'zod';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -67,6 +68,7 @@ export const actions = {
 			console.error('Error joining Session:', error);
 			return fail(500, { message: 'Server error. Please try again later.' });
 		}
+
 		throw redirect(303, '/session');
 	}
 };

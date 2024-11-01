@@ -1,5 +1,5 @@
 import { fetchSpecificSession, handleAuthenticatedRequest } from '$lib/requestHandler';
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { jwtDecode } from 'jwt-decode';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
@@ -10,23 +10,6 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 	const refresh_token = cookies.get('refresh_token') || '';
 
 	if (anon_token) {
-		// let decoded_token;
-		// try {
-		// 	decoded_token = jwtDecode(anon_token) as {
-		// 		'http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata': string;
-		// 	};
-		// } catch (error) {
-		// 	console.error('Invalid token:', error.message);
-		// 	decoded_token = null;
-		// }
-
-		// let user_id;
-		// if (decoded_token) {
-		// 	user_id = decoded_token['http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'];
-		// }
-
-		// console.log(user_id);
-
 		const response = await fetch(`${backendUrl}${api_version}/sessions/${params.id}`, {
 			method: 'GET',
 			headers: {
@@ -39,12 +22,13 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 			session = await response.json();
 		} else if (response.status === 404) {
 			throw error(404, 'Session not found');
+		} else {
+			cookies.delete('anon_token', { path: '/' });
+			throw redirect(303, '/join');
 		}
 		return {
 			session: session ? session : null
 		};
-
-		console.log(response);
 	} else if (access_token) {
 		const response = await handleAuthenticatedRequest(
 			(token) => fetchSpecificSession(backendUrl, api_version, token, params.id),
@@ -59,5 +43,5 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		return {
 			session: session ? session : null
 		};
-	}
+	} else throw redirect(303, '/join');
 };
