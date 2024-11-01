@@ -5,6 +5,7 @@
 
 	export let codeSolutionText: string = '';
 	export let solutionLanguage: string = 'haskell';
+	export let editable: boolean = true;
 
 	const haskellExtension = [StreamLanguage.define(haskell)];
 
@@ -18,4 +19,4 @@
 	}
 </script>
 
-<CodeMirror class="w-full h-full" bind:value={codeSolutionText} extensions={getExtension()} />
+<CodeMirror editable={editable} class="w-full h-full" bind:value={codeSolutionText} extensions={getExtension()} />
