@@ -183,7 +183,7 @@
 					<div class="flex space-x-4">
 						<Form.Button>Confirm</Form.Button>
 					</div>
-					<!-- <SuperDebug data={$formData} /> -->
+					<SuperDebug data={$formData} />
 				</div>
 			</Resizable.Pane>
 		</Resizable.PaneGroup>
