@@ -18,12 +18,16 @@ export const load: PageServerLoad = async ({ cookies }) => {
 		};
 	}
 
-	const instructor_exercises = await handleAuthenticatedRequest(
+	const response = await handleAuthenticatedRequest(
 		(token) => fetchExerciseData(backendUrl, api_version, token),
 		access_token,
 		refresh_token,
 		cookies
 	);
+	let instructor_exercises;
+	if (response.ok) {
+		instructor_exercises = await response.json();
+	}
 
 	return { instructor_exercises };
 };
@@ -42,7 +46,6 @@ export const actions: Actions = {
 
 		// Parse the JSON strings back into arrays
 		let added_exercises: { id: number; title: string }[] = [];
-		let date_time = {};
 
 		try {
 			added_exercises = added_exercise_list ? JSON.parse(added_exercise_list.toString()) : [];
@@ -83,7 +86,9 @@ export const actions: Actions = {
 			cookies
 		);
 
-		console.log(response);
-		throw redirect(303, '/');
+		if (response.ok) {
+			console.log(response);
+			throw redirect(303, '/');
+		}
 	}
 };
