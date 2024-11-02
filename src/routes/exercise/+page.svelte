@@ -62,8 +62,7 @@
 						{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
 						{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
 
-						<div class="flex space-x-4">
-							<Button variant="default">Validate</Button>
+						<div class="flex space-x-4"> 
 							<Form.Button>Confirm</Form.Button>
 						</div>
 					</div>
