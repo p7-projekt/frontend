@@ -15,8 +15,8 @@ const apiVersion = import.meta.env.VITE_V1;
 export const load: PageServerLoad = async ({ cookies, url }) => {
 	const access_token: string = cookies.get('access_token') || '';
 	const refresh_token: string = cookies.get('refresh_token') || '';
-	const exerciseId = url.searchParams.get('exerciseid') || 'XXX';
-	const sessionId = url.searchParams.get('seshid') || 'XXX';
+	const exerciseId = url.searchParams.get('exerciseid');
+	const sessionId = url.searchParams.get('seshid');
 
 	const response = await fetch(`${backendUrl}${apiVersion}/exercises/${exerciseId}`, {
 		method: 'GET',
@@ -32,6 +32,8 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
         try {
             jsonResponse = JSON.parse(responseBody);
             delete jsonResponse.solution;
+			jsonResponse.testCases = jsonResponse.testCases.filter(testCase => testCase.publicVisible);
+       
         } catch (error) {
             console.error('Failed to parse JSON response:', error);
             throw new Error('Failed to parse JSON response');
