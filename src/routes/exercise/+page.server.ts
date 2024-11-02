@@ -4,10 +4,12 @@ import { fail, redirect } from '@sveltejs/kit';
 import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
 import { fetchExerciseData } from '$lib/requestHandler';
+import { handleAuthenticatedRequest } from '$lib/requestHandler';
+
 
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
-const api_version = import.meta.env.VITE_V1;
+const apiVersion = import.meta.env.VITE_V1;
 
 export const load: PageServerLoad = async ({ cookies, url }) => {
 	const access_token: string = cookies.get('access_token') || '';
@@ -15,7 +17,7 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 	const exerciseId = url.searchParams.get('exerciseid') || 'XXX';
 	const sessionId = url.searchParams.get('seshid') || 'XXX';
 
-	const response = await fetch(`${backendUrl}${api_version}/exercises/${exerciseId}`, {
+	const response = await fetch(`${backendUrl}${apiVersion}/exercises/${exerciseId}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -52,7 +54,22 @@ function convertFormData(formData, sessionId) {
 	}
 }
 
-
+async function postSolution(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	apiData,
+	exerciseId: int
+): Promise<Response> {
+	return await fetch(`${backendUrl}${api_version}/exercises/${exerciseId}/submission`, {
+		method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+				'Authorization': `Bearer ${access_token}` // Append the Bearer token
+            },
+            body: JSON.stringify(apiData)
+	});
+}
 
 export const actions: Actions = {
     default: async (event) => {
@@ -67,19 +84,26 @@ export const actions: Actions = {
         // Convert form data to API format
         const apiData = convertFormData(form.data, sessionId);
 
+		console.log(apiData);
 
-
-        const access_token = event.cookies.get('access_token');
-        const refresh_token = event.cookies.get('refresh_token');
+        const access_token = event.cookies.get('anon_token'); 
   
-		console.log('apiData:', apiData);
+		// Doesn't work right now as anon users are redirected to /login 
+        // const response = await handleAuthenticatedRequest(
+        //     (token) => postSolution(backendUrl, apiVersion, token, apiData, exerciseId),
+        //     access_token,
+        //     refresh_token,
+        //     event.cookies,
+        // );  
 
-        const response = await handleAuthenticatedRequest(
-            (token) => postExercise(backendUrl, apiVersion, token, apiData),
-            access_token,
-            refresh_token,
-            event.cookies
-        );  
+		const response = await fetch(`${backendUrl}${apiVersion}/exercises/${exerciseId}/submission`, {
+			method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${access_token}` // Append the Bearer token
+				},
+				body: JSON.stringify(apiData)
+		});
 
 
         if (response.ok) {
