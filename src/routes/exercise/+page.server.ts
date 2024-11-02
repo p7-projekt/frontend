@@ -145,7 +145,7 @@ export const actions: Actions = {
                 return setError(form, 'codeText', errorMessages || 'An error occurred on the server'); 
             } else {
                 console.log('Epic Win:', resJSON); 
-    			throw redirect(303, '/');
+    			throw redirect(303, '/session');
 
             } 
         } else {
