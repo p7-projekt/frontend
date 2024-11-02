@@ -58,9 +58,7 @@ export const actions: Actions = {
         // Convert form data to API format
         const apiData = convertFormData(form.data);
         const access_token = event.cookies.get('access_token');
-        const refresh_token = event.cookies.get('refresh_token');
-  
-		console.log('apiData:', apiData);
+        const refresh_token = event.cookies.get('refresh_token'); 
 
         const response = await handleAuthenticatedRequest(
             (token) => postExercise(backendUrl, apiVersion, token, apiData),
@@ -82,9 +80,7 @@ export const actions: Actions = {
                 }
             } else {
                 resJSON = { detail: 'No response body' }; // Handle empty response body
-            }
-
-            console.log('resJSON:', resJSON); 
+            } 
             
             if (resJSON.isFailed) { 
                 const errorMessages = resJSON.errors.map((err) => err.message).join('\n'); 

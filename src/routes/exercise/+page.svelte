@@ -47,8 +47,7 @@
 									</li>
 								{/each}
 							</ul>
-						</div> 
-                        
+						</div>  
 					</Resizable.Pane>
 				</Resizable.PaneGroup>
 			</Resizable.Pane>
