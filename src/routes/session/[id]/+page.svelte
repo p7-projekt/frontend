@@ -17,7 +17,8 @@
 	let sessionId: string;
     onMount(() => {
         const url = new URL(window.location.href);
-        sessionId = url.searchParams.get('seshid') || '';
+        const pathSegments = url.pathname.split('/');
+        sessionId = pathSegments[pathSegments.length - 1];
     });
 </script>
 
