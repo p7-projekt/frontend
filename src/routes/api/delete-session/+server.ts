@@ -5,7 +5,7 @@ import { handleAuthenticatedRequest, fetchDeleteSession } from '$lib/requestHand
 // Internal API endpoint to log the user out
 export const POST: RequestHandler = async ({ request, cookies }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;
-	const api_version = import.meta.env.VITE_V1;
+	const api_version = import.meta.env.VITE_API_VERSION;
 	const access_token = cookies.get('access_token') || '';
 	const refresh_token = cookies.get('refresh_token') || '';
 
