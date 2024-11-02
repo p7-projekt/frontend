@@ -8,6 +8,7 @@
 	import * as Form from '$lib/components/ui/form/index.js';
 	import SuperDebug, { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
 	import { formSchema, type FormSchema } from './schema';
+	import { setIDEBoilerPlate } from '../../lib/boilerplate';
 
 	export let data: PageData;
 	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form;

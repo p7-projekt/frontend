@@ -5,6 +5,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 
+
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const apiVersion = import.meta.env.VITE_V1;
 

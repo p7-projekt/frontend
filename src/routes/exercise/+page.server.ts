@@ -5,6 +5,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
 import { fetchExerciseData } from '$lib/requestHandler';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
+import { setIDEBoilerPlate } from '$lib/boilerplate';
 
 
 
@@ -41,10 +42,26 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 
     console.log(jsonResponse);
 
-    return {
-        form: await superValidate(zod(formSchema)),
-        exerciseData: jsonResponse
+	const testTemplate = {
+        parameters: {
+            input: jsonResponse.testCases[0].inputParams.map((value, index) => ({
+                type: jsonResponse.inputParameterType[index],
+                value
+            })),
+            output: jsonResponse.testCases[0].outputParams.map((value, index) => ({
+                type: jsonResponse.outputParamaterType[index],
+                value
+            }))
+        }
     };
+
+    let form = await superValidate(zod(formSchema));
+    form.data.codeText = setIDEBoilerPlate(testTemplate);
+
+	return {
+		form,
+		exerciseData: jsonResponse
+	};
 };
 
 function convertFormData(formData, sessionId) {
