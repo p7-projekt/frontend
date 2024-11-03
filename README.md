@@ -63,5 +63,5 @@ Create file '.env' with content:
 
 ```
 VITE_BACKEND_URL=http://localhost:5015
-VITE_V1 = /v1
+VITE_API_VERSION = v1
 ```

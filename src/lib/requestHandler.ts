@@ -1,4 +1,4 @@
-import { redirect, type Cookies, json } from '@sveltejs/kit';
+import { redirect, type Cookies } from '@sveltejs/kit';
 import { jwtDecode } from 'jwt-decode';
 const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
 
@@ -67,7 +67,7 @@ export async function fetchCreateSession(
 	access_token: string,
 	new_session: { title: string; description: string; expiresInHours: number; exerciseIds: number[] }
 ): Promise<Response> {
-	return await fetch(`${backendUrl}${api_version}/sessions`, {
+	return await fetch(`${backendUrl}/${api_version}/sessions`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ export async function fetchSessionsData(
 	api_version: string,
 	access_token: string
 ): Promise<Response> {
-	return await fetch(`${backendUrl}${api_version}/sessions`, {
+	return await fetch(`${backendUrl}/${api_version}/sessions`, {
 		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${access_token}`
@@ -95,7 +95,7 @@ export async function fetchSpecificSession(
 	access_token: string,
 	session_id: number
 ): Promise<Response> {
-	return await fetch(`${backendUrl}${api_version}/sessions/${session_id}`, {
+	return await fetch(`${backendUrl}/${api_version}/sessions/${session_id}`, {
 		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${access_token}`
@@ -108,7 +108,7 @@ export async function fetchExerciseData(
 	api_version: string,
 	access_token: string
 ): Promise<Response> {
-	return await fetch(`${backendUrl}${api_version}/exercises`, {
+	return await fetch(`${backendUrl}/${api_version}/exercises`, {
 		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${access_token}`
@@ -135,7 +135,7 @@ export async function fetchUserData(
 		user_id = decoded_token['http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'];
 	}
 
-	return await fetch(`${backendUrl}${api_version}/users/${user_id}`, {
+	return await fetch(`${backendUrl}/${api_version}/users/${user_id}`, {
 		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${access_token}`
@@ -149,7 +149,7 @@ export async function fetchDeleteSession(
 	access_token: string,
 	session_id: number
 ): Promise<Response> {
-	return await fetch(`${backendUrl}${api_version}/sessions/${session_id}`, {
+	return await fetch(`${backendUrl}/${api_version}/sessions/${session_id}`, {
 		method: 'DELETE',
 		headers: {
 			Authorization: `Bearer ${access_token}`
@@ -163,7 +163,7 @@ export async function fetchDeleteExercise(
 	access_token: string,
 	exercise_id: number
 ): Promise<Response> {
-	return await fetch(`${backendUrl}${api_version}/exercises/${exercise_id}`, {
+	return await fetch(`${backendUrl}/${api_version}/exercises/${exercise_id}`, {
 		method: 'DELETE',
 		headers: {
 			Authorization: `Bearer ${access_token}`

@@ -4,7 +4,7 @@ import { redirect, error } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;
-	const api_version = import.meta.env.VITE_V1;
+	const api_version = import.meta.env.VITE_API_VERSION;
 	const anon_token = cookies.get('anon_token') || '';
 
 	if (anon_token) {
@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 		}
 
 		if (user_id) {
-			const response = await fetch(`${backendUrl}${api_version}/users/${user_id}`, {
+			const response = await fetch(`${backendUrl}/${api_version}/users/${user_id}`, {
 				method: 'GET',
 				headers: {
 					Authorization: `Bearer ${anon_token}`

@@ -4,13 +4,13 @@ import { jwtDecode } from 'jwt-decode';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;
-	const api_version = import.meta.env.VITE_V1;
+	const api_version = import.meta.env.VITE_API_VERSION;
 	const anon_token = cookies.get('anon_token') || '';
 	const access_token = cookies.get('access_token') || '';
 	const refresh_token = cookies.get('refresh_token') || '';
 
 	if (anon_token) {
-		const response = await fetch(`${backendUrl}${api_version}/sessions/${params.id}`, {
+		const response = await fetch(`${backendUrl}/${api_version}/sessions/${params.id}`, {
 			method: 'GET',
 			headers: {
 				Authorization: `Bearer ${anon_token}`
