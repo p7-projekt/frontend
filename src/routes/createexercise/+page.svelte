@@ -17,13 +17,14 @@
 	import type { Integer } from 'type-fest';
 	import { onMount } from 'svelte';
 	export { formSchema as form };
+	import { writable } from 'svelte/store';
 
 	export let data: PageData;
 
 	let open: boolean = false;
 	let isEditMode: boolean = false;
 	let exerciseId: number;
-
+  
 	onMount(() => {
         const urlParams = new URLSearchParams(window.location.search);
         isEditMode = urlParams.get('edit') === 'true';
@@ -32,6 +33,7 @@
             exerciseId = parseInt(exerciseIdParam, 10);
         }
     });
+	
 
 	function handleCancel() {
 		open = false;
@@ -41,7 +43,7 @@
 		open = false;
 	}
 
-	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form.data.form;
+	export let superFormData: SuperValidated<Infer<FormSchema>> = data.data.form;
 
 	const form = superForm(superFormData, {
 		validators: zodClient(formSchema),

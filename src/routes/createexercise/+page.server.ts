@@ -28,10 +28,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
         const responseBody = await response.text();
         if (responseBody) {
             try {
-                exerciseData = JSON.parse(responseBody);
-                delete exerciseData.solution;
-                exerciseData.testCases = exerciseData.testCases.filter(testCase => testCase.publicVisible);
-
+                exerciseData = JSON.parse(responseBody); 
                 // Populate form with exercise data
                 form.data.title = exerciseData.title;
                 form.data.description = exerciseData.description;
