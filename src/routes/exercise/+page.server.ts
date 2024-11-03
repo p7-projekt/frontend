@@ -10,7 +10,7 @@ import { setIDEBoilerPlate } from '$lib/boilerplate';
 
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
-const apiVersion = import.meta.env.VITE_V1;
+const apiVersion = import.meta.env.VITE_API_VERSION;
 
 export const load: PageServerLoad = async ({ cookies, url }) => {
 	const access_token: string = cookies.get('access_token') || '';
@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 	const exerciseId = url.searchParams.get('exerciseid');
 	const sessionId = url.searchParams.get('seshid');
 
-	const response = await fetch(`${backendUrl}${apiVersion}/exercises/${exerciseId}`, {
+	const response = await fetch(`${backendUrl}/${apiVersion}/exercises/${exerciseId}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ async function postSolution(
 	apiData,
 	exerciseId: int
 ): Promise<Response> {
-	return await fetch(`${backendUrl}${api_version}/exercises/${exerciseId}/submission`, {
+	return await fetch(`${backendUrl}/${api_version}/exercises/${exerciseId}/submission`, {
 		method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ export const actions: Actions = {
         //     event.cookies,
         // );  
 
-		const response = await fetch(`${backendUrl}${apiVersion}/exercises/${exerciseId}/submission`, {
+		const response = await fetch(`${backendUrl}/${apiVersion}/exercises/${exerciseId}/submission`, {
 			method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
