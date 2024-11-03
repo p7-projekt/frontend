@@ -83,9 +83,7 @@
 			<Resizable.Pane defaultSize={50} class="pane">
 				<Resizable.PaneGroup direction="vertical">
 					<Resizable.Pane defaultSize={60}>
-						<div class="m-8 content">
-							Exercise id = {exerciseId}
-							isEditMode = {isEditMode}
+						<div class="m-8 content"> 
 							<Form.Field {form} name="title">
 								<Form.Control let:attrs>
 									<TitleInput
