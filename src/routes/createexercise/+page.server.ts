@@ -9,9 +9,56 @@ import { handleAuthenticatedRequest } from '$lib/requestHandler';
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const apiVersion = import.meta.env.VITE_API_VERSION;
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ url, cookies }) => {
+    const access_token = cookies.get('access_token') || '';
+    const exerciseId = url.searchParams.get('exerciseid');
+
+    let form = await superValidate(zod(formSchema));
+    let exerciseData = null;
+
+    if (exerciseId) {
+        const response = await fetch(`${backendUrl}/${apiVersion}/exercises/${exerciseId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${access_token}`
+            }
+        });
+
+        const responseBody = await response.text();
+        if (responseBody) {
+            try {
+                exerciseData = JSON.parse(responseBody);
+                delete exerciseData.solution;
+                exerciseData.testCases = exerciseData.testCases.filter(testCase => testCase.publicVisible);
+
+                // Populate form with exercise data
+                form.data.title = exerciseData.title;
+                form.data.description = exerciseData.description;
+                form.data.codeText = exerciseData.solution || '';
+                form.data.testCases = exerciseData.testCases.map(testCase => ({
+                    parameters: {
+                        input: testCase.inputParams.map((value, index) => ({
+                            type: exerciseData.inputParameterType[index],
+                            value
+                        })),
+                        output: testCase.outputParams.map((value, index) => ({
+                            type: exerciseData.outputParamaterType[index],
+                            value
+                        }))
+                    },
+                    publicVisible: testCase.publicVisible
+                }));
+            } catch (error) {
+                console.error('Failed to parse JSON response:', error);
+                throw new Error('Failed to parse JSON response');
+            }
+        }
+    }
+
     return {
-        form: await superValidate(zod(formSchema))
+        form,
+        exerciseData
     };
 };
 

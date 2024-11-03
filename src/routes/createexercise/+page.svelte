@@ -14,11 +14,24 @@
 	import TestCaseTemplate from '$components/Tests/TestCaseTemplate.svelte';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import { setIDEBoilerPlate } from '../../lib/boilerplate';
+	import type { Integer } from 'type-fest';
+	import { onMount } from 'svelte';
 	export { formSchema as form };
 
 	export let data: PageData;
 
 	let open: boolean = false;
+	let isEditMode: boolean = false;
+	let exerciseId: number;
+
+	onMount(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        isEditMode = urlParams.get('edit') === 'true';
+        const exerciseIdParam = urlParams.get('exerciseid');
+        if (exerciseIdParam) {
+            exerciseId = parseInt(exerciseIdParam, 10);
+        }
+    });
 
 	function handleCancel() {
 		open = false;
@@ -69,10 +82,13 @@
 <main>
 	<form method="POST" use:enhance class="max-w max-h">
 		<Resizable.PaneGroup direction="horizontal" class="pane-group max-w max-h rounded-lg border">
+			
 			<Resizable.Pane defaultSize={50} class="pane">
 				<Resizable.PaneGroup direction="vertical">
 					<Resizable.Pane defaultSize={60}>
 						<div class="m-8 content">
+							Exercise id = {exerciseId}
+							isEditMode = {isEditMode}
 							<Form.Field {form} name="title">
 								<Form.Control let:attrs>
 									<TitleInput
@@ -83,6 +99,7 @@
 								</Form.Control>
 								{#if $errors.title}<span class="invalid">{$errors.title}</span>{/if}
 							</Form.Field>
+							
 							<Form.Field {form} name="description">
 								<Form.Control let:attrs>
 									<DescriptionBox
