@@ -3,7 +3,7 @@ import { handleAuthenticatedRequest, fetchUserData } from '$lib/requestHandler';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;
-	const api_version = import.meta.env.VITE_V1;
+	const api_version = import.meta.env.VITE_API_VERSION;
 	const access_token: string = cookies.get('access_token') || '';
 	const refresh_token: string = cookies.get('refresh_token') || '';
 

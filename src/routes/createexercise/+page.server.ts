@@ -6,7 +6,7 @@ import { formSchema } from './schema';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
-const apiVersion = import.meta.env.VITE_V1;
+const apiVersion = import.meta.env.VITE_API_VERSION;
 
 export const load: PageServerLoad = async () => {
     return {
@@ -36,7 +36,7 @@ async function postExercise(
 	access_token: string,
 	apiData
 ): Promise<Response> {
-	return await fetch(`${backendUrl}${api_version}/exercises`, {
+	return await fetch(`${backendUrl}/${api_version}/exercises`, {
 		method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
