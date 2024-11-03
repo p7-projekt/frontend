@@ -9,6 +9,13 @@ const testCasesStore = writable<{ idCounter: number; testCases: any[] }>({
 export const load: PageLoad = ({ data }) => {
     const exerciseData = data.exerciseData;
 
+    let testCaseSchema = {
+        parameters: {
+            input: [],
+            output: []
+        }
+    };
+
     if (exerciseData) {
         const testCases = exerciseData.testCases.map((testCase: any, index: number) => ({
             ...testCase,
@@ -29,7 +36,15 @@ export const load: PageLoad = ({ data }) => {
             idCounter: testCases.length,
             testCases
         });
+
+        testCaseSchema = {
+            parameters: {
+                input: exerciseData.inputParameterType.map((type: string) => ({ type, value: '' })),
+                output: exerciseData.outputParamaterType.map((type: string) => ({ type, value: '' }))
+            }
+        };
     }
 
-    return { testCasesStore, data };
+    return { testCasesStore, data, testCaseSchema };
+
 };

@@ -52,17 +52,12 @@
 
 	const { form: formData, enhance, errors } = form;
 
-	let testCaseSchema: {
+	export let testCaseSchema: {
 		parameters: {
 			input: { type: string; value: string }[];
 			output: { type: string; value: string }[];
 		};
-	} = {
-		parameters: {
-			input: [],
-			output: []
-		}
-	};
+	} = data.testCaseSchema;
 
 	data.testCasesStore.subscribe((store) => {
 		$formData.testCases = store.testCases;
