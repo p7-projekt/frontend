@@ -31,7 +31,7 @@ export async function handleAuthenticatedRequest(
 			cookies.set('access_token', resJSON.token, {
 				path: '/',
 				httpOnly: true,
-				secure: true, // Use secure for HTTPS-only environments
+				secure: false, // Use secure for HTTPS-only environments
 				sameSite: 'strict'
 			});
 
@@ -39,7 +39,7 @@ export async function handleAuthenticatedRequest(
 				path: '/',
 				expires: expires_at,
 				httpOnly: true,
-				secure: true, // Use secure for HTTPS-only environments
+				secure: false, // Use secure for HTTPS-only environments
 				sameSite: 'strict'
 			});
 

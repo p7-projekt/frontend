@@ -44,16 +44,14 @@ export const actions: Actions = {
 			cookies.set('access_token', resJSON.token, {
 				path: '/',
 				httpOnly: true,
-				secure: true, // Use secure for HTTPS-only environments
-				sameSite: 'strict'
+				secure: false // Use secure for HTTPS-only environments
 			});
 
 			cookies.set('refresh_token', resJSON.refreshToken, {
 				path: '/',
 				expires: expires_at,
 				httpOnly: true,
-				secure: true, // Use secure for HTTPS-only environments
-				sameSite: 'strict'
+				secure: false // Use secure for HTTPS-only environments
 			});
 			throw redirect(303, '/');
 		} else {
