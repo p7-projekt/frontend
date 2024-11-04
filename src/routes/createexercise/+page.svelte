@@ -13,7 +13,7 @@
 	import { formSchema, type FormSchema } from './schema';
 	import TestCaseTemplate from '$components/Tests/TestCaseTemplate.svelte';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
-	import { setIDEBoilerPlate } from './boilerplate';
+	import { setIDEBoilerPlate } from '../../lib/boilerplate';
 	export { formSchema as form };
 
 	export let data: PageData;
@@ -183,7 +183,7 @@
 					<div class="flex space-x-4">
 						<Form.Button>Confirm</Form.Button>
 					</div>
-					<SuperDebug data={$formData} />
+					<!-- <SuperDebug data={$formData} /> -->
 				</div>
 			</Resizable.Pane>
 		</Resizable.PaneGroup>

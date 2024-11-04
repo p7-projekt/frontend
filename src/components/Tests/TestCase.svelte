@@ -42,8 +42,8 @@
 	});
 
 	function validateIntegerValue(input) {
-		return /^\d+$/.test(input.value);
-	}
+        return /^-?\d+$/.test(input.value);
+    }
 
 	function validateStringValue(input) {
 		return typeof input.value === 'string';
