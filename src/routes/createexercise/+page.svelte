@@ -72,8 +72,10 @@
 	}
 
 	function createBoilerplate() {
-		$formData.codeText = setIDEBoilerPlate(testCaseSchema);
-	}
+        if (!$formData.codeText) {
+            $formData.codeText = setIDEBoilerPlate(testCaseSchema);
+        }
+    }
 </script>
 
 <main>
