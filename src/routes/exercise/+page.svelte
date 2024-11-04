@@ -9,6 +9,7 @@
 	import SuperDebug, { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
 	import { formSchema, type FormSchema } from './schema';
 	import { setIDEBoilerPlate } from '../../lib/boilerplate';
+    import LoaderCircle from "lucide-svelte/icons/loader-circle";
 
 	export let data: PageData;
 	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form;
@@ -20,7 +21,7 @@
 		dataType: 'json'
 	});
 
-	const { form: formData, enhance, errors } = form;
+	const { form: formData, enhance, errors, submitting } = form;
  
 
 </script>
@@ -63,7 +64,14 @@
 						{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
 
 						<div class="flex space-x-4"> 
-							<Form.Button>Confirm</Form.Button>
+							{#if $submitting}
+                            <Button disabled>
+                                <LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
+                                Please wait
+                            </Button>
+							{:else}
+								<Form.Button>Confirm</Form.Button>
+							{/if}
 						</div>
 					</div>
 				</form>

@@ -36,14 +36,7 @@
             exerciseId = parseInt(exerciseIdParam, 10);
         }
     });
-    
-    async function handleSubmit(event) {
-        isLoading = true; // Set loading state to true
-        await enhance(event); // Wait for the form submission to complete
-        isLoading = false; // Set loading state to false
-    }
-
-
+ 
     function handleCancel() {
         open = false;
     }
@@ -57,12 +50,10 @@
 
     const form = superForm(superFormData, {
         validators: zodClient(formSchema),
-        dataType: 'json',
-        delayMs: 500,
-        timeoutMs: 8000
+        dataType: 'json'
     });
 
-    const { form: formData, enhance, submitting, errors, delayed, timeout } = form;
+    const { form: formData, enhance, submitting, errors} = form;
 
     export let testCaseSchema: {
         parameters: {
