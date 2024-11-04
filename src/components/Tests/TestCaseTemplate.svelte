@@ -3,7 +3,7 @@
     import * as Card from '$lib/components/ui/card/index.js';
     import { Label } from '$lib/components/ui/label/index.js';
     import * as Select from '$lib/components/ui/select/index.js';
-    import { writable } from 'svelte/store';
+    import { writable, get } from 'svelte/store';
     import { createEventDispatcher, onMount } from 'svelte';
     import ConfirmationDialog from './UpdateTestTemplateDialog.svelte';
     import CircleAlert from 'lucide-svelte/icons/circle-alert';
@@ -79,19 +79,24 @@
     }
 
     function createOrUpdateTestTemplate() {
-        const validInputs = $inputParameters.every(validateInput);
-        const validOutputs = $outputParameters.every(validateInput);
-        const hasInputs = $inputParameters.length > 0;
-        const hasOutputs = $outputParameters.length > 0;
+        const validInputs = get(inputParameters).every(validateInput);
+        const validOutputs = get(outputParameters).every(validateInput);
+        const hasInputs = get(inputParameters).length > 0;
+        const hasOutputs = get(outputParameters).length > 0;
         const hasType =
-            $inputParameters.every((input) => input.type !== '') &&
-            $outputParameters.every((output) => output.type !== '');
+            get(inputParameters).every((input) => input.type !== '') &&
+            get(outputParameters).every((output) => output.type !== '');
 
         if (validInputs && validOutputs && hasInputs && hasOutputs && hasType) {
             if (testCaseTemplate) {
-                showConfirmationDialog.set(true);
+                const store = get(testCasesStore);
+                if (store.testCases.length > 0) {
+                    showConfirmationDialog.set(true);
+                } else {
+                    handleConfirm();
+                }
             } else {
-                testCaseTemplate.parameters = { input: $inputParameters, output: $outputParameters };
+                testCaseTemplate.parameters = { input: get(inputParameters), output: get(outputParameters) };
                 dispatch('finishCreatingOrUpdatingTestTemplate');
             }
             showAlert.set(false);
