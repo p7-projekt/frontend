@@ -57,11 +57,21 @@ You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
 
-# Set Environment variables
+# Set Environment variables for development
 
 Create file '.env' with content:
 
 ```
 VITE_BACKEND_URL=http://localhost:5015
 VITE_API_VERSION = v1
+```
+
+# Set Environment variables for production
+
+Create file '.env' with content:
+
+```
+VITE_BACKEND_URL=http://api-service:8080
+VITE_API_VERSION=v1
+
 ```

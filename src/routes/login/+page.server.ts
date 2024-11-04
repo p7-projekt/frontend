@@ -44,7 +44,7 @@ export const actions: Actions = {
 			cookies.set('access_token', resJSON.token, {
 				path: '/',
 				httpOnly: true,
-				secure: true, // Use secure for HTTPS-only environments
+				secure: false, // Use secure for HTTPS-only environments
 				sameSite: 'strict'
 			});
 
@@ -52,7 +52,7 @@ export const actions: Actions = {
 				path: '/',
 				expires: expires_at,
 				httpOnly: true,
-				secure: true, // Use secure for HTTPS-only environments
+				secure: false, // Use secure for HTTPS-only environments
 				sameSite: 'strict'
 			});
 			throw redirect(303, '/');

@@ -60,7 +60,7 @@ export const actions = {
 			cookies.set('anon_token', token, {
 				path: '/',
 				httpOnly: true,
-				secure: true,
+				secure: false,
 				sameSite: 'strict',
 				expires: expires_at
 			});
