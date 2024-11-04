@@ -3,6 +3,7 @@
     import TitleInput from '$components/Input/TitleInput.svelte';
     import TestCaseList from '$components/Tests/TestCaseList.svelte';
     import DescriptionBox from '$components/Textarea/DescriptionBox.svelte';
+    import LoaderCircle from "lucide-svelte/icons/loader-circle";
     import { Button } from '$lib/components/ui/button/index.js';
     import * as Resizable from '$lib/components/ui/resizable/index.js';
     import type { PageData } from './$types';
@@ -25,6 +26,7 @@
     let isEditMode: boolean = false;
     let exerciseId: number;
     let overwriteCodeText: boolean = false;
+    let isLoading: boolean = false;
   
     onMount(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -35,6 +37,12 @@
         }
     });
     
+    async function handleSubmit(event) {
+        isLoading = true; // Set loading state to true
+        await enhance(event); // Wait for the form submission to complete
+        isLoading = false; // Set loading state to false
+    }
+
 
     function handleCancel() {
         open = false;
@@ -49,10 +57,12 @@
 
     const form = superForm(superFormData, {
         validators: zodClient(formSchema),
-        dataType: 'json'
+        dataType: 'json',
+        delayMs: 500,
+        timeoutMs: 8000
     });
 
-    const { form: formData, enhance, errors } = form;
+    const { form: formData, enhance, submitting, errors, delayed, timeout } = form;
 
     export let testCaseSchema: {
         parameters: {
@@ -88,7 +98,7 @@
             <Resizable.Pane defaultSize={50} class="pane">
                 <Resizable.PaneGroup direction="vertical">
                     <Resizable.Pane defaultSize={60}>
-                        <div class="m-8 content"> 
+                        <div class="m-8 p-2 content"> 
                             <Form.Field {form} name="title">
                                 <Form.Control let:attrs>
                                     <TitleInput
@@ -99,7 +109,7 @@
                                 </Form.Control>
                                 {#if $errors.title}<span class="invalid">{$errors.title}</span>{/if}
                             </Form.Field>
-                            
+                            <div class="h-full"> 
                             <Form.Field {form} name="description">
                                 <Form.Control let:attrs>
                                     <DescriptionBox
@@ -109,6 +119,7 @@
                                     />
                                 </Form.Control>
                             </Form.Field>
+                        </div>
                             {#if $errors.description}<span class="invalid">{$errors.description}</span>{/if}
                         </div>
                     </Resizable.Pane>
@@ -198,9 +209,15 @@
                     {#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
                     {#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
                     <div class="flex space-x-4">
-                        <Form.Button>Confirm</Form.Button>
+                        {#if $submitting}
+                            <Button disabled>
+                                <LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
+                                Please wait
+                            </Button>
+                        {:else}
+                            <Form.Button>Confirm</Form.Button>
+                        {/if}
                     </div>
-                    <!-- <SuperDebug data={$formData} /> -->
                 </div>
             </Resizable.Pane>
         </Resizable.PaneGroup>

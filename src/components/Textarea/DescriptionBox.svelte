@@ -7,9 +7,9 @@
 	export let placeholder: string = 'Type your message here.';
 </script>
 
-<div class="grid gap-1.5">
+<div class="grid gap-1.5" >
 	<Label class="text-base pl-1" for="message">{description_title} Description</Label>
-	<Textarea name={description_name} {placeholder} id="message" bind:value />
+	<Textarea name={description_name} {placeholder} id="message" bind:value class="h-[16rem]" />
 </div>
 
 <style>
