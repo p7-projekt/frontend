@@ -8,7 +8,8 @@
     import ConfirmationDialog from './UpdateTestTemplateDialog.svelte';
     import CircleAlert from 'lucide-svelte/icons/circle-alert';
     import * as Alert from '$lib/components/ui/alert/index.js';
-
+	import { types } from './testcasetypes';
+ 
     export let Inputs: { type: string; value: string; argNumber: number; isInput: boolean }[] = [];
     export let Outputs: { type: string; value: string; argNumber: number; isInput: boolean }[] = [];
     export let testCaseTemplate = null;
@@ -21,15 +22,7 @@
 
     let showAlert = writable(false);
     let showConfirmationDialog = writable(false);
-
-    const types = [
-        { value: 'string', label: 'String' },
-        { value: 'int', label: 'Int' },
-        { value: 'char', label: 'Char' },
-        { value: 'float', label: 'Float' },
-        { value: 'bool', label: 'Bool' }
-    ];
-
+  
     onMount(() => {
         if (testCaseTemplate) {
             inputParameters.set(testCaseTemplate.parameters.input);
