@@ -9,7 +9,6 @@
 	export let data: PageData;
 
 	const sessionData = data.sessions;
-	console.log(sessionData);
 
 	let instructor_exercises;
 	if (data.instructor_exercises) {

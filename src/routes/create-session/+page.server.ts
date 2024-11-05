@@ -5,6 +5,7 @@ import {
 	fetchExerciseData,
 	fetchCreateSession
 } from '$lib/requestHandler';
+import { getExerciseIds } from './utils';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const api_version = import.meta.env.VITE_API_VERSION;
@@ -42,18 +43,6 @@ export const actions: Actions = {
 		const session_description = form.get('session-description');
 		const added_exercise_list = form.get('added-exercise-list');
 		const expires_in_hours = form.get('selected-expiration');
-		console.log(session_title, expires_in_hours);
-
-		// Parse the JSON strings back into arrays
-		let added_exercises: { id: number; title: string }[] = [];
-
-		try {
-			added_exercises = added_exercise_list ? JSON.parse(added_exercise_list.toString()) : [];
-		} catch (error) {
-			console.error('Error parsing exercise lists:', error);
-		}
-
-		const added_exercise_ids = added_exercises ? added_exercises.map(({ id }) => id) : [];
 
 		if (!session_title) {
 			return fail(400, {
@@ -74,10 +63,10 @@ export const actions: Actions = {
 			title: session_title.toString(),
 			description: session_description?.toString(),
 			expiresInHours: parseInt(expires_in_hours.toString()),
-			exerciseIds: added_exercise_ids
+			exerciseIds: getExerciseIds(added_exercise_list)
 		};
 
-		console.log(new_session);
+		// console.log(new_session);
 
 		const response = await handleAuthenticatedRequest(
 			(token) => fetchCreateSession(backendUrl, api_version, token, new_session),
@@ -86,8 +75,8 @@ export const actions: Actions = {
 			cookies
 		);
 
+		console.log(response);
 		if (response.ok) {
-			console.log(response);
 			throw redirect(303, '/');
 		}
 	}
