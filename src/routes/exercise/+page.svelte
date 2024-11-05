@@ -9,12 +9,11 @@
 	import SuperDebug, { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
 	import { formSchema, type FormSchema } from './schema';
 	import { setIDEBoilerPlate } from '../../lib/boilerplate';
-    import LoaderCircle from "lucide-svelte/icons/loader-circle";
+	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 
 	export let data: PageData;
 	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form;
 	export let exerciseData = data.exerciseData;
-
 
 	const form = superForm(superFormData, {
 		validators: zodClient(formSchema),
@@ -22,61 +21,58 @@
 	});
 
 	const { form: formData, enhance, errors, submitting } = form;
- 
-
 </script>
 
 <main>
-		<Resizable.PaneGroup direction="horizontal" class="pane-group max-w max-h rounded-lg border">
-			<Resizable.Pane defaultSize={50} class="pane">
-				<Resizable.PaneGroup direction="vertical">
-					<Resizable.Pane defaultSize={60}>
-						<div class="m-8 content">
-							<h1 class=" text-2xl font-semibold col-span-full">{exerciseData.title}</h1>
-							<p class="text-muted-foreground text-sm">{exerciseData.description}</p>
-						</div>
-						
-					</Resizable.Pane>
-					<Resizable.Handle />
-					<Resizable.Pane defaultSize={40}>
-						<div class="m-8 content">
-							<h1 class=" text-2xl font-semibold col-span-full">Example Test Cases</h1>
-							<ul>
-								{#each exerciseData.testCases as testCase}
-									<li>
-										<p>Input: {testCase.inputParams.join(', ')}</p>
-										<p>Output: {testCase.outputParams.join(', ')}</p> 
-									</li>
-								{/each}
-							</ul>
-						</div>  
-					</Resizable.Pane>
-				</Resizable.PaneGroup>
-			</Resizable.Pane>
-			<Resizable.Handle />
-			<Resizable.Pane defaultSize={50} class="pane">
-				<form method="POST" use:enhance class="max-w max-h">
-					<div class="flex flex-col h-full items-center justify-center p-6 space-y-4 content">
-						<div class="ide-container w-full h-full">
-							<Ide bind:codeSolutionText={$formData.codeText} />
-						</div> 
-						{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
-						{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
-
-						<div class="flex space-x-4"> 
-							{#if $submitting}
-                            <Button disabled>
-                                <LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
-                                Please wait
-                            </Button>
-							{:else}
-								<Form.Button>Confirm</Form.Button>
-							{/if}
-						</div>
+	<Resizable.PaneGroup direction="horizontal" class="pane-group max-w max-h rounded-lg border">
+		<Resizable.Pane defaultSize={50} class="pane">
+			<Resizable.PaneGroup direction="vertical">
+				<Resizable.Pane defaultSize={60}>
+					<div class="m-8 content">
+						<h1 class=" text-2xl font-semibold col-span-full">{exerciseData.title}</h1>
+						<p class="text-muted-foreground text-sm">{exerciseData.description}</p>
 					</div>
-				</form>
-			</Resizable.Pane>
-		</Resizable.PaneGroup>
+				</Resizable.Pane>
+				<Resizable.Handle />
+				<Resizable.Pane defaultSize={40}>
+					<div class="m-8 content">
+						<h1 class=" text-2xl font-semibold col-span-full">Example Test Cases</h1>
+						<ul>
+							{#each exerciseData.testCases as testCase}
+								<li>
+									<p>Input: {testCase.inputParams.join(', ')}</p>
+									<p>Output: {testCase.outputParams.join(', ')}</p>
+								</li>
+							{/each}
+						</ul>
+					</div>
+				</Resizable.Pane>
+			</Resizable.PaneGroup>
+		</Resizable.Pane>
+		<Resizable.Handle />
+		<Resizable.Pane defaultSize={50} class="pane">
+			<form method="POST" use:enhance class="max-w max-h">
+				<div class="flex flex-col h-full items-center justify-center p-6 space-y-4 content">
+					<div class="ide-container w-full h-full">
+						<Ide bind:codeSolutionText={$formData.codeText} />
+					</div>
+					{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
+					{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
+
+					<div class="flex space-x-4">
+						{#if $submitting}
+							<Button disabled>
+								<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
+								Please wait
+							</Button>
+						{:else}
+							<Form.Button>Confirm</Form.Button>
+						{/if}
+					</div>
+				</div>
+			</form>
+		</Resizable.Pane>
+	</Resizable.PaneGroup>
 </main>
 
 <style>

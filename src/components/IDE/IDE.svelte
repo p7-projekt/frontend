@@ -19,4 +19,9 @@
 	}
 </script>
 
-<CodeMirror editable={editable} class="w-full h-full" bind:value={codeSolutionText} extensions={getExtension()} />
+<CodeMirror
+	{editable}
+	class="w-full h-full"
+	bind:value={codeSolutionText}
+	extensions={getExtension()}
+/>

@@ -1,11 +1,11 @@
 <script>
-    export let data;
-  </script>
-  
-  <style global>
-    * {
-      transition: none !important;
-    }
-  </style>
+	export let data;
+</script>
 
-  <slot />
+<slot />
+
+<style global>
+	* {
+		transition: none !important;
+	}
+</style>

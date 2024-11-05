@@ -22,7 +22,7 @@
 	const dispatch = createEventDispatcher();
 
 	let showAlert = writable(false);
- 
+
 	function cancel() {
 		dispatch('cancel');
 	}
@@ -35,8 +35,8 @@
 	});
 
 	function validateIntegerValue(input) {
-        return /^-?\d+$/.test(input.value);
-    }
+		return /^-?\d+$/.test(input.value);
+	}
 
 	function validateStringValue(input) {
 		return typeof input.value === 'string';
@@ -47,8 +47,8 @@
 	}
 
 	function validateFloatValue(input) {
-        return /^-?\d+(\.\d+)?$/.test(input.value);
-    }
+		return /^-?\d+(\.\d+)?$/.test(input.value);
+	}
 
 	function validateBoolValue(input) {
 		return input.value === 'true' || input.value === 'false';
