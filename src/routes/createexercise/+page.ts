@@ -1,10 +1,6 @@
 import { writable } from 'svelte/store';
-import type { PageLoad } from './$types';
-
-const testCasesStore = writable<{ idCounter: number; testCases: any[] }>({
-	idCounter: 0,
-	testCases: []
-});
+import type { PageLoad } from './$types'; 
+import { testCasesStore } from './testCasesStore';
 
 export const load: PageLoad = ({ data }) => {
     const exerciseData = data.exerciseData;

@@ -30,6 +30,7 @@
   
     onMount(() => {
         const urlParams = new URLSearchParams(window.location.search);
+        data.testCasesStore.set({ idCounter: 0, testCases: [] });
         isEditMode = urlParams.get('edit') === 'true';
         const exerciseIdParam = urlParams.get('exerciseid');
         if (exerciseIdParam) {
@@ -79,7 +80,7 @@
             $formData.codeText = setIDEBoilerPlate(testCaseSchema);
             overwriteCodeText = false; // Reset the flag after overwriting codeText
         }
-    }
+    } 
 </script>
 
 <main>

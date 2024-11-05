@@ -139,7 +139,7 @@
 					{#each $inputParameters as input, index}
 						<div class="flex space-x-2 items-center" key={index}>
 							<Select.Root portal={null}>
-								<Select.Trigger class="w-[120px]">
+								<Select.Trigger class="w-[120px]" disabled={true}>
 									<Select.Value placeholder={input.type ? input.type : 'Type'} />
 								</Select.Trigger>
 								<Select.Content>
@@ -176,7 +176,7 @@
 					{#each $outputParameters as output, index}
 						<div class="flex space-x-2 items-center" key={index}>
 							<Select.Root portal={null}>
-								<Select.Trigger class="w-[120px]">
+								<Select.Trigger class="w-[120px]" disabled={true}>
 									<Select.Value placeholder={output.type ? output.type : 'Type'} />
 								</Select.Trigger>
 								<Select.Content>
