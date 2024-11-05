@@ -47,7 +47,7 @@ function convertType(type: string): string {
 		case 'char':
 			return 'Char';
 		case 'float':
-			return 'Float';
+			return 'Double';
 		case 'bool':
 			return 'Bool';
 		default:

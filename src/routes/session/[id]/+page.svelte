@@ -4,6 +4,7 @@
 	import FlexTable from '$components/FlexTable/index';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 	const session: {
@@ -51,12 +52,12 @@
 							/>
 						</FlexTable.Column>
 						<FlexTable.Column>
-							<a
-                                href={`/exercise?exerciseid=${exercise.id}&seshid=${sessionId}`}
+							<button
+								on:click={() => goto(`/exercise?exerciseid=${exercise.id}&seshid=${sessionId}`)}
                                 class="text-[1.125rem] px-4 py-2 text-sm rounded-sm font-bold text-white border-2 border-[#1f2937] bg-[#1f2937] hover:bg-transparent hover:text-[#1f2937]"
                             >
                                 Code
-                            </a>
+                            </button>
 						</FlexTable.Column>
 					{/each}
 				</FlexTable.Body>
