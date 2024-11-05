@@ -128,7 +128,7 @@
                                         <strong class="font-medium">Input:</strong>
                                         {#each testCaseSchema.parameters.input as input, index (index)}
                                             <span class="ml-1 text-gray-700"
-                                                >{input.type}{#if index < testCaseSchema.parameters.input.length - 1},
+                                                ><strong>{input.type}</strong>{#if index < testCaseSchema.parameters.input.length - 1},
                                                 {/if}</span
                                             >
                                         {/each}
@@ -137,7 +137,7 @@
                                         <strong class="font-medium">Output:</strong>
                                         {#each testCaseSchema.parameters.output as output, index (index)}
                                             <span class="ml-1 text-gray-700"
-                                                >{output.type}{#if index < testCaseSchema.parameters.output.length - 1},
+                                                ><strong>{output.type}</strong>{#if index < testCaseSchema.parameters.output.length - 1},
                                                 {/if}</span
                                             >
                                         {/each}

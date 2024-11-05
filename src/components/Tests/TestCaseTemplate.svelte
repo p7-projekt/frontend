@@ -151,7 +151,7 @@
                     {#each $outputParameters as output, index}
                         <div class="flex space-x-2 items-center">
                             <Select.Root portal={null}>
-                                <Select.Trigger class="w-[120px]">
+                                <Select.Trigger class="w-f">
                                     <Select.Value placeholder={output.type ? output.type : 'Type'} />
                                 </Select.Trigger>
                                 <Select.Content>

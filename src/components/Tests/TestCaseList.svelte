@@ -69,13 +69,13 @@
 						<div>
 							<strong class="font-medium">Input:</strong>
 							{#each testCase.parameters.input as input}
-								<span class="ml-1 text-gray-700">{input.type}: {input.value}</span>
+								<span class="ml-1 text-gray-700"><strong>{input.type}</strong>: {input.value}</span>
 							{/each}
 						</div>
 						<div>
 							<strong class="font-medium">Output:</strong>
 							{#each testCase.parameters.output as output}
-								<span class="ml-1 text-gray-700">{output.type}: {output.value}</span>
+								<span class="ml-1 text-gray-700"><strong>{output.type}</strong>: {output.value}</span>
 							{/each}
 						</div>
 					</div>
