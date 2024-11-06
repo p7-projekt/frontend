@@ -120,6 +120,7 @@
 					<div class="flex items-center space-x-4 mt-4">
 						<span class="text-[#333] font-medium text-[1.0625rem]">Create New Exercise</span>
 						<button
+							on:click={() => goto('/createexercise')}
 							class="bg-[#1f2937] hover:bg-[#e9eaeb] hover:text-[#1f2937] flex items-center justify-center rounded-full w-7 h-7 text-white font-bold transition duration-300 ease-in-out hover:scale-110"
 						>
 							<svg

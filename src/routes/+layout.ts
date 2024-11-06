@@ -14,7 +14,8 @@ export const load: LayoutLoad = ({ data, url }) => {
 		urlp !== '/join' &&
 		!urlp.startsWith('/session') &&
 		urlp !== '/login' &&
-		urlp !== '/'
+		urlp !== '/' &&
+		urlp !== '/exercise'
 	) {
 		throw redirect(303, '/');
 	}

@@ -3,10 +3,12 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
-	import { writable } from 'svelte/store';
+	import { writable, get } from 'svelte/store';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import ConfirmationDialog from './UpdateTestTemplateDialog.svelte';
-	import type { Store } from 'lucide-svelte';
+	import CircleAlert from 'lucide-svelte/icons/circle-alert';
+	import * as Alert from '$lib/components/ui/alert/index.js';
+	import { types } from './testcasetypes';
 
 	export let Inputs: { type: string; value: string; argNumber: number; isInput: boolean }[] = [];
 	export let Outputs: { type: string; value: string; argNumber: number; isInput: boolean }[] = [];
@@ -20,14 +22,6 @@
 
 	let showAlert = writable(false);
 	let showConfirmationDialog = writable(false);
-
-	const types = [
-		{ value: 'string', label: 'String' },
-		{ value: 'int', label: 'Int' },
-		{ value: 'char', label: 'Char' },
-		{ value: 'float', label: 'Float' },
-		{ value: 'bool', label: 'Bool' }
-	];
 
 	onMount(() => {
 		if (testCaseTemplate) {
@@ -68,12 +62,42 @@
 		});
 	}
 
+	function validateInput(input: { type: string; value: string }) {
+		switch (input.type) {
+			case '':
+				return false;
+			default:
+				return true;
+		}
+	}
+
 	function createOrUpdateTestTemplate() {
-		if (testCaseTemplate) {
-			showConfirmationDialog.set(true);
+		const validInputs = get(inputParameters).every(validateInput);
+		const validOutputs = get(outputParameters).every(validateInput);
+		const hasInputs = get(inputParameters).length > 0;
+		const hasOutputs = get(outputParameters).length > 0;
+		const hasType =
+			get(inputParameters).every((input) => input.type !== '') &&
+			get(outputParameters).every((output) => output.type !== '');
+
+		if (validInputs && validOutputs && hasInputs && hasOutputs && hasType) {
+			if (testCaseTemplate) {
+				const store = get(testCasesStore);
+				if (store.testCases.length > 0) {
+					showConfirmationDialog.set(true);
+				} else {
+					handleConfirm();
+				}
+			} else {
+				testCaseTemplate.parameters = {
+					input: get(inputParameters),
+					output: get(outputParameters)
+				};
+				dispatch('finishCreatingOrUpdatingTestTemplate');
+			}
+			showAlert.set(false);
 		} else {
-			testCaseTemplate.parameters = { input: $inputParameters, output: $outputParameters };
-			dispatch('finishCreatingOrUpdatingTestTemplate');
+			showAlert.set(true);
 		}
 	}
 
@@ -123,7 +147,7 @@
 					{#each $outputParameters as output, index}
 						<div class="flex space-x-2 items-center">
 							<Select.Root portal={null}>
-								<Select.Trigger class="w-[120px]">
+								<Select.Trigger class="w-f">
 									<Select.Value placeholder={output.type ? output.type : 'Type'} />
 								</Select.Trigger>
 								<Select.Content>
@@ -153,6 +177,18 @@
 		>
 	</Card.Footer>
 </Card.Root>
+
+{#if $showAlert}
+	<Alert.Root variant="destructive">
+		<CircleAlert class="h-4 w-4" />
+		<Alert.Title>Error</Alert.Title>
+		<Alert.Description>
+			Invalid input: Please ensure all types are valid, each parameter has a type, and at least one
+			input and one output are provided.
+		</Alert.Description>
+		<Button on:click={() => showAlert.set(false)}>X</Button>
+	</Alert.Root>
+{/if}
 
 {#if $showConfirmationDialog}
 	<ConfirmationDialog

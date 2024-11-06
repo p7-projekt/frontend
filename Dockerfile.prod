@@ -8,12 +8,12 @@ COPY package*.json ./
 
 # Downgrade to npm version 10.8.3, since npm install freezes on version 10.9.0 when running npm install
 RUN npm install -g npm@10.8.3 \
-&& npm install && npm i -D @sveltejs/adapter-node
+    && npm install && npm i -D @sveltejs/adapter-node
 
 # Copy the rest of the application code
 COPY . .
 
-
+# Replace adapter-auto with adapter-node
 RUN sed -i "s/@sveltejs\/adapter-auto/@sveltejs\/adapter-node/" svelte.config.js
 
 # Build the application
@@ -24,10 +24,18 @@ FROM node:23-alpine
 
 WORKDIR /home/node/frontend
 
-# # Copy necessary files from the builder stage
+# Copy necessary files from the builder stage
 COPY --from=builder /home/node/frontend/package*.json ./
 COPY --from=builder /home/node/frontend/node_modules ./node_modules
 COPY --from=builder /home/node/frontend/build ./build
+COPY --from=builder /home/node/frontend/.env .
 
-# # Start the application using node (adjust if you have a custom start command)
-CMD ["node", "build"]
+RUN npm install -g npm@10.8.3 && npm install dotenv
+
+# Set ORIGIN environment variable
+ENV ORIGIN=http://10.92.1.109
+
+EXPOSE 80
+
+# Start the application with dotenv to load additional environment variables if needed
+CMD ["node", "-r", "dotenv/config", "build"]

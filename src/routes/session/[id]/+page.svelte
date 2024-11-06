@@ -3,6 +3,8 @@
 	import * as Card from '$lib/components/ui/card';
 	import FlexTable from '$components/FlexTable/index';
 	import { Checkbox } from '$lib/components/ui/checkbox';
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 	const session: {
@@ -12,6 +14,13 @@
 		sessionExpiresUtc: string;
 		exercises: { id: number; name: string; solved: boolean };
 	} = data.session;
+
+	let sessionId: string;
+	onMount(() => {
+		const url = new URL(window.location.href);
+		const pathSegments = url.pathname.split('/');
+		sessionId = pathSegments[pathSegments.length - 1];
+	});
 </script>
 
 <div class="container grid grid-cols-1 gap-y-8 pl-6 w-full text-[#333] mt-3">
@@ -44,9 +53,11 @@
 						</FlexTable.Column>
 						<FlexTable.Column>
 							<button
-								class="text-[1.125rem] px-4 py-2 text-sm rounded-sm font-bold text-white border-2 border-[#1f2937] bg-[#1f2937] transition-all ease-in-out duration-300 hover:bg-transparent hover:text-[#1f2937]"
-								>Code</button
+								on:click={() => goto(`/exercise?exerciseid=${exercise.id}&seshid=${sessionId}`)}
+								class="text-[1.125rem] px-4 py-2 text-sm rounded-sm font-bold text-white border-2 border-[#1f2937] bg-[#1f2937] hover:bg-transparent hover:text-[#1f2937]"
 							>
+								Code
+							</button>
 						</FlexTable.Column>
 					{/each}
 				</FlexTable.Body>

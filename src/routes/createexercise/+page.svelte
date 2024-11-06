@@ -3,6 +3,7 @@
 	import TitleInput from '$components/Input/TitleInput.svelte';
 	import TestCaseList from '$components/Tests/TestCaseList.svelte';
 	import DescriptionBox from '$components/Textarea/DescriptionBox.svelte';
+	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Resizable from '$lib/components/ui/resizable/index.js';
 	import type { PageData } from './$types';
@@ -13,12 +14,29 @@
 	import { formSchema, type FormSchema } from './schema';
 	import TestCaseTemplate from '$components/Tests/TestCaseTemplate.svelte';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
-	import { setIDEBoilerPlate } from './boilerplate';
+	import { setIDEBoilerPlate } from '../../lib/boilerplate';
+	import type { Integer } from 'type-fest';
+	import { onMount } from 'svelte';
 	export { formSchema as form };
+	import { writable } from 'svelte/store';
 
 	export let data: PageData;
 
 	let open: boolean = false;
+	let isEditMode: boolean = false;
+	let exerciseId: number;
+	let overwriteCodeText: boolean = false;
+	let isLoading: boolean = false;
+
+	onMount(() => {
+		const urlParams = new URLSearchParams(window.location.search);
+		data.testCasesStore.set({ idCounter: 0, testCases: [] });
+		isEditMode = urlParams.get('edit') === 'true';
+		const exerciseIdParam = urlParams.get('exerciseid');
+		if (exerciseIdParam) {
+			exerciseId = parseInt(exerciseIdParam, 10);
+		}
+	});
 
 	function handleCancel() {
 		open = false;
@@ -26,28 +44,24 @@
 
 	function handleFinish() {
 		open = false;
+		overwriteCodeText = true; // Set the flag to overwrite codeText when creating a new test case schema
 	}
 
-	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form.data.form;
+	export let superFormData: SuperValidated<Infer<FormSchema>> = data.data.form;
 
 	const form = superForm(superFormData, {
 		validators: zodClient(formSchema),
 		dataType: 'json'
 	});
 
-	const { form: formData, enhance, errors } = form;
+	const { form: formData, enhance, submitting, errors } = form;
 
-	let testCaseSchema: {
+	export let testCaseSchema: {
 		parameters: {
 			input: { type: string; value: string }[];
 			output: { type: string; value: string }[];
 		};
-	} = {
-		parameters: {
-			input: [],
-			output: []
-		}
-	};
+	} = data.testCaseSchema;
 
 	data.testCasesStore.subscribe((store) => {
 		$formData.testCases = store.testCases;
@@ -62,7 +76,10 @@
 	}
 
 	function createBoilerplate() {
-		$formData.codeText = setIDEBoilerPlate(testCaseSchema);
+		if (!$formData.codeText || overwriteCodeText) {
+			$formData.codeText = setIDEBoilerPlate(testCaseSchema);
+			overwriteCodeText = false; // Reset the flag after overwriting codeText
+		}
 	}
 </script>
 
@@ -72,7 +89,7 @@
 			<Resizable.Pane defaultSize={50} class="pane">
 				<Resizable.PaneGroup direction="vertical">
 					<Resizable.Pane defaultSize={60}>
-						<div class="m-8 content">
+						<div class="m-8 p-2 content">
 							<Form.Field {form} name="title">
 								<Form.Control let:attrs>
 									<TitleInput
@@ -83,15 +100,18 @@
 								</Form.Control>
 								{#if $errors.title}<span class="invalid">{$errors.title}</span>{/if}
 							</Form.Field>
-							<Form.Field {form} name="description">
-								<Form.Control let:attrs>
-									<DescriptionBox
-										placeholder="Write your exercise description here"
-										{...attrs}
-										bind:value={$formData.description}
-									/>
-								</Form.Control>
-							</Form.Field>
+							<div class="h-full">
+								<Form.Field {form} name="description">
+									<Form.Control let:attrs>
+										<DescriptionBox
+											placeholder="Write your exercise description here"
+                                            customClass="h-[16rem]"
+											{...attrs}
+											bind:value={$formData.description}
+										/>
+									</Form.Control>
+								</Form.Field>
+							</div>
 							{#if $errors.description}<span class="invalid">{$errors.description}</span>{/if}
 						</div>
 					</Resizable.Pane>
@@ -108,7 +128,8 @@
 										<strong class="font-medium">Input:</strong>
 										{#each testCaseSchema.parameters.input as input, index (index)}
 											<span class="ml-1 text-gray-700"
-												>{input.type}{#if index < testCaseSchema.parameters.input.length - 1},
+												><strong>{input.type}</strong
+												>{#if index < testCaseSchema.parameters.input.length - 1},
 												{/if}</span
 											>
 										{/each}
@@ -117,7 +138,8 @@
 										<strong class="font-medium">Output:</strong>
 										{#each testCaseSchema.parameters.output as output, index (index)}
 											<span class="ml-1 text-gray-700"
-												>{output.type}{#if index < testCaseSchema.parameters.output.length - 1},
+												><strong>{output.type}</strong
+												>{#if index < testCaseSchema.parameters.output.length - 1},
 												{/if}</span
 											>
 										{/each}
@@ -181,9 +203,15 @@
 					{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
 					{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
 					<div class="flex space-x-4">
-						<Form.Button>Confirm</Form.Button>
+						{#if $submitting}
+							<Button disabled>
+								<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
+								Please wait
+							</Button>
+						{:else}
+							<Form.Button>Confirm</Form.Button>
+						{/if}
 					</div>
-					<SuperDebug data={$formData} />
 				</div>
 			</Resizable.Pane>
 		</Resizable.PaneGroup>
