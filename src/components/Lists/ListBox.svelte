@@ -29,8 +29,7 @@
 		<ol class="w-full">
 			{#if list.length !== 0}
 				{#each list as list_item (list_item.id)}
-				
-				<li
+					<li
 						in:fly={{ y: 20 }}
 						out:slide
 						class="pl-1 pr-2 w-[675px] h-[52px] border-b-[1.5px] flex items-center hover:bg-muted/50 w-full justify-between"
