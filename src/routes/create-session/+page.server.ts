@@ -42,7 +42,6 @@ export const actions: Actions = {
 		const session_description = form.get('session-description');
 		const added_exercise_list = form.get('added-exercise-list');
 		const expires_in_hours = form.get('selected-expiration');
-		console.log(session_title, expires_in_hours);
 
 		// Parse the JSON strings back into arrays
 		let added_exercises: { id: number; title: string }[] = [];
@@ -77,8 +76,6 @@ export const actions: Actions = {
 			exerciseIds: added_exercise_ids
 		};
 
-		console.log(new_session);
-
 		const response = await handleAuthenticatedRequest(
 			(token) => fetchCreateSession(backendUrl, api_version, token, new_session),
 			access_token,
@@ -87,7 +84,6 @@ export const actions: Actions = {
 		);
 
 		if (response.ok) {
-			console.log(response);
 			throw redirect(303, '/');
 		}
 	}
