@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { getExerciseIds } from '../../../../src/routes/create-session/utils';
+import { getExerciseIds } from '../../../../src/routes/create-session/create_session';
 
 describe('getExerciseIds', () => {
 	it('should return an arrays of exercise ids when given valid JSON string with exercises', () => {

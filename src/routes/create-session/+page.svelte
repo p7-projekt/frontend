@@ -5,14 +5,12 @@
 	import Select from '$components/Select/Select.svelte';
 	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
-	import { type DateValue } from '@internationalized/date';
 
 	export let data: PageData;
 	export let form: ActionData;
 
 	let added_exercise_list: { id: number; content: string }[] = [];
 	let receive_message: string = '';
-	let datetime: { datetime: DateValue; time: string };
 	let select_title: string = 'Expires in';
 	let select_options: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 	let selected_option: string = '';

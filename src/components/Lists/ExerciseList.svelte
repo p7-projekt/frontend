@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import ListBox from './ListBox.svelte';
+	import { updateLists } from './ExerciseList';
 
 	export let added_exercise_list: { id: number; content: string }[] = [];
 	export let remaining_exercise_list: { id: number; content: string }[] = [];
@@ -33,39 +34,18 @@
 		<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
 	</svg>`;
 
-	// Helper function to insert an item into a sorted array
-	function insertInSortedOrder(list, item) {
-		const index = list.findIndex((existingItem) => existingItem.id > item.id);
-		if (index === -1) {
-			// If no larger item found, insert at the end
-			return [...list, item];
-		} else {
-			// Insert at the correct position
-			return [...list.slice(0, index), item, ...list.slice(index)];
-		}
-	}
-
 	// Event handler that updates the when elements are removed and added from them using the arrows
 	function handleMessage(event) {
 		receive_message = event.detail;
 
-		if (receive_message.list_id === 1) {
-			added_exercise_list = added_exercise_list.filter(
-				(item) => item.id !== receive_message.item_id
-			);
-			remaining_exercise_list = insertInSortedOrder(remaining_exercise_list, {
-				id: receive_message.item_id,
-				content: receive_message.item_content
-			});
-		} else if (receive_message.list_id === 2) {
-			remaining_exercise_list = remaining_exercise_list.filter(
-				(item) => item.id !== receive_message.item_id
-			);
-			added_exercise_list = insertInSortedOrder(added_exercise_list, {
-				id: receive_message.item_id,
-				content: receive_message.item_content
-			});
-		}
+		[added_exercise_list, remaining_exercise_list] = updateLists(
+			receive_message.list_id,
+			receive_message.item_id,
+			receive_message.item_content,
+			added_exercise_list,
+			remaining_exercise_list
+		);
+
 		sendToParent();
 	}
 
