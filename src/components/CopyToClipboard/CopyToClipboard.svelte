@@ -3,14 +3,20 @@
 	export let textToCopy = '';
 
 	function copyToClipboard() {
-		navigator.clipboard
-			.writeText(textToCopy)
-			.then(() => {
-				toast('Copied to clipboard!');
-			})
-			.catch((error) => {
-				console.error('Failed to copy text: ', error);
-			});
+		const input = document.createElement('input');
+		input.value = textToCopy;
+
+		// Append the input to the body, select its content, and copy it
+		document.body.appendChild(input);
+		input.select();
+		const successful = document.execCommand('copy');
+		document.body.removeChild(input);
+
+		if (successful) {
+			toast('Copied to clipboard!');
+		} else {
+			console.error('Failed to copy text');
+		}
 	}
 </script>
 

@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		} else if (response.status === 404) {
 			throw error(404, 'Session not found');
 		} else {
-			cookies.delete('anon_token', { path: '/' });
+			cookies.delete('anon_token', { path: '/', secure: false });
 			throw redirect(303, '/join');
 		}
 		return {

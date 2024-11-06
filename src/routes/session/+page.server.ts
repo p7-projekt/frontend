@@ -14,7 +14,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 				'http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata': string;
 			};
 		} catch (e) {
-			cookies.delete('anon_token', { path: '/' });
+			cookies.delete('anon_token', { path: '/', secure: false });
 			throw redirect(303, '/join');
 		}
 		let user_id;
@@ -33,7 +33,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 				const resJSON = await response.json();
 				throw redirect(303, `/session/${resJSON.sessionId}`);
 			} else if (response.status === 401) {
-				cookies.delete('anon_token', { path: '/' });
+				cookies.delete('anon_token', { path: '/', secure: false });
 				throw redirect(303, '/join');
 			} else throw redirect(303, '/join');
 		}

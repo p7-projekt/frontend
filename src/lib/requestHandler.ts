@@ -46,15 +46,15 @@ export async function handleAuthenticatedRequest(
 			// Return new response after refresh
 			return await requestFunction(resJSON.token);
 		} else {
-			cookies.delete('access_token', { path: '/' });
-			cookies.delete('refresh_token', { path: '/' });
+			cookies.delete('access_token', { path: '/', secure: false });
+			cookies.delete('refresh_token', { path: '/', secure: false });
 			throw redirect(303, '/login');
 		}
 	}
 	// If refresh token is invalid, log user out
 	else if (response.status === 401 || response.status === 404) {
-		cookies.delete('access_token', { path: '/' });
-		cookies.delete('refresh_token', { path: '/' });
+		cookies.delete('access_token', { path: '/', secure: false });
+		cookies.delete('refresh_token', { path: '/', secure: false });
 		throw redirect(303, '/login');
 	} else {
 		return response;

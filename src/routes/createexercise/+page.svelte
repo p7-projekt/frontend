@@ -105,7 +105,7 @@
 									<Form.Control let:attrs>
 										<DescriptionBox
 											placeholder="Write your exercise description here"
-                                            customClass="h-[16rem]"
+											customClass="h-[16rem]"
 											{...attrs}
 											bind:value={$formData.description}
 										/>
