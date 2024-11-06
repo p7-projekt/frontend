@@ -66,9 +66,9 @@
 
 	export let testCasesStore = data.testCasesStore;
 
-	// data.testCasesStore.subscribe((store) => {
-	// 	$formData.testCases = store.testCases;
-	// });
+	data.testCasesStore.subscribe((store) => {
+		$formData.testCases = store.testCases;
+	});
 
 	// Reactive statement to call createBoilerplate when testCaseSchema is set
 	$: if (
