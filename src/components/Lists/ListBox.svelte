@@ -1,5 +1,6 @@
 <!-- ListBox.svelte (Child Component) -->
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { Item } from '$lib/components/ui/dropdown-menu';
 	import { createEventDispatcher } from 'svelte';
 	import { fly, slide } from 'svelte/transition';
@@ -28,7 +29,8 @@
 		<ol class="w-full">
 			{#if list.length !== 0}
 				{#each list as list_item (list_item.id)}
-					<li
+				
+				<li
 						in:fly={{ y: 20 }}
 						out:slide
 						class="pl-1 pr-2 w-[675px] h-[52px] border-b-[1.5px] flex items-center hover:bg-muted/50 w-full justify-between"
@@ -38,7 +40,9 @@
 								{@html before_item}
 							</button>
 						{/if}
-						{list_item.content}
+						<button on:click={() => goto(`/createexercise?edit=true&exerciseid=${list_item.id}`)}>
+							{list_item.content}
+						</button>
 
 						{#if after_item}
 							<button type="button" on:click={() => sendToParent(list_item.id, list_item.content)}>
