@@ -5,6 +5,7 @@ import {
 	fetchExerciseData,
 	fetchCreateSession
 } from '$lib/requestHandler';
+import { getExerciseIds } from './utils';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const api_version = import.meta.env.VITE_API_VERSION;
@@ -73,7 +74,7 @@ export const actions: Actions = {
 			title: session_title.toString(),
 			description: session_description?.toString(),
 			expiresInHours: parseInt(expires_in_hours.toString()),
-			exerciseIds: added_exercise_ids
+			exerciseIds: getExerciseIds(added_exercise_list)
 		};
 
 		const response = await handleAuthenticatedRequest(
@@ -83,6 +84,7 @@ export const actions: Actions = {
 			cookies
 		);
 
+		console.log(response);
 		if (response.ok) {
 			throw redirect(303, '/');
 		}
