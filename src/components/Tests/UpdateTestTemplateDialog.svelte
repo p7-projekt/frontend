@@ -28,7 +28,7 @@
 		</Dialog.Description>
 		<Dialog.Footer class="flex justify-between">
 			<Button variant="outline" on:click={cancel}>Cancel</Button>
-			<Button variant="destructive" on:click={confirm}>Confirm</Button>
+			<Button variant="default" on:click={confirm}>Confirm</Button>
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>

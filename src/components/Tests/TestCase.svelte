@@ -8,6 +8,7 @@
 	import CircleAlert from 'lucide-svelte/icons/circle-alert';
 	import * as Alert from '$lib/components/ui/alert/index.js';
 	import { createEventDispatcher, onMount } from 'svelte';
+	import { types } from './testcasetypes';
 
 	export let testCasesStore;
 	export let testCaseTemplate;
@@ -22,14 +23,6 @@
 
 	let showAlert = writable(false);
 
-	const types = [
-		{ value: 'string', label: 'String' },
-		{ value: 'int', label: 'Int' },
-		{ value: 'char', label: 'Char' },
-		{ value: 'float', label: 'Float' },
-		{ value: 'bool', label: 'Bool' }
-	];
-
 	function cancel() {
 		dispatch('cancel');
 	}
@@ -42,8 +35,8 @@
 	});
 
 	function validateIntegerValue(input) {
-        return /^-?\d+$/.test(input.value);
-    }
+		return /^-?\d+$/.test(input.value);
+	}
 
 	function validateStringValue(input) {
 		return typeof input.value === 'string';
@@ -54,8 +47,8 @@
 	}
 
 	function validateFloatValue(input) {
-        return /^-?\d+(\.\d+)?$/.test(input.value);
-    }
+		return /^-?\d+(\.\d+)?$/.test(input.value);
+	}
 
 	function validateBoolValue(input) {
 		return input.value === 'true' || input.value === 'false';
@@ -139,7 +132,7 @@
 					{#each $inputParameters as input, index}
 						<div class="flex space-x-2 items-center" key={index}>
 							<Select.Root portal={null}>
-								<Select.Trigger class="w-[120px]">
+								<Select.Trigger class="w-[120px]" disabled={true}>
 									<Select.Value placeholder={input.type ? input.type : 'Type'} />
 								</Select.Trigger>
 								<Select.Content>
@@ -176,7 +169,7 @@
 					{#each $outputParameters as output, index}
 						<div class="flex space-x-2 items-center" key={index}>
 							<Select.Root portal={null}>
-								<Select.Trigger class="w-[120px]">
+								<Select.Trigger class="w-[120px]" disabled={true}>
 									<Select.Value placeholder={output.type ? output.type : 'Type'} />
 								</Select.Trigger>
 								<Select.Content>
