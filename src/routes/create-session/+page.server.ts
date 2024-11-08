@@ -44,6 +44,7 @@ export const actions: Actions = {
 		const added_exercise_list = form.get('added-exercise-list');
 		const expires_in_hours = form.get('selected-expiration');
 
+		// TODO look into zod validation
 		if (!session_title) {
 			return fail(400, {
 				sessionTitleMissing: true,

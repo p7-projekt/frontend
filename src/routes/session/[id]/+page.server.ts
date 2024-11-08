@@ -1,6 +1,5 @@
 import { fetchSpecificSession, handleAuthenticatedRequest } from '$lib/requestHandler';
 import { error, redirect } from '@sveltejs/kit';
-import { jwtDecode } from 'jwt-decode';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;

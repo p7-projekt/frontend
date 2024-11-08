@@ -6,9 +6,10 @@ export default defineConfig({
 			provider: 'v8',
 			include: ['src/**'], // Only include files from the src folder
 			exclude: [
-				'**/*.d.ts', // Optionally still exclude type declaration files
+				'**/*.d.ts', // Exclude type declaration files
 				'src/mocks/**', // Exclude mock files within src if needed
-				'src/lib/components'
+				'src/lib/components', // Exclude specific components directory
+				'**/*.svelte' // Exclude all .svelte files
 			]
 		}
 	}
