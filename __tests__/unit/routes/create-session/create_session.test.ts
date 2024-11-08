@@ -44,6 +44,11 @@ describe('getExerciseIds', () => {
 		expect(result).toEqual([]);
 	});
 
+	it('should return an empty array when given not array', () => {
+		const result = getExerciseIds(JSON.stringify({ id: 4, content: 'lol' }));
+		expect(result).toEqual([]);
+	});
+
 	it('should return an empty array and log an error when given invalid JSON', () => {
 		// Mock console.error to test if it's called
 		const consoleErrorMock = vi.spyOn(console, 'error').mockImplementation(() => {});

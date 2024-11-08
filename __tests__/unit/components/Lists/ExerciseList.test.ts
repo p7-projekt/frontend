@@ -126,4 +126,26 @@ describe('updateLists function', () => {
 		expect(added_exercise_list).toEqual([{ id: 1, content: 'Exercise 1' }]);
 		expect(remaining_exercise_list).toEqual([]);
 	});
+
+	it('throws an invalid list error if list_id is not 1 or 2', () => {
+		const added_exercise_list = [{ id: 3, content: 'Exercise 3' }];
+		const remaining_exercise_list = [
+			{ id: 1, content: 'Exercise 1' },
+			{ id: 2, content: 'Exercise 2' }
+		];
+
+		const list_id = 3;
+		const new_item_id = 1;
+		const new_item_content = 'Exercise 1';
+
+		expect(() =>
+			updateLists(
+				list_id,
+				new_item_id,
+				new_item_content,
+				added_exercise_list,
+				remaining_exercise_list
+			)
+		).toThrow('Invalid list_id: 3. Expected 1 or 2.');
+	});
 });
