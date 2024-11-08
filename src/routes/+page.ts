@@ -23,3 +23,31 @@ export async function _deleteExercise(
 		};
 	}
 }
+
+export async function _deleteSession(
+	sessionId: number | null,
+	sessions: {
+		id: number;
+		title: string;
+		expiresInSeconds: number;
+	}[]
+) {
+	const response = await fetch('/api/delete-session', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ session_id: sessionId })
+	});
+
+	if (response.ok) {
+		sessions = sessions.filter((session) => session.id !== sessionId);
+
+		return {
+			sessions,
+			isDialogOpen: false,
+			selected_session_id: null,
+			selected_session_title: null
+		};
+	}
+}
