@@ -1,4 +1,5 @@
-import { fetchSpecificSession, handleAuthenticatedRequest } from '$lib/requestHandler';
+import { fetchSpecificSession } from '$lib/fetchRequests';
+import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { error, redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {

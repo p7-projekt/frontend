@@ -3,8 +3,6 @@ import { setError, superValidate } from 'sveltekit-superforms';
 import { fail, redirect } from '@sveltejs/kit';
 import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
-import { fetchExerciseData } from '$lib/requestHandler';
-import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { setIDEBoilerPlate } from '$lib/boilerplate';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -12,9 +10,7 @@ const apiVersion = import.meta.env.VITE_API_VERSION;
 
 export const load: PageServerLoad = async ({ cookies, url }) => {
 	const access_token: string = cookies.get('access_token') || '';
-	const refresh_token: string = cookies.get('refresh_token') || '';
 	const exerciseId = url.searchParams.get('exerciseid');
-	const sessionId = url.searchParams.get('seshid');
 
 	const response = await fetch(`${backendUrl}/${apiVersion}/exercises/${exerciseId}`, {
 		method: 'GET',
@@ -55,7 +51,7 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 		}
 	};
 
-	let form = await superValidate(zod(formSchema));
+	const form = await superValidate(zod(formSchema));
 	form.data.codeText = setIDEBoilerPlate(testTemplate);
 
 	return {

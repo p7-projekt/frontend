@@ -1,9 +1,6 @@
 import type { PageServerLoad } from './$types';
-import {
-	handleAuthenticatedRequest,
-	fetchExerciseData,
-	fetchSessionsData
-} from '$lib/requestHandler';
+import { fetchExerciseData, fetchSessionsData } from '$lib/fetchRequests';
+import { handleAuthenticatedRequest } from '$lib/requestHandler';
 
 export const load: PageServerLoad = async ({ cookies, depends }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;

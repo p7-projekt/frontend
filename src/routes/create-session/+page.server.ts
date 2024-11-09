@@ -1,10 +1,7 @@
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import {
-	handleAuthenticatedRequest,
-	fetchExerciseData,
-	fetchCreateSession
-} from '$lib/requestHandler';
+import { fetchExerciseData, fetchCreateSession } from '$lib/fetchRequests';
+import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { getExerciseIds } from './create_session';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
