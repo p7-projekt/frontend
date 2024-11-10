@@ -1,4 +1,3 @@
-<!-- ListBox.svelte (Child Component) -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { createEventDispatcher } from 'svelte';

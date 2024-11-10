@@ -7,18 +7,15 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Resizable from '$lib/components/ui/resizable/index.js';
 	import type { PageData } from './$types';
-	import SuperDebug, { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
+	import { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { browser } from '$app/environment';
 	import * as Form from '$lib/components/ui/form/index.js';
 	import { formSchema, type FormSchema } from './schema';
 	import TestCaseTemplate from '$components/Tests/TestCaseTemplate.svelte';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import { setIDEBoilerPlate } from '../../lib/boilerplate';
-	import type { Integer } from 'type-fest';
 	import { onMount } from 'svelte';
 	export { formSchema as form };
-	import { writable } from 'svelte/store';
 
 	export let data: PageData;
 

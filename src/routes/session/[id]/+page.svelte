@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import * as Card from '$lib/components/ui/card';
 	import FlexTable from '$components/FlexTable/index';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { onMount } from 'svelte';

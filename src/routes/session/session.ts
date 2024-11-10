@@ -9,7 +9,8 @@ export function get_anon_userID(anon_token: string, cookies: Cookies) {
 		if (decoded_token) {
 			return decoded_token['http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'];
 		}
-	} catch (e) {
+	} catch (error) {
+		console.error('Invalid anon_token', error.message);
 		cookies.delete('anon_token', { path: '/', secure: false });
 		throw redirect(303, '/join');
 	}
