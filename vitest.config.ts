@@ -1,7 +1,16 @@
 import { defineConfig } from 'vitest/config';
+import path from 'path';
 
 export default defineConfig({
+	resolve: {
+		alias: {
+			$src: path.resolve(__dirname, 'src'),
+			$lib: path.resolve(__dirname, 'src/lib'), // Add your alias paths here
+			$components: path.resolve(__dirname, './src/components')
+		}
+	},
 	test: {
+		clearMocks: true,
 		coverage: {
 			provider: 'v8',
 			include: ['src/**'], // Only include files from the src folder

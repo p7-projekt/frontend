@@ -1,5 +1,5 @@
 import { redirect, type Cookies } from '@sveltejs/kit';
-const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 // Run request function; if access_token is expired, refresh and rerun the request function
 export async function handleAuthenticatedRequest(
