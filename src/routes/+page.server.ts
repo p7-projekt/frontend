@@ -42,7 +42,8 @@ export const load: PageServerLoad = async ({ cookies, depends }) => {
 	}
 
 	return {
-		instructor_exercises: instructor_exercises,
+		instructor_exercises:
+			instructor_exercises && instructor_exercises.length > 0 ? instructor_exercises : null,
 		sessions: sessions && sessions.length > 0 ? sessions : null
 	};
 };

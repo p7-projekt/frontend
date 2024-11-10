@@ -1,7 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { load } from '$src/routes/+layout.server';
 import { fetchUserData } from '$lib/fetchRequests';
-import { handleAuthenticatedRequest } from '$lib/requestHandler';
 
 const backendUrl = 'http://localhost:5015';
 const api_version = 'v1';
