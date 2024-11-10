@@ -5,6 +5,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
 import { handleAuthenticatedRequest } from '$lib/requestHandler'; 
 import {convertFormData} from './helpers';
+import { debugCreateExercise } from '$lib/debug.js';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const apiVersion = import.meta.env.VITE_API_VERSION;
@@ -15,6 +16,8 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 
 	let form = await superValidate(zod(formSchema));
 	let exerciseData = null;
+
+	debugCreateExercise("loading");
 
 	if (exerciseId) {
 		const response = await fetch(`${backendUrl}/${apiVersion}/exercises/${exerciseId}`, {
@@ -47,7 +50,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 					publicVisible: testCase.publicVisible
 				}));
 			} catch (error) {
-				console.error('Failed to parse JSON response:', error);
+				debugCreateExercise('Failed to parse JSON response:', error);
 				throw new Error('Failed to parse JSON response');
 			}
 		}
@@ -132,7 +135,7 @@ export const actions: Actions = {
 				try {
 					resJSON = JSON.parse(responseBody); // Try to parse the response as JSON
 				} catch (e) {
-					console.error('Failed to parse response JSON:', e);
+					debugCreateExercise('Failed to parse response JSON:', e);
 					resJSON = { detail: responseBody }; // If parsing fails, use the text as the response detail
 				}
 			} else {
@@ -141,15 +144,15 @@ export const actions: Actions = {
 
 			if (resJSON.isFailed) {
 				const errorMessages = resJSON.errors.map((err) => err.message).join('\n');
-				console.log('Epic fail from server:', resJSON);
+				debugCreateExercise('Create exercise failed:', e); 
 				return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
 			} else {
-				console.log('Epic Win:', resJSON);
+				debugCreateExercise('Successfull post:', resJSON);
 				throw redirect(303, '/');
 			}
 		} else {
 			const responseBody = await response.text(); // Read the response as text
-			console.log('responseBody:', responseBody);
+			debugCreateExercise('responseBody:', responseBody);
 			let error;
 			if (responseBody) {
 				try {

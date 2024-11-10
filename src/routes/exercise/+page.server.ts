@@ -6,6 +6,7 @@ import { formSchema } from './schema';
 import { fetchExerciseData } from '$lib/requestHandler';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { setIDEBoilerPlate } from '$lib/boilerplate';
+import { debugExercise } from '$lib/debug';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const apiVersion = import.meta.env.VITE_API_VERSION;
@@ -39,8 +40,7 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 	} else {
 		jsonResponse = {};
 	}
-
-	console.log(jsonResponse);
+ 
 
 	const testTemplate = {
 		parameters: {
@@ -100,8 +100,7 @@ export const actions: Actions = {
 
 		// Convert form data to API format
 		const apiData = convertFormData(form.data, sessionId);
-
-		console.log(apiData);
+ 
 
 		const access_token = event.cookies.get('anon_token');
 
@@ -127,20 +126,19 @@ export const actions: Actions = {
 			} else {
 				resJSON = { detail: 'No response body' }; // Handle empty response body
 			}
-
-			console.log('resJSON:', resJSON);
+ 
 
 			if (resJSON.isFailed) {
 				const errorMessages = resJSON.errors.map((err) => err.message).join('\n');
-				console.log('Epic fail from server:', resJSON);
+				debugExercise('Epic fail from server:', resJSON);
 				return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
 			} else {
-				console.log('Epic Win:', resJSON);
+				debugExercise('Epic Win:', resJSON);
 				throw redirect(303, '/session');
 			}
 		} else {
 			const responseBody = await response.text(); // Read the response as text
-			console.log('responseBody:', responseBody);
+			debugExercise('responseBody:', responseBody);
 			let error;
 			if (responseBody) {
 				try {

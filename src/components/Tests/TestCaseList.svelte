@@ -28,8 +28,7 @@
 		selectedTestCase = null;
 	}
 
-	function setTestCaseAsPublic(testCaseId: number, isPublic: boolean) {
-		console.log(testCaseId, isPublic);
+	function setTestCaseAsPublic(testCaseId: number, isPublic: boolean) { 
 		testCasesStore.update((store: any) => {
 			const updatedTestCases = store.testCases.map((tc: TestCase) =>
 				tc.id === testCaseId ? { ...tc, publicVisible: isPublic } : tc
@@ -85,8 +84,7 @@
 					<div class="flex items-center space-x-2">
 						<Checkbox
 							checked={testCase.publicVisible}
-							onCheckedChange={(e) => {
-								console.log('Checkbox change event:', e);
+							onCheckedChange={(e) => { 
 								setTestCaseAsPublic(testCase.id, e);
 							}}
 						/>

@@ -24,7 +24,7 @@ export const actions: Actions = {
 
 		// Potentially encrypt password when sending to backend
 		// const hashedPassword = CryptoJS.SHA256(password).toString();
-		// console.log(hashedPassword);
+		// console.log(hashedPassword); 
 
 		// Make request login post request to backend
 		const response = await fetch(backendUrl + '/login', {

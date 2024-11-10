@@ -6,6 +6,7 @@ import {
 	fetchCreateSession
 } from '$lib/requestHandler';
 import { getExerciseIds } from './utils';
+import { debugCreateSession } from '$lib/debug';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const api_version = import.meta.env.VITE_API_VERSION;
@@ -84,7 +85,7 @@ export const actions: Actions = {
 			cookies
 		);
 
-		console.log(response);
+		debugCreateSession(response);
 		if (response.ok) {
 			throw redirect(303, '/');
 		}
