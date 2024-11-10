@@ -23,11 +23,7 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 	if (response.ok) {
 		userData = await response.json();
 	}
-
-	const user = {
-		name: userData.name
-	};
 	return {
-		user
+		user: userData ? { name: userData.name } : null
 	};
 };
