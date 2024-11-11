@@ -13,7 +13,8 @@
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
-		"coverage": "vitest --coverage"
+		"coverage": "vitest --coverage",
+		"testui": "vitest --ui --coverage"
 	},
 	"devDependencies": {
 		"@internationalized/date": "^3.5.6",
