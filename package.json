@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "DEBUG=app:* vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "npm run test:unit",
@@ -55,6 +55,8 @@
 		"@srsholmes/svelte-code-input": "^0.0.5",
 		"clsx": "^2.1.1",
 		"crypto-js": "^4.2.0",
+		"debug": "^4.3.7",
+		"dotenv": "^16.4.5",
 		"formsnap": "^1.0.1",
 		"jwt-decode": "^4.0.0",
 		"luxon": "^3.5.0",
@@ -64,6 +66,7 @@
 		"sveltekit-superforms": "^2.19.1",
 		"tailwind-merge": "^2.5.3",
 		"tailwind-variants": "^0.2.1",
+		"vite-plugin-commonjs": "^0.10.3",
 		"zod": "^3.23.8"
 	}
 }

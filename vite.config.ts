@@ -1,9 +1,12 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from 'vitest/config'; 
+import commonjs from 'vite-plugin-commonjs';
+
+
 import path from 'path';
 
 export default defineConfig({
-	plugins: [sveltekit()],
+	plugins: [sveltekit(), commonjs()],
 	resolve: {
 		alias: {
 			$components: path.resolve(__dirname, './src/components')
@@ -20,4 +23,4 @@ export default defineConfig({
 			// ... other dependencies
 		]
 	}
-});
+}); 
