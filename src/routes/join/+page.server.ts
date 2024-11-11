@@ -1,5 +1,4 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { jwtDecode } from 'jwt-decode';
 import { z } from 'zod';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;

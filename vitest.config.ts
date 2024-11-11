@@ -1,14 +1,29 @@
 import { defineConfig } from 'vitest/config';
+import path from 'path';
 
 export default defineConfig({
+	resolve: {
+		alias: {
+			$src: path.resolve(__dirname, 'src'),
+			$lib: path.resolve(__dirname, 'src/lib'), // Add your alias paths here
+			$components: path.resolve(__dirname, './src/components')
+		}
+	},
 	test: {
+		clearMocks: true,
 		coverage: {
 			provider: 'v8',
 			include: ['src/**'], // Only include files from the src folder
 			exclude: [
-				'**/*.d.ts', // Optionally still exclude type declaration files
+				'src/routes/createexercise/schema.ts',
+				'src/routes/exercise/schema.ts',
+				'src/routes/login/schema.ts',
+				'src/routes/createexercise/testCasesStore.ts',
+				'src/components/FlexTable/index.ts',
+				'**/*.d.ts', // Exclude type declaration files
 				'src/mocks/**', // Exclude mock files within src if needed
-				'src/lib/components'
+				'src/lib/components', // Exclude specific components directory
+				'**/*.svelte' // Exclude all .svelte files
 			]
 		}
 	}

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Label } from '$lib/components/ui/label';
 	import { invalidate } from '$app/navigation';
+	import { _deleteSession } from './+page';
 	import Timer from '$components/Timer/Timer.svelte';
 	import CopyToClipboard from '$components/CopyToClipboard/CopyToClipboard.svelte';
 	import { slide } from 'svelte/transition';
@@ -15,53 +16,23 @@
 	let selected_session_title: string | null;
 	let isDialogOpen = false;
 
-	async function deleteSession(sessionId) {
-		const response = await fetch('/api/delete-session', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ session_id: sessionId })
-		});
+	const clickDelete = async () => {
+		const result = await _deleteSession(selected_session_id, sessions);
 
-		if (response.ok) {
-			sessions = sessions.filter((session) => session.id !== sessionId);
+		if (result) {
+			({ sessions, isDialogOpen, selected_session_id, selected_session_title } = result);
 			toast('Session Deleted');
-			isDialogOpen = false;
-			selected_session_id = null;
-			selected_session_title = null;
 			if (sessions.length === 0) {
 				invalidate('data:sessions');
 			}
 		}
-	}
+	};
 
 	function openDeleteDialog(session) {
 		selected_session_id = session.id;
 		selected_session_title = session.title;
 		isDialogOpen = true;
 	}
-
-	// Intersection Observer
-	let observer;
-	const setObserver = (element) => {
-		if (!element) return;
-
-		observer = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					// Set opacity based on full visibility
-					entry.target.style.opacity = entry.isIntersecting ? '1' : '0';
-				});
-			},
-			{
-				root: document.querySelector('.scrollable-list'),
-				threshold: 1.0 // Element must be fully visible
-			}
-		);
-
-		observer.observe(element);
-	};
 </script>
 
 <Card.Header>
@@ -70,7 +41,7 @@
 <Card.Content>
 	<div class="grid grid-cols-1 gap-4 overflow-y-auto scrollable-list">
 		{#each sessions as session (session.id)}
-			<div class="rounded-[1.5rem] p-[1.5rem] border-[1.5px]" use:setObserver out:slide>
+			<div class="rounded-[1.5rem] p-[1.5rem] border-[1.5px]" out:slide>
 				<h2 class="text-[1.375rem] mb-2 font-medium relative">
 					<a href="/session/{session.id}">
 						{session.title}
@@ -118,9 +89,7 @@
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel on:click={() => (isDialogOpen = false)}>Cancel</AlertDialog.Cancel>
-			<AlertDialog.Action on:click={() => deleteSession(selected_session_id)}
-				>Delete</AlertDialog.Action
-			>
+			<AlertDialog.Action on:click={clickDelete}>Delete</AlertDialog.Action>
 		</AlertDialog.Footer>
 	</AlertDialog.Content>
 </AlertDialog.Root>

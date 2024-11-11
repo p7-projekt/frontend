@@ -1,5 +1,6 @@
 import type { LayoutServerLoad } from './$types';
-import { handleAuthenticatedRequest, fetchUserData } from '$lib/requestHandler';
+import { fetchUserData } from '$lib/fetchRequests';
+import { handleAuthenticatedRequest } from '$lib/requestHandler';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -22,11 +23,7 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 	if (response.ok) {
 		userData = await response.json();
 	}
-
-	const user = {
-		name: userData.name
-	};
 	return {
-		user
+		user: userData ? { name: userData.name } : null
 	};
 };

@@ -1,7 +1,5 @@
-<!-- ListBox.svelte (Child Component) -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { Item } from '$lib/components/ui/dropdown-menu';
 	import { createEventDispatcher } from 'svelte';
 	import { fly, slide } from 'svelte/transition';
 

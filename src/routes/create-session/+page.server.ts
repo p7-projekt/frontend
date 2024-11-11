@@ -1,11 +1,8 @@
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import {
-	handleAuthenticatedRequest,
-	fetchExerciseData,
-	fetchCreateSession
-} from '$lib/requestHandler';
-import { getExerciseIds } from './utils';
+import { fetchExerciseData, fetchCreateSession } from '$lib/fetchRequests';
+import { handleAuthenticatedRequest } from '$lib/requestHandler';
+import { getExerciseIds } from './create_session';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const api_version = import.meta.env.VITE_API_VERSION;
@@ -44,17 +41,7 @@ export const actions: Actions = {
 		const added_exercise_list = form.get('added-exercise-list');
 		const expires_in_hours = form.get('selected-expiration');
 
-		// Parse the JSON strings back into arrays
-		let added_exercises: { id: number; title: string }[] = [];
-
-		try {
-			added_exercises = added_exercise_list ? JSON.parse(added_exercise_list.toString()) : [];
-		} catch (error) {
-			console.error('Error parsing exercise lists:', error);
-		}
-
-		const added_exercise_ids = added_exercises ? added_exercises.map(({ id }) => id) : [];
-
+		// TODO look into zod validation
 		if (!session_title) {
 			return fail(400, {
 				sessionTitleMissing: true,
@@ -84,7 +71,6 @@ export const actions: Actions = {
 			cookies
 		);
 
-		console.log(response);
 		if (response.ok) {
 			throw redirect(303, '/');
 		}
