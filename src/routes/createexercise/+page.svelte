@@ -30,11 +30,12 @@
 
 	onMount(() => {
 		const urlParams = new URLSearchParams(window.location.search);
-		data.testCasesStore.set({ idCounter: 0, testCases: [] });
 		isEditMode = urlParams.get('edit') === 'true';
 		const exerciseIdParam = urlParams.get('exerciseid');
 		if (exerciseIdParam) {
 			exerciseId = parseInt(exerciseIdParam, 10);
+		} else {
+			data.testCasesStore.set({ idCounter: 0, testCases: [] });
 		}
 	});
 
@@ -61,7 +62,7 @@
 			input: { type: string; value: string }[];
 			output: { type: string; value: string }[];
 		};
-	} = data.testCaseSchema;
+	} = data.testCaseSchema; 
 
 	data.testCasesStore.subscribe((store) => {
 		$formData.testCases = store.testCases;
@@ -174,7 +175,7 @@
 							</Dialog.Root>
 
 							<TestCaseList
-								testCasesStore={data.testCasesStore}
+								testCasesStore={data.testCasesStore} 
 								bind:testCaseTemplate={testCaseSchema}
 							/>
 							{#if $errors.testCases && $errors.testCases._errors}<span class="invalid"
