@@ -4,6 +4,7 @@ import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
+import { convertFormData } from './helpers';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const apiVersion = import.meta.env.VITE_API_VERSION;
@@ -55,21 +56,6 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 	return {
 		form,
 		exerciseData
-	};
-};
-
-const convertFormData = (formData) => {
-	return {
-		name: formData.title,
-		description: formData.description,
-		solution: formData.codeText,
-		inputParameterType: formData.testCases[0].parameters.input.map((param: any) => param.type),
-		outputParamaterType: formData.testCases[0].parameters.output.map((param: any) => param.type),
-		testcases: formData.testCases.map((testCase: any) => ({
-			inputParams: testCase.parameters.input.map((param: any) => param.value),
-			outputParams: testCase.parameters.output.map((param: any) => param.value),
-			publicVisible: testCase.publicVisible
-		}))
 	};
 };
 
