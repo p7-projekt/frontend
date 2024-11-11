@@ -27,7 +27,7 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 			throw redirect(303, '/join');
 		}
 		return {
-			session: session ? session : null
+			session: session
 		};
 	} else if (access_token) {
 		const response = await handleAuthenticatedRequest(
@@ -41,7 +41,7 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 			session = await response.json();
 		}
 		return {
-			session: session ? session : null
+			session: session
 		};
 	} else throw redirect(303, '/join');
 };

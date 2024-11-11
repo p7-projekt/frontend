@@ -20,10 +20,10 @@ export const load: PageServerLoad = async ({ cookies }) => {
 			if (response.ok) {
 				const resJSON = await response.json();
 				throw redirect(303, `/session/${resJSON.sessionId}`);
-			} else if (response.status === 401) {
+			} else {
 				cookies.delete('anon_token', { path: '/', secure: false });
 				throw redirect(303, '/join');
-			} else throw redirect(303, '/join');
+			}
 		}
-	} else redirect(303, '/join');
+	} else throw redirect(303, '/join');
 };
