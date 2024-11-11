@@ -62,8 +62,6 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 	};
 };
 
-
-
 async function postExercise(
 	backendUrl: string,
 	api_version: string,

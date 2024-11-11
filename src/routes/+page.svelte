@@ -3,14 +3,15 @@
 	import ListBox from '$components/Lists/ListBox.svelte';
 	import SessionDisplay from './SessionDisplay.svelte';
 	import { goto } from '$app/navigation';
-	import { toast } from 'svelte-sonner';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import { _deleteExercise } from './+page';
+	import { toast } from 'svelte-sonner';
 
 	export let data: PageData;
 
 	const sessionData = data.sessions;
 
-	let instructor_exercises;
+	let instructor_exercises: { id: number; content: string }[];
 	if (data.instructor_exercises) {
 		instructor_exercises = data.instructor_exercises.map(
 			(exercise: { id: number; name: string }) => ({
@@ -39,23 +40,13 @@
 		goto('/create-session');
 	}
 
-	const deleteExercise = async () => {
-		const response = await fetch('/api/delete-exercise', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ exercise_id: selected_exercise_id })
-		});
+	const clickDelete = async () => {
+		const result = await _deleteExercise(selected_exercise_id, instructor_exercises);
 
-		if (response.ok) {
-			instructor_exercises = instructor_exercises.filter(
-				(exercise) => exercise.id !== selected_exercise_id
-			);
+		if (result) {
+			({ selected_exercise_id, selected_exercise_title, instructor_exercises, isDialogOpen } =
+				result);
 			toast('Exercise Deleted');
-			isDialogOpen = false;
-			selected_exercise_id = null;
-			selected_exercise_title = null;
 		}
 	};
 
@@ -111,7 +102,7 @@
 						<AlertDialog.Footer>
 							<AlertDialog.Cancel on:click={() => (isDialogOpen = false)}>Cancel</AlertDialog.Cancel
 							>
-							<AlertDialog.Action on:click={deleteExercise}>Delete</AlertDialog.Action>
+							<AlertDialog.Action on:click={clickDelete}>Delete</AlertDialog.Action>
 						</AlertDialog.Footer>
 					</AlertDialog.Content>
 				</AlertDialog.Root>

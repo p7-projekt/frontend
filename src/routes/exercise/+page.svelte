@@ -6,9 +6,8 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	export { formSchema as form };
 	import * as Form from '$lib/components/ui/form/index.js';
-	import SuperDebug, { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
+	import { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
 	import { formSchema, type FormSchema } from './schema';
-	import { setIDEBoilerPlate } from '../../lib/boilerplate';
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 
 	export let data: PageData;

@@ -1,6 +1,7 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { handleAuthenticatedRequest, fetchDeleteExercise } from '$lib/requestHandler';
+import { handleAuthenticatedRequest } from '$lib/requestHandler';
+import { fetchDeleteExercise } from '$lib/fetchRequests';
 
 // Internal API endpoint to log the user out
 export const POST: RequestHandler = async ({ request, cookies }) => {
