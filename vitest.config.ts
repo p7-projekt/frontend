@@ -15,6 +15,8 @@ export default defineConfig({
 			provider: 'v8',
 			include: ['src/**'], // Only include files from the src folder
 			exclude: [
+				'src/routes/createexercise/schema.ts',
+				'src/routes/createexercise/testCasesStore.ts',
 				'src/components/FlexTable/index.ts',
 				'**/*.d.ts', // Exclude type declaration files
 				'src/mocks/**', // Exclude mock files within src if needed
