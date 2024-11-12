@@ -36,48 +36,48 @@ describe('Page Server Load function', () => {
     });
 
     it('fetches instructor exercises successfully', async () => {
-        // Arrange
-        const mockCookies = {
-            get: vi.fn((name) => (name === 'access_token' ? 'valid_token' : 'refresh_token')),
-            set: vi.fn(),
-            delete: vi.fn()
-        };
-
-        const mockUrl = {
-            searchParams: {
-                get: vi.fn((param) => (param === 'exerciseid' ? '1' : null))
-            }
-        };
-
-        const mockExerciseData = {
-            title: 'Exercise 1',
-            description: 'Description 1',
-            solution: 'Solution 1',
-            testCases: [
-                {
-                    inputParams: ['input1'],
-                    outputParams: ['output1'],
-                    publicVisible: true
-                }
-            ],
-            inputParameterType: ['string'],
-            outputParamaterType: ['string']
-        };
-
-        global.fetch = vi.fn(() =>
-            Promise.resolve({
-                ok: true,
-                text: () => Promise.resolve(JSON.stringify(mockExerciseData))
-            })
-        );
-
-        // Act
-        const result = await load({ url: mockUrl, cookies: mockCookies, depends: mockDepends });
-
-        // Assert
-        expect(result).toEqual({
-            form: expect.any(Object),
-            exerciseData: mockExerciseData
-        });
-    });
+		// Arrange
+		const mockCookies = {
+			get: vi.fn((name) => (name === 'access_token' ? 'valid_token' : 'refresh_token')),
+			set: vi.fn(),
+			delete: vi.fn()
+		};
+	
+		const mockUrl = {
+			searchParams: {
+				get: vi.fn((param) => (param === 'exerciseid' ? '1' : null))
+			}
+		};
+	
+		const mockExerciseData = {
+			title: 'Exercise 1',
+			description: 'Description 1',
+			solution: 'Solution 1',
+			testCases: [
+				{
+					inputParams: ['input1'],
+					outputParams: ['output1'],
+					publicVisible: true
+				}
+			],
+			inputParameterType: ['string'],
+			outputParamaterType: ['string']
+		};
+	
+		global.fetch = vi.fn(() =>
+			Promise.resolve({
+				ok: true,
+				text: () => Promise.resolve(JSON.stringify(mockExerciseData))
+			})
+		);
+	
+		// Act
+		const result = await load({ url: mockUrl, cookies: mockCookies, depends: mockDepends });
+	
+		// Assert
+		expect(result).toEqual({
+			form: expect.any(Object),
+			exerciseData: mockExerciseData
+		});
+	});
 });

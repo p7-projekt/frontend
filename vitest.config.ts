@@ -8,7 +8,10 @@ export default defineConfig({
 		alias: {
 			$src: path.resolve(__dirname, 'src'),
 			$lib: path.resolve(__dirname, 'src/lib'), // Add your alias paths here
-			$components: path.resolve(__dirname, './src/components'), 
+			$components: path.resolve(__dirname, './src/components'),
+			'sveltekit-superforms': path.resolve(__dirname, 'node_modules/sveltekit-superforms/dist/index.js'),
+			'sveltekit-superforms/adapters': path.resolve(__dirname, 'node_modules/sveltekit-superforms/dist/adapters/index.js'),
+
 		}, 
 	},
 	test: {
