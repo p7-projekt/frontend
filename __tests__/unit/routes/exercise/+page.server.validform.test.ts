@@ -1,4 +1,4 @@
-import { load, actions } from '../../../../src/routes/createexercise/+page.server';
+import { load, actions } from '../../../../src/routes/exercise/+page.server';
 import { describe, it, expect, vi } from 'vitest';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { redirect } from '@sveltejs/kit';
@@ -29,6 +29,7 @@ vi.mock('@sveltejs/kit', () => ({
     fail: vi.fn((status, body) => ({ status, body }))
 }));
 
+
 vi.mock('sveltekit-superforms/adapters', () => ({
     zod: vi.fn(),
 }));
@@ -40,22 +41,7 @@ vi.mock('$lib/requestHandler', () => ({
 describe('Page Server Load function', () => {
     const mockDepends = vi.fn();
 
-    it('exerciseData is null when no url parameters are provided', async () => {
-        const mockCookies = {
-            get: vi.fn(() => null),
-            set: vi.fn(),
-            delete: vi.fn()
-        };
-
-        const mockUrl = {
-            searchParams: {
-                get: vi.fn(() => null)
-            }
-        };
-
-        const result = await load({ url: mockUrl, cookies: mockCookies, depends: mockDepends });
-        expect(result).toEqual({ form: expect.any(Object), exerciseData: null });
-    });
+    
 
     it('Loads exercise data correctly if url parameter is provided', async () => {
         // Arrange
@@ -92,42 +78,59 @@ describe('Page Server Load function', () => {
                 text: () => Promise.resolve(JSON.stringify(mockExerciseData))
             })
         );
-
+        
         // Act
         const result = await load({ url: mockUrl, cookies: mockCookies, depends: mockDepends });
-
+        
         // Assert
         expect(result).toEqual({
-            form: expect.any(Object),
-            exerciseData: mockExerciseData
+            form: {
+                valid: true,
+                data: {
+                    title: 'Valid Title',
+                    description: 'Valid Description',
+                    codeText: 'solution :: String -> String\nsolution input0 = output0',
+                    testCases: [
+                        {
+                            parameters: {
+                                input: [
+                                    {
+                                        type: 'string',
+                                        value: 'input1',
+                                    },
+                                ],
+                                output: [
+                                    {
+                                        type: 'string',
+                                        value: 'output1',
+                                    },
+                                ],
+                            },
+                            publicVisible: true,
+                        },
+                    ],
+                },
+            },
+            exerciseData: {
+                title: 'Exercise 1',
+                description: 'Description 1',
+                inputParameterType: ['string'],
+                outputParamaterType: ['string'],
+                testCases: [
+                    {
+                        inputParams: ['input1'],
+                        outputParams: ['output1'],
+                        publicVisible: true,
+                    },
+                ],
+            },
         });
     });
 });
 
 describe('Page Server Actions function', () => {
     it('redirects on successful exercise creation', async () => {
-        // Arrange
-        vi.doMock('sveltekit-superforms', () => ({
-            setError: vi.fn(),
-            superValidate: vi.fn(() => ({
-                valid: true,
-                data: {
-                    title: 'Exercise 1',
-                    description: 'Description 1',
-                    codeText: 'Solution 1',
-                    testCases: [
-                        {
-                            parameters: {
-                                input: [{ type: 'string', value: 'input1' }],
-                                output: [{ type: 'string', value: 'output1' }]
-                            },
-                            publicVisible: true
-                        }
-                    ]
-                }
-            }))
-        }));
-
+        // Arrange 
         const formData = new FormData();
         formData.set('title', 'Test Exercise');
         formData.set('description', 'Test description');
@@ -135,7 +138,7 @@ describe('Page Server Actions function', () => {
         formData.set('testCases', JSON.stringify([{ inputParams: ['input1'], outputParams: ['output1'], publicVisible: true }]));
 
         const mockCookies = {
-            get: vi.fn((name) => (name === 'access_token' ? 'valid_token' : 'refresh_token')),
+            get: vi.fn((name) => (name === 'anon_token' ? 'valid_token' : 'refresh_token')),
             set: vi.fn(),
             delete: vi.fn()
         };
@@ -145,7 +148,12 @@ describe('Page Server Actions function', () => {
             text: vi.fn().mockResolvedValueOnce(JSON.stringify({ isFailed: false }))
         };
 
-        handleAuthenticatedRequest.mockResolvedValueOnce(mockResponse);
+        global.fetch = vi.fn(() =>
+            Promise.resolve({
+                ok: true,
+                text: () => Promise.resolve(JSON.stringify({ isFailed: false }))
+            })
+        );
 
         const request = { formData: async () => formData };
 
@@ -153,7 +161,7 @@ describe('Page Server Actions function', () => {
             searchParams: {
                 get: vi.fn((param) => {
                     if (param === 'exerciseid') return '1';
-                    if (param === 'edit') return 'true';
+                    if (param === 'seshid') return '1';
                     return null;
                 })
             }
@@ -167,17 +175,6 @@ describe('Page Server Actions function', () => {
 
         // Act and Assert
         await expect(actions.default(event)).rejects.toThrow();
-        expect(redirect).toHaveBeenCalledWith(303, '/');
-
-        // Verify the body passed to handleAuthenticatedRequest
-        expect(handleAuthenticatedRequest).toHaveBeenCalledWith(
-            expect.any(Function), // We expect a function to be passed
-            'valid_token',
-            'refresh_token',
-            mockCookies
-        );
-
-        // Verify the response text method was called
-        expect(mockResponse.text).toHaveBeenCalled();
+        expect(redirect).toHaveBeenCalledWith(303, '/session'); 
     }); 
 });
