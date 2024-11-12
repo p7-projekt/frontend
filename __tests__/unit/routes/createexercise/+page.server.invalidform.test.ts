@@ -1,6 +1,7 @@
 import { load, actions } from '../../../../src/routes/createexercise/+page.server';
 import { describe, it, expect, vi } from 'vitest';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
+import { redirect } from '@sveltejs/kit';
 
 vi.mock('sveltekit-superforms', () => ({
     setError: vi.fn(),
@@ -12,6 +13,11 @@ vi.mock('sveltekit-superforms', () => ({
             testCases: []
         }
     }))
+}));
+
+vi.mock('@sveltejs/kit', () => ({
+	redirect: vi.fn(),
+	fail: vi.fn((status, body) => ({ status, body }))
 }));
 
 vi.mock('sveltekit-superforms/adapters', () => ({
@@ -87,4 +93,28 @@ describe('Page Server Load function', () => {
             exerciseData: mockExerciseData
         });
     });
+});
+
+
+describe('Page Server Actions function', () => {
+    
+    it('Return 400 if form is invalid', async () => {
+        const formData = new FormData();
+        formData.set('title', '');
+        formData.set('description', 'Test description');
+
+        const mockCookies = {
+            get: vi.fn(() => 'valid_token'),
+            set: vi.fn(),
+            delete: vi.fn()
+        };
+
+        const request = {
+            formData: async () => formData
+        };
+
+        const result = await actions.default({ request, cookies: mockCookies });
+
+        expect(result.status).toBe(400);
+    }); 
 });
