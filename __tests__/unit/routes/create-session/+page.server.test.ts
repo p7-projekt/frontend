@@ -1,7 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { load, actions } from '$src/routes/create-session/+page.server';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
-import { fetchCreateSession } from '$lib/fetchRequests';
 import { getExerciseIds } from '$src/routes/create-session/create_session';
 import { redirect } from '@sveltejs/kit';
 
