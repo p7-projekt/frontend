@@ -9,14 +9,11 @@ export default defineConfig({
 	plugins: [sveltekit(), commonjs()],
 	resolve: {
 		alias: {
-			$components: path.resolve(__dirname, './src/components')
+			$components: path.resolve(__dirname, './src/components'),
 		}
 	},
 	test: {
-		include: ['src/**/*.{test,spec}.{js,ts}'], 
-		deps: {
-			inline: ['sveltekit-superforms'],
-		  },
+		include: ['src/**/*.{test,spec}.{js,ts}'] 
 	},
 	optimizeDeps: {
 		exclude: [
