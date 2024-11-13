@@ -1,4 +1,4 @@
-import { actions } from '../../../../src/routes/exercise/+page.server';
+import { actions } from '$src/routes/exercise/+page.server';
 import { describe, it, expect, vi } from 'vitest';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { setError } from 'sveltekit-superforms';

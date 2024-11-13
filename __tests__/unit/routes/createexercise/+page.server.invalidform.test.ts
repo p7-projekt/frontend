@@ -1,4 +1,4 @@
-import { load, actions } from '../../../../src/routes/createexercise/+page.server';
+import { load, actions } from '$src/routes/createexercise/+page.server';
 import { describe, it, expect, vi } from 'vitest';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { redirect } from '@sveltejs/kit';
