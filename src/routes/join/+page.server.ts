@@ -36,37 +36,32 @@ export const actions = {
 			SessionCode: sessionCode
 		};
 
-		try {
-			const response = await fetch(`${backendUrl}/join`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(joinCode)
-			});
+		const response = await fetch(`${backendUrl}/join`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(joinCode)
+		});
 
-			const responseData = await response.json();
-			if (!response.ok) {
-				return fail(400, { error: responseData.errors?.SessionCode?.[0] || 'Invalid code' });
-			}
-			const token = responseData.token;
-			if (!token) {
-				return fail(500, { message: 'Server error. Please try again later.' });
-			}
-			const token_expiration = responseData.expiresAt;
-
-			const expires_at: Date = new Date(token_expiration);
-			cookies.set('anon_token', token, {
-				path: '/',
-				httpOnly: true,
-				secure: false,
-				sameSite: 'strict',
-				expires: expires_at
-			});
-		} catch (error) {
-			console.error('Error joining Session:', error);
+		const responseData = await response.json();
+		if (!response.ok) {
+			return fail(400, { error: responseData.errors?.SessionCode?.[0] || 'Invalid code' });
+		}
+		const token = responseData.token;
+		if (!token) {
 			return fail(500, { message: 'Server error. Please try again later.' });
 		}
+		const token_expiration = responseData.expiresAt;
+
+		const expires_at: Date = new Date(token_expiration);
+		cookies.set('anon_token', token, {
+			path: '/',
+			httpOnly: true,
+			secure: false,
+			sameSite: 'strict',
+			expires: expires_at
+		});
 
 		throw redirect(303, '/session');
 	}
