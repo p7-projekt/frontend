@@ -61,12 +61,7 @@ describe('Page Server Actions function', () => {
             }))
         }));
 
-        const formData = new FormData();
-        formData.set('title', 'Test Exercise');
-        formData.set('description', 'Test description');
-        formData.set('codeText', 'Test code');
-        formData.set('testCases', JSON.stringify([{ inputParams: ['input1'], outputParams: ['output1'], publicVisible: true }]));
-
+ 
         const mockCookies = {
             get: vi.fn((name) => (name === 'access_token' ? 'valid_token' : 'refresh_token')),
             set: vi.fn(),
@@ -79,8 +74,7 @@ describe('Page Server Actions function', () => {
         };
 
         handleAuthenticatedRequest.mockResolvedValueOnce(mockResponse);
-
-        const request = { formData: async () => formData };
+ 
 
         const mockUrl = {
             searchParams: {
@@ -92,8 +86,7 @@ describe('Page Server Actions function', () => {
             }
         };
 
-        const event = {
-            request,
+        const event = { 
             cookies: mockCookies,
             url: mockUrl
         };
