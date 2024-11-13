@@ -23,7 +23,8 @@ export function _validate_url_path(user: { name: string } | null, urlp: string) 
 		!urlp.startsWith('/session') &&
 		urlp !== '/login' &&
 		urlp !== '/' &&
-		urlp !== '/exercise'
+		urlp !== '/exercise' &&
+		urlp !== '/signup'
 	) {
 		throw redirect(303, '/');
 	}
