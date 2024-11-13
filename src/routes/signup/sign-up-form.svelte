@@ -62,10 +62,3 @@
       </form>
     </div>
   </div>
-  
-  <style>
-    /* Remove the red color from labels when there is an error */
-    .form-field-error .form-label {
-      color: inherit; /* Reset to default or specify your preferred color */
-    }
-  </style>
