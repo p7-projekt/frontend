@@ -15,6 +15,8 @@ export default defineConfig({
 			provider: 'v8',
 			include: ['src/**'], // Only include files from the src folder
 			exclude: [
+				'src/lib/debug.ts',
+				'src/components/Tests/testcasetypes.ts',
 				'src/routes/createexercise/schema.ts',
 				'src/routes/exercise/schema.ts',
 				'src/routes/login/schema.ts',
