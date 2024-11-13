@@ -8,56 +8,24 @@
 	export let form: ActionData;
 </script>
 
-<div class="customContainer">
-	<form class="form-group" method="POST" action="?/join" use:enhance>
-		<p class="form-text">Enter your code below to join!</p>
+<div class="flex min-h-screen items-start pt-32 justify-center bg-gray-100">
+	<form class="flex flex-col items-center text-center max-w-md w-full p-8 bg-white shadow-md rounded-lg" method="POST" action="?/join" use:enhance>
+		<p class="text-xl font-semibold text-gray-700 mb-4">Enter your code below to join!</p>
 		<Input
-			class="shad-input"
+			class="mb-8 w-full"
 			name="sessionCode"
 			placeholder="Enter code"
 			bind:value={code}
 			required
 			autocomplete="off"
 		/>
+		
+		<!-- Error Message -->
 		{#if form?.error}
-			<p class="error mt-2" style="color: red; font-size: small;">{form.error}</p>
+			<p class="text-red-600 text-sm mt-2">{form.error}</p>
 		{/if}
-		<Button class="submit-button mt-2" type="submit" size="lg">Join</Button>
+		
+		<!-- Submit Button -->
+		<Button class="w-full mt-2 max-w-xs py-3" type="submit" size="lg">Join</Button>
 	</form>
 </div>
-
-<style>
-	.customContainer {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 100vh;
-		background-color: #f2f2f2;
-	}
-
-	.form-group {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
-		max-width: 400px;
-		width: 100%;
-	}
-
-	.shad-input {
-		margin-bottom: 128px;
-		width: 100%;
-	}
-
-	.form-text {
-		font-size: x-large;
-		margin-bottom: 12px;
-		color: #333;
-	}
-
-	.submit-button {
-		width: 100%;
-		padding: 15px 25px;
-		max-width: 300px;
-	}
-</style>

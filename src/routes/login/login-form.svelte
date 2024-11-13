@@ -14,7 +14,7 @@
 	const { form: formData, enhance, errors } = form;
 </script>
 
-<div class="flex min-h-screen items-center justify-center bg-gray-100">
+<div class="flex min-h-screen items-start pt-16 justify-center bg-gray-100">
 	<!-- Outer wrapper to center both the title and form together -->
 	<div class="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
 		<!-- Application Title -->
