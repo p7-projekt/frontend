@@ -21,7 +21,7 @@ export const actions: Actions = {
 		}
 
 		const { email, password } = form.data;
- 
+
 		// Make request login post request to backend
 		const response = await fetch(backendUrl + '/login', {
 			method: 'POST',
