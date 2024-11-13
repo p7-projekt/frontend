@@ -39,29 +39,7 @@ vi.mock('$lib/requestHandler', () => ({
 
 describe('Page Server Actions function', () => {
     it('redirects on successful exercise creation', async () => {
-        // Arrange
-        vi.doMock('sveltekit-superforms', () => ({
-            setError: vi.fn(),
-            superValidate: vi.fn(() => ({
-                valid: true,
-                data: {
-                    title: 'Exercise 1',
-                    description: 'Description 1',
-                    codeText: 'Solution 1',
-                    testCases: [
-                        {
-                            parameters: {
-                                input: [{ type: 'string', value: 'input1' }],
-                                output: [{ type: 'string', value: 'output1' }]
-                            },
-                            publicVisible: true
-                        }
-                    ]
-                }
-            }))
-        }));
-
- 
+      
         const mockCookies = {
             get: vi.fn((name) => (name === 'access_token' ? 'valid_token' : 'refresh_token')),
             set: vi.fn(),
