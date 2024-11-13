@@ -21,7 +21,7 @@
       <h1 class="text-2xl font-bold text-center mb-6">Sign up for SyntaxShift!</h1>
       
       <!-- Form -->
-      <form method="POST" use:enhance>
+      <form method="POST" action="?/signUp" use:enhance>
         <!-- Email Field -->
         <Form.Field {form} name="email">
           <Form.Control let:attrs>
