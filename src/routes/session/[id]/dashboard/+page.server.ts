@@ -7,8 +7,7 @@ export const load = (async () => {
           "exercises": [
             {
               "exerciseId": "1",
-              "title": "Exercise 1",
-              "description": "Solve the given problem.",
+              "title": "Exercise 1", 
               "completedCount": 5,
               "attemptedCount": 10,
               "submissions": [
@@ -31,8 +30,7 @@ export const load = (async () => {
             },
             {
               "exerciseId": "2",
-              "title": "Exercise 2",
-              "description": "Implement the algorithm.",
+              "title": "Exercise 2", 
               "completedCount": 3,
               "attemptedCount": 8,
               "submissions": [

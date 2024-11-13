@@ -1,7 +1,19 @@
 <script lang="ts">
     import type { PageData } from './$types';
     import * as Accordion from '$lib/components/ui/accordion';
+    import * as Dialog from '$lib/components/ui/dialog';
+    import Ide from '$components/IDE/IDE.svelte';
     export let data: PageData;
+
+    let openDialog = false;
+    let selectedCode = '';
+    let selectedLanguage = 'haskell';
+
+    function handleSubmissionClick(submission: { name: string; solution: string; language: string }) {
+        selectedCode = submission.solution;
+        selectedLanguage = submission.language;
+        openDialog = true;
+    }
 </script>
 
 <div class="container m-auto grid grid-cols-4">
@@ -24,7 +36,9 @@
                         <div class="container m-auto grid grid-cols-4">
                             {#each exercise.submissions as submission}
                                 <div class="tile flex items-center justify-center">
-                                    <h1 class="tile-marker">{submission.name}</h1>
+                                    <h1 class="tile-marker cursor-pointer" on:click={() => handleSubmissionClick(submission)}>
+                                        {submission.name}
+                                    </h1>
                                 </div>
                             {/each}
                         </div>
@@ -40,3 +54,12 @@
         </div>
     {/each}
 </div>
+
+<Dialog.Root bind:open={openDialog}>
+    <Dialog.Content class="sm:max-w-[425px]">
+        <Dialog.Header>
+            <Dialog.Title>View Submission</Dialog.Title>
+        </Dialog.Header>
+        <Ide bind:codeSolutionText={selectedCode} solutionLanguage={selectedLanguage} />
+    </Dialog.Content>
+</Dialog.Root>
