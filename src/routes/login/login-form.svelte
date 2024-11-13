@@ -25,7 +25,7 @@
 			<!-- Email Field -->
 			<Form.Field {form} name="email">
 				<Form.Control let:attrs>
-					<Form.Label>Email</Form.Label>
+					<Form.Label class="!text-current">Email</Form.Label>
 					<Input {...attrs} bind:value={$formData.email} />
 				</Form.Control>
 				<Form.Description>Please enter your email address.</Form.Description>
@@ -35,7 +35,7 @@
 			<!-- Password Field -->
 			<Form.Field {form} name="password">
 				<Form.Control let:attrs>
-					<Form.Label>Password</Form.Label>
+					<Form.Label class="!text-current">Password</Form.Label>
 					<Input type="password" {...attrs} bind:value={$formData.password} />
 				</Form.Control>
 				<Form.Description>Enter your password to log in.</Form.Description>
