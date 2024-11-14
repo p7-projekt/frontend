@@ -22,7 +22,7 @@
 	// Values for the programming language Select component
 	let lang_select_title: string = 'Choose Language';
 	let lang_select_options: string[] = ['Haskell', 'Python'];
-	let lang_selected_option: string = '';
+	let lang_selected_option: string;
 
 	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
 	let remaining_exercise_list = data.instructor_exercises.map(
@@ -42,7 +42,7 @@
 	}
 
 	function langOptionSelected(event) {
-		lang_selected_option = event.detail.chosen_option;
+		lang_selected_option = event.detail.chosen_options;
 	}
 
 	$: session_description =
@@ -80,7 +80,6 @@
 			<div class="grid grid-rows-[min-content] gap-1.5">
 				<Label class="text-base pl-1" for="expiration-time">Expiration Time</Label>
 				<Select
-					name="expiration-time"
 					select_title={expiration_select_title}
 					select_options={expiration_select_options}
 					post_option_str={expiration_post_option_str}
@@ -94,7 +93,7 @@
 			<div class="grid grid-rows-[min-content] gap-1.5">
 				<Label class="text-base pl-1" for="programming-language">Programming Language</Label>
 				<Select
-					name="programming-language"
+					multiple={true}
 					select_title={lang_select_title}
 					select_options={lang_select_options}
 					on:message={langOptionSelected}

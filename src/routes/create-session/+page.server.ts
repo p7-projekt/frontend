@@ -41,6 +41,7 @@ export const actions: Actions = {
 		const added_exercise_list = form.get('added-exercise-list');
 		const expires_in_hours = form.get('selected-expiration');
 		const programming_language = form.get('selected-language');
+		// console.log(programming_language);
 
 		// TODO look into zod validation
 		if (!session_title) {
