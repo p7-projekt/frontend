@@ -3,6 +3,7 @@
 	import TitleInput from '$components/Input/TitleInput.svelte';
 	import ExerciseList from '$components/Lists/ExerciseList.svelte';
 	import Select from '$components/Select/Select.svelte';
+	import { Label } from '$lib/components/ui/label/index.js';
 	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
 
@@ -11,10 +12,17 @@
 
 	let added_exercise_list: { id: number; content: string }[] = [];
 	let receive_message: string = '';
-	let select_title: string = 'Expires in';
-	let select_options: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-	let selected_option: string = '';
-	let post_option_str = 'hour(s)';
+
+	// Values for the select expiration time Select component
+	let expiration_select_title: string = 'Expires in';
+	let expiration_select_options: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+	let expiration_selected_option: string = '';
+	let expiration_post_option_str = 'hour(s)';
+
+	// Values for the programming language Select component
+	let lang_select_title: string = 'Choose Language';
+	let lang_select_options: string[] = ['Haskell', 'Python'];
+	let lang_selected_option: string = '';
 
 	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
 	let remaining_exercise_list = data.instructor_exercises.map(
@@ -29,8 +37,12 @@
 		added_exercise_list = receive_message.added_exercise_list;
 	}
 
-	function optionSelected(event) {
-		selected_option = event.detail.chosen_option;
+	function expirationOptionSelected(event) {
+		expiration_selected_option = event.detail.chosen_option;
+	}
+
+	function langOptionSelected(event) {
+		lang_selected_option = event.detail.chosen_option;
 	}
 
 	$: session_description =
@@ -64,13 +76,34 @@
 		</div>
 
 		<DescriptionBox description_name="session-description" value={session_description} />
-		<div class="flex items-center gap-4">
-			<Select {select_title} {select_options} {post_option_str} on:message={optionSelected}
-			></Select>
-			{#if form?.expirationMissing}
-				<p style="color:red; margin-bottom:0;">Expiration time required</p>
-			{/if}
-			<input type="hidden" name="selected-expiration" value={selected_option} />
+		<div class="grid grid-cols-2">
+			<div class="grid grid-rows-[min-content] gap-1.5">
+				<Label class="text-base pl-1" for="expiration-time">Expiration Time</Label>
+				<Select
+					name="expiration-time"
+					select_title={expiration_select_title}
+					select_options={expiration_select_options}
+					post_option_str={expiration_post_option_str}
+					on:message={expirationOptionSelected}
+				></Select>
+				{#if form?.expirationMissing}
+					<p style="color:red; margin-bottom:0;">Expiration time required</p>
+				{/if}
+				<input type="hidden" name="selected-expiration" value={expiration_selected_option} />
+			</div>
+			<div class="grid grid-rows-[min-content] gap-1.5">
+				<Label class="text-base pl-1" for="programming-language">Programming Language</Label>
+				<Select
+					name="programming-language"
+					select_title={lang_select_title}
+					select_options={lang_select_options}
+					on:message={langOptionSelected}
+				></Select>
+				{#if form?.languageMissing}
+					<p style="color:red; margin-bottom:0;">Programming language required</p>
+				{/if}
+				<input type="hidden" name="selected-language" value={lang_selected_option} />
+			</div>
 		</div>
 		<ExerciseList {added_exercise_list} {remaining_exercise_list} on:message={handleMessage} />
 		<input type="hidden" name="added-exercise-list" value={JSON.stringify(added_exercise_list)} />
@@ -86,3 +119,10 @@
 		</div>
 	</div>
 </form>
+
+<!-- <style>
+	.custom-grid {
+		display: grid;
+		grid-template-rows: min-content min-content min-content;
+	}
+</style> -->

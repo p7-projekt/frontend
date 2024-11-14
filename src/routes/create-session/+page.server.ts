@@ -40,20 +40,31 @@ export const actions: Actions = {
 		const session_description = form.get('session-description');
 		const added_exercise_list = form.get('added-exercise-list');
 		const expires_in_hours = form.get('selected-expiration');
+		const programming_language = form.get('selected-language');
 
 		// TODO look into zod validation
 		if (!session_title) {
 			return fail(400, {
 				sessionTitleMissing: true,
 				session_description,
-				expirationMissing: false
+				expirationMissing: false,
+				languageMissing: false
 			});
 		}
 		if (!expires_in_hours) {
 			return fail(400, {
 				sessionTitleMissing: false,
 				session_description,
-				expirationMissing: true
+				expirationMissing: true,
+				languageMissing: false
+			});
+		}
+		if (!programming_language) {
+			return fail(400, {
+				sessionTitleMissing: false,
+				session_description,
+				expirationMissing: false,
+				languageMissing: true
 			});
 		}
 
