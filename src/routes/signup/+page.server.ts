@@ -4,13 +4,13 @@ import { fail } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './sign-up-schema';
+import { ok } from 'assert';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export const load: PageServerLoad = async () => {
   return {
     form: await superValidate(zod(formSchema)),
-    signupSuccess: false
   };
 };
 
@@ -24,16 +24,18 @@ export const actions: Actions = {
     const { email, password, confirmPassword, name } = form.data;
 
     // Make request for signup to backend
-    const response = await fetch(backendUrl + '/signup', {
+    const response = await fetch(backendUrl + '/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name, email, password, confirmPassword }),
+      body: JSON.stringify({ email, password, confirmPassword, name }),
     });
 
     if (response.ok) {
-      return { form, signupSuccess: true}
+      return ok ({ 
+        form
+      });
     } else {
       const error = await response.json();
       return setError(form, 'confirmPassword', error?.detail || 'Signup failed!');

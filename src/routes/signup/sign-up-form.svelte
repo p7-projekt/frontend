@@ -6,13 +6,19 @@
     import { zodClient } from 'sveltekit-superforms/adapters';
   
     export let data: SuperValidated<Infer<FormSchema>>;
-    export let signupSuccess: boolean;
+    let signupSuccess = false;
   
     const form = superForm(data, {
-      validators: zodClient(formSchema),
+    validators: zodClient(formSchema),
+    onResult: ({ result }) => {
+      if (result.status === 204) {
+        signupSuccess = true;
+      }
+    },
     });
   
     const { form: formData, enhance, errors } = form;
+    $:signupSuccess = signupSuccess;
 
   </script>
   
