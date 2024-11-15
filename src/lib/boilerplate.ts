@@ -10,11 +10,14 @@ export function setIDEBoilerPlate(
 	},
 	language: string = 'haskell'
 ) {
-	if (language === 'haskell') {
-		return createHaskellBoilerplate(testTemplate);
-	}
 
-	return 'hello';
+	switch (language.toLowerCase()) {
+
+		case 'haskell':
+			return createHaskellBoilerplate(testTemplate);
+		default:
+			return 'hello';
+	} 
 }
 
 function createHaskellBoilerplate(testTemplate: {

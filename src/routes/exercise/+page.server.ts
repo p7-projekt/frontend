@@ -11,8 +11,7 @@ const apiVersion = import.meta.env.VITE_API_VERSION;
 
 export const load: PageServerLoad = async ({ cookies, url }) => {
 	const access_token: string = cookies.get('access_token') || '';
-	const exerciseId = url.searchParams.get('exerciseid');
-
+	const exerciseId = url.searchParams.get('exerciseid'); 
 	const response = await fetch(`${backendUrl}/${apiVersion}/exercises/${exerciseId}`, {
 		method: 'GET',
 		headers: {
@@ -56,7 +55,7 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 
 	return {
 		form,
-		exerciseData: jsonResponse
+		exerciseData: jsonResponse, testTemplate
 	};
 };
 

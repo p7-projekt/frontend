@@ -10,10 +10,20 @@
 	import { formSchema, type FormSchema } from './schema';
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 	import LanguageSelection from '$components/IDE/LanguageSelection.svelte';
+	import { debugExercise } from '$lib/debug';
+	import { setIDEBoilerPlate } from '$lib/boilerplate';
 
 	export let data: PageData;
 	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form;
 	export let exerciseData = data.exerciseData;
+	let selectedLanguage: string = '';
+
+	$: {
+        if (selectedLanguage) {
+            console.log(`Selected language changed to: ${selectedLanguage}`);
+            $formData.codeText = setIDEBoilerPlate(data.testTemplate, selectedLanguage);
+        }  
+    }
 
 	const form = superForm(superFormData, {
 		validators: zodClient(formSchema),
@@ -54,14 +64,14 @@
 			<form method="POST" use:enhance class="max-w max-h">
 				<div class="flex flex-col h-full items-center justify-center p-6 space-y-4 content">
 					<div class="ide-container w-full h-full">
-						<Ide bind:codeSolutionText={$formData.codeText} />
+						<Ide bind:solutionLanguage={selectedLanguage}  bind:codeSolutionText={$formData.codeText} />
 					</div>
 					{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
 					{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
 
 					<div class="flex justify-between w-full items-center mx-8">
-						<div class="mx-8">
-							<LanguageSelection />
+						<div class="mx-8"  >
+							<LanguageSelection bind:selected={selectedLanguage}/>
 						</div>
 						<div class="mx-8">
 							{#if $submitting}
