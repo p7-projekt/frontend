@@ -60,9 +60,6 @@ export const actions: Actions = {
 			return fail(400, { errors: validation.error.errors, session_description });
 		}
 
-		// Proceed with the validated data
-		console.log('Validation successful:', validation.data);
-
 		const response = await handleAuthenticatedRequest(
 			(token) => fetchCreateSession(backendUrl, api_version, token, new_session),
 			access_token,
