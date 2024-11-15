@@ -3,24 +3,25 @@ import type { PageServerLoad, Actions } from './$types.js';
 import { fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { formSchema } from './sign-up-schema'; // Your signup schema (same as login schema, but may include different fields)
+import { formSchema } from './sign-up-schema';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export const load: PageServerLoad = async () => {
   return {
-    form: await superValidate(zod(formSchema)) // Validate the form on server load
+    form: await superValidate(zod(formSchema)),
+    signupSuccess: false
   };
 };
 
 export const actions: Actions = {
   signUp: async (event) => {
-    const form = await superValidate(event, zod(formSchema)); // Validate form data on submission
+    const form = await superValidate(event, zod(formSchema));
     if (!form.valid) {
       return fail(400, { form });
     }
 
-    const { email, password } = form.data;
+    const { email, password, confirmPassword } = form.data;
 
     // Make request for signup to backend
     const response = await fetch(backendUrl + '/signup', {
@@ -28,14 +29,14 @@ export const actions: Actions = {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, confirmPassword }),
     });
 
     if (response.ok) {
-      throw redirect(303, '/');
+      return { form, signupSuccess: true}
     } else {
       const error = await response.json();
-      return setError(form, 'email', error?.detail || 'Signup failed');
+      return setError(form, 'confirmPassword', error?.detail || 'Signup failed!');
     }
   },
 };

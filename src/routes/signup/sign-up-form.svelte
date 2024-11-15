@@ -6,12 +6,14 @@
     import { zodClient } from 'sveltekit-superforms/adapters';
   
     export let data: SuperValidated<Infer<FormSchema>>;
+    export let signupSuccess: boolean;
   
     const form = superForm(data, {
       validators: zodClient(formSchema),
     });
   
     const { form: formData, enhance, errors } = form;
+
   </script>
   
   <div class="flex min-h-screen items-start pt-16 justify-center bg-gray-100">
@@ -19,7 +21,7 @@
     <div class="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
       <!-- Application Title -->
       <h1 class="text-2xl font-bold text-center mb-6">Sign up for SyntaxShift!</h1>
-      
+      {#if !signupSuccess}
       <!-- Form -->
       <form method="POST" action="?/signUp" use:enhance>
         <!-- Email Field -->
@@ -54,5 +56,12 @@
         <!-- Submit Button -->
         <Form.Button class="w-full mt-4">Sign Up</Form.Button>
       </form>
+      {:else}
+      <!-- Signup Success Message -->
+      <div class="text-center">
+        <h1 class="text-2xl font-bold text-green-600">Sign-up Successful!</h1>
+        <p class="mt-4">Thank you for signing up! You can now <a href="/login" class="text-blue-500 underline">log in</a> to your account.</p>
+      </div>
+      {/if}
     </div>
   </div>

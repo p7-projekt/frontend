@@ -4,4 +4,4 @@
 	export let data: PageData;
   </script>
   
-  <SignupForm data={data.form} />
+  <SignupForm data={data.form} signupSuccess={data.signupSuccess}/>
