@@ -21,6 +21,7 @@
 	$: {
         if (selectedLanguage) {
             console.log(`Selected language changed to: ${selectedLanguage}`);
+			$formData.selectedLanguage = selectedLanguage;
             $formData.codeText = setIDEBoilerPlate(data.testTemplate, selectedLanguage);
         }  
     }
@@ -64,7 +65,7 @@
 			<form method="POST" use:enhance class="max-w max-h">
 				<div class="flex flex-col h-full items-center justify-center p-6 space-y-4 content">
 					<div class="ide-container w-full h-full">
-						<Ide bind:solutionLanguage={selectedLanguage}  bind:codeSolutionText={$formData.codeText} />
+						<Ide editable={selectedLanguage!=''} bind:solutionLanguage={selectedLanguage}  bind:codeSolutionText={$formData.codeText} />
 					</div>
 					{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
 					{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
@@ -83,8 +84,9 @@
 								<Form.Button>Confirm</Form.Button>
 							{/if}
 						</div>
-						
-					</div>
+					</div> 
+					{#if selectedLanguage==''}<span class="invalid">Select a language to begin coding!</span>{/if}
+					{#if $errors.selectedLanguage}<span class="invalid">{$errors.selectedLanguage}</span>{/if}
 			</form>
 		</Resizable.Pane>
 	</Resizable.PaneGroup>

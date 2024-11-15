@@ -51,7 +51,6 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 	};
 
 	const form = await superValidate(zod(formSchema));
-	form.data.codeText = setIDEBoilerPlate(testTemplate);
 
 	return {
 		form,
