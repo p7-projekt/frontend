@@ -21,7 +21,7 @@ export const actions: Actions = {
       return fail(400, { form });
     }
 
-    const { email, password, confirmPassword } = form.data;
+    const { email, password, confirmPassword, name } = form.data;
 
     // Make request for signup to backend
     const response = await fetch(backendUrl + '/signup', {
@@ -29,7 +29,7 @@ export const actions: Actions = {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password, confirmPassword }),
+      body: JSON.stringify({ name, email, password, confirmPassword }),
     });
 
     if (response.ok) {

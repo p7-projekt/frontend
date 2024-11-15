@@ -25,6 +25,16 @@
       <!-- Form -->
       <form method="POST" action="?/signUp" use:enhance>
         <!-- Email Field -->
+        <Form.Field {form} name="name">
+          <Form.Control let:attrs>
+            <Form.Label class="!text-current">Name</Form.Label>
+            <Input placeholder="Enter your name" {...attrs} bind:value={$formData.name} />
+          </Form.Control>
+          <Form.FieldErrors />
+          <br />
+        </Form.Field>
+
+        <!-- Email Field -->
         <Form.Field {form} name="email">
           <Form.Control let:attrs>
             <Form.Label class="!text-current">Email</Form.Label>
@@ -44,7 +54,7 @@
           <br />
         </Form.Field>
   
-        <!-- Confirm Password Field (Optional, depending on signup flow) -->
+        <!-- Confirm Password Field -->
         <Form.Field {form} name="confirmPassword">
           <Form.Control let:attrs>
             <Form.Label class="!text-current">Confirm Password</Form.Label>

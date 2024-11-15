@@ -12,7 +12,7 @@
 	<form class="flex flex-col items-center text-center max-w-md w-full p-8 bg-white shadow-md rounded-lg" method="POST" action="?/join" use:enhance>
 		<p class="text-xl font-semibold text-gray-700 mb-4">Enter your code below to join!</p>
 		<Input
-			class="mb-8 w-full"
+			class="mb-4 w-full"
 			name="sessionCode"
 			placeholder="Enter code"
 			bind:value={code}
@@ -26,6 +26,6 @@
 		{/if}
 		
 		<!-- Submit Button -->
-		<Button class="w-full mt-2 max-w-xs py-3" type="submit" size="lg">Join</Button>
+		<Button class="w-full mt-2 py-3" type="submit" size="lg">Join</Button>
 	</form>
 </div>
