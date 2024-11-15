@@ -10,7 +10,7 @@ vi.mock('sveltekit-superforms', () => ({
         data: {
             title: 'Valid Title',
             description: 'Valid Description',
-            codeText: 'Valid Code',
+            codeText: 'solution :: String -> String\nsolution input0 = output0',
             testCases: [
                 {
                     parameters: {
@@ -19,7 +19,7 @@ vi.mock('sveltekit-superforms', () => ({
                     },
                     publicVisible: true
                 }
-            ]
+            ], 
         }
     }))
 }));
@@ -39,10 +39,7 @@ vi.mock('$lib/requestHandler', () => ({
 }));
 
 describe('Page Server Load function', () => {
-    const mockDepends = vi.fn();
-
-    
-
+    const mockDepends = vi.fn(); 
     it('Loads exercise data correctly if url parameter is provided', async () => {
         // Arrange
         const mockCookies = {
@@ -122,7 +119,23 @@ describe('Page Server Load function', () => {
                         outputParams: ['output1'],
                         publicVisible: true,
                     },
-                ],
+                ], 
+            },
+            testTemplate: {
+                parameters:  {
+                    input:  [
+                        {
+                        "type": "string",
+                        "value": "input1",
+                        },
+                    ],
+                    output: [
+                    {
+                        "type": "string",
+                        "value": "output1",
+                        },
+                    ],
+                },
             },
         });
     });
