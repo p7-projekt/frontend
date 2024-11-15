@@ -6,6 +6,7 @@
 	import { Label } from '$lib/components/ui/label/index.js';
 	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
+	import { displayValidationErrors } from './create_session';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -23,6 +24,8 @@
 	let lang_select_title: string = 'Choose Language';
 	let lang_select_options: string[] = ['Haskell', 'Python'];
 	let lang_selected_options: string[];
+
+	$: displayValidationErrors(form);
 
 	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
 	let remaining_exercise_list = data.instructor_exercises.map(

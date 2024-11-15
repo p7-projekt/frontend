@@ -3,8 +3,8 @@ import { z } from 'zod';
 export const formSchema = z.object({
 	title: z
 		.string()
-		.min(1, 'Title must consist of at least one character')
-		.max(35, 'Title must be no longer than 35 characters'),
+		.min(1, 'The title must consist of at least one character')
+		.max(35, 'The title must be no longer than 35 characters'),
 	description: z.string().optional(), // Assuming description is optional
 	added_exercise_ids: z.number().array().nonempty('You must select at least one exercise!'),
 	expires_in_hours: z.string().min(1, 'You must pick an expiration time!'),
