@@ -11,8 +11,7 @@ const apiVersion = import.meta.env.VITE_API_VERSION_V1;
 
 export const load: PageServerLoad = async ({ cookies, url }) => {
 	const access_token: string = cookies.get('access_token') || '';
-	const exerciseId = url.searchParams.get('exerciseid');
-
+	const exerciseId = url.searchParams.get('exerciseid'); 
 	const response = await fetch(`${backendUrl}/${apiVersion}/exercises/${exerciseId}`, {
 		method: 'GET',
 		headers: {
@@ -51,11 +50,10 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 	};
 
 	const form = await superValidate(zod(formSchema));
-	form.data.codeText = setIDEBoilerPlate(testTemplate);
 
 	return {
 		form,
-		exerciseData: jsonResponse
+		exerciseData: jsonResponse, testTemplate
 	};
 };
 
