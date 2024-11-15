@@ -1,4 +1,4 @@
-import { actions } from '../../../../src/routes/exercise/+page.server';
+import { actions } from '$src/routes/exercise/+page.server';
 import { describe, it, expect, vi } from 'vitest';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { setError } from 'sveltekit-superforms';
@@ -32,19 +32,13 @@ vi.mock('$lib/requestHandler', () => ({
 
 describe('Page Server Actions function', () => {
     it('Return 400 if form is invalid', async () => {
-        const formData = new FormData();
-        formData.set('title', '');
-        formData.set('description', 'Test description');
-
+ 
         const mockCookies = {
             get: vi.fn(() => 'valid_token'),
             set: vi.fn(),
             delete: vi.fn()
         };
-
-        const request = {
-            formData: async () => formData
-        };
+ 
         const mockUrl = {
             searchParams: {
                 get: vi.fn((param) => {
@@ -62,7 +56,7 @@ describe('Page Server Actions function', () => {
 
         handleAuthenticatedRequest.mockResolvedValueOnce(mockResponse);
 
-        const result = await actions.default({ request, url: mockUrl, cookies: mockCookies });
+        const result = await actions.default({ url: mockUrl, cookies: mockCookies });
 
         expect(result.status).toBe(400);
     });

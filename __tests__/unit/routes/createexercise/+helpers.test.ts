@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { convertFormData } from '../../../../src/routes/createexercise/helpers';
+import { convertFormData } from '$src/routes/createexercise/helpers';
 
 describe('convertFormData', () => {
     it('should convert form data to API format correctly', () => {

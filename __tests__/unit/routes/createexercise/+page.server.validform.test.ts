@@ -1,4 +1,4 @@
-import { load, actions } from '../../../../src/routes/createexercise/+page.server';
+import { load, actions } from '$src/routes/createexercise/+page.server';
 import { describe, it, expect, vi } from 'vitest';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { redirect } from '@sveltejs/kit';
@@ -39,34 +39,7 @@ vi.mock('$lib/requestHandler', () => ({
 
 describe('Page Server Actions function', () => {
     it('redirects on successful exercise creation', async () => {
-        // Arrange
-        vi.doMock('sveltekit-superforms', () => ({
-            setError: vi.fn(),
-            superValidate: vi.fn(() => ({
-                valid: true,
-                data: {
-                    title: 'Exercise 1',
-                    description: 'Description 1',
-                    codeText: 'Solution 1',
-                    testCases: [
-                        {
-                            parameters: {
-                                input: [{ type: 'string', value: 'input1' }],
-                                output: [{ type: 'string', value: 'output1' }]
-                            },
-                            publicVisible: true
-                        }
-                    ]
-                }
-            }))
-        }));
-
-        const formData = new FormData();
-        formData.set('title', 'Test Exercise');
-        formData.set('description', 'Test description');
-        formData.set('codeText', 'Test code');
-        formData.set('testCases', JSON.stringify([{ inputParams: ['input1'], outputParams: ['output1'], publicVisible: true }]));
-
+      
         const mockCookies = {
             get: vi.fn((name) => (name === 'access_token' ? 'valid_token' : 'refresh_token')),
             set: vi.fn(),
@@ -79,8 +52,7 @@ describe('Page Server Actions function', () => {
         };
 
         handleAuthenticatedRequest.mockResolvedValueOnce(mockResponse);
-
-        const request = { formData: async () => formData };
+ 
 
         const mockUrl = {
             searchParams: {
@@ -92,8 +64,7 @@ describe('Page Server Actions function', () => {
             }
         };
 
-        const event = {
-            request,
+        const event = { 
             cookies: mockCookies,
             url: mockUrl
         };

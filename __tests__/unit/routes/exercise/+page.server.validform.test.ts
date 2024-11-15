@@ -1,4 +1,4 @@
-import { load, actions } from '../../../../src/routes/exercise/+page.server';
+import { load, actions } from '$src//routes/exercise/+page.server';
 import { describe, it, expect, vi } from 'vitest';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { redirect } from '@sveltejs/kit';
@@ -141,12 +141,7 @@ describe('Page Server Actions function', () => {
             get: vi.fn((name) => (name === 'anon_token' ? 'valid_token' : 'refresh_token')),
             set: vi.fn(),
             delete: vi.fn()
-        };
-
-        const mockResponse = {
-            ok: true,
-            text: vi.fn().mockResolvedValueOnce(JSON.stringify({ isFailed: false }))
-        };
+        }; 
 
         global.fetch = vi.fn(() =>
             Promise.resolve({
