@@ -8,3 +8,14 @@ export function getExerciseIds(exercise_list: FormDataEntryValue | null) {
 		return [];
 	}
 }
+
+export function getProgrammingLanguages(lang_list: FormDataEntryValue | null) {
+	try {
+		const added_languages = lang_list ? JSON.parse(lang_list as string) : [];
+		// Ensure `added_languages` is an array and map over it
+		return Array.isArray(added_languages) ? added_languages : [];
+	} catch (error) {
+		console.error('Error processing  added programming languages:', error);
+		return [];
+	}
+}

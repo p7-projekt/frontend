@@ -2,7 +2,8 @@ import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { fetchExerciseData, fetchCreateSession } from '$lib/fetchRequests';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
-import { getExerciseIds } from './create_session';
+import { getExerciseIds, getProgrammingLanguages } from './create_session';
+import { formSchema } from './schema';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const api_version = import.meta.env.VITE_API_VERSION;
@@ -38,43 +39,63 @@ export const actions: Actions = {
 		const form = await request.formData();
 		const session_title = form.get('session-title');
 		const session_description = form.get('session-description');
-		const added_exercise_list = form.get('added-exercise-list');
+		const added_exercise_ids = getExerciseIds(form.get('added-exercise-list'));
 		const expires_in_hours = form.get('selected-expiration');
-		const programming_language = form.get('selected-language');
-		// console.log(programming_language);
+		const programming_language = getProgrammingLanguages(form.get('selected-language'));
 
-		// TODO look into zod validation
-		if (!session_title) {
-			return fail(400, {
-				sessionTitleMissing: true,
-				session_description,
-				expirationMissing: false,
-				languageMissing: false
-			});
-		}
-		if (!expires_in_hours) {
-			return fail(400, {
-				sessionTitleMissing: false,
-				session_description,
-				expirationMissing: true,
-				languageMissing: false
-			});
-		}
-		if (!programming_language) {
-			return fail(400, {
-				sessionTitleMissing: false,
-				session_description,
-				expirationMissing: false,
-				languageMissing: true
-			});
-		}
-
+		// Create the data object to validate
 		const new_session = {
-			title: session_title.toString(),
-			description: session_description?.toString(),
-			expiresInHours: parseInt(expires_in_hours.toString()),
-			exerciseIds: getExerciseIds(added_exercise_list)
+			title: session_title,
+			description: session_description,
+			added_exercise_ids,
+			expires_in_hours: expires_in_hours,
+			programming_language: programming_language
 		};
+
+		// Validate against the schema
+		const validation = formSchema.safeParse(new_session);
+
+		if (!validation.success) {
+			console.log(validation.error);
+			// Return the first validation error message if validation fails
+			return fail(400, { error: validation.error.errors[0].message });
+		}
+
+		// Proceed with the validated data
+		console.log('Validation successful:', validation.data);
+
+		// // TODO look into zod validation
+		// if (!session_title) {
+		// 	return fail(400, {
+		// 		sessionTitleMissing: true,
+		// 		session_description,
+		// 		expirationMissing: false,
+		// 		languageMissing: false
+		// 	});
+		// }
+		// if (!expires_in_hours) {
+		// 	return fail(400, {
+		// 		sessionTitleMissing: false,
+		// 		session_description,
+		// 		expirationMissing: true,
+		// 		languageMissing: false
+		// 	});
+		// }
+		// if (!programming_language) {
+		// 	return fail(400, {
+		// 		sessionTitleMissing: false,
+		// 		session_description,
+		// 		expirationMissing: false,
+		// 		languageMissing: true
+		// 	});
+		// }
+
+		// const new_session = {
+		// 	title: session_title.toString(),
+		// 	description: session_description?.toString(),
+		// 	expiresInHours: parseInt(expires_in_hours.toString()),
+		// 	exerciseIds: added_exercise_ids
+		// };
 
 		const response = await handleAuthenticatedRequest(
 			(token) => fetchCreateSession(backendUrl, api_version, token, new_session),
@@ -82,7 +103,7 @@ export const actions: Actions = {
 			refresh_token,
 			cookies
 		);
-
+		console.log(response);
 		if (response.ok) {
 			throw redirect(303, '/');
 		}

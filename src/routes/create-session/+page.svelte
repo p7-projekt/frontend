@@ -22,7 +22,7 @@
 	// Values for the programming language Select component
 	let lang_select_title: string = 'Choose Language';
 	let lang_select_options: string[] = ['Haskell', 'Python'];
-	let lang_selected_option: string;
+	let lang_selected_options: string[];
 
 	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
 	let remaining_exercise_list = data.instructor_exercises.map(
@@ -42,7 +42,7 @@
 	}
 
 	function langOptionSelected(event) {
-		lang_selected_option = event.detail.chosen_options;
+		lang_selected_options = event.detail.chosen_options;
 	}
 
 	$: session_description =
@@ -101,7 +101,11 @@
 				{#if form?.languageMissing}
 					<p style="color:red; margin-bottom:0;">Programming language required</p>
 				{/if}
-				<input type="hidden" name="selected-language" value={lang_selected_option} />
+				<input
+					type="hidden"
+					name="selected-language"
+					value={JSON.stringify(lang_selected_options)}
+				/>
 			</div>
 		</div>
 		<ExerciseList {added_exercise_list} {remaining_exercise_list} on:message={handleMessage} />
