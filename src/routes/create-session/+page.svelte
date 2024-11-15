@@ -72,8 +72,8 @@
 
 		<div class="w-1/4 col-span-full">
 			<TitleInput input_name="session-title" />
-			{#if error.errorInTitle}
-				<p style="color:red; margin-bottom:0;">Session title is required</p>
+			{#if error.errorInTitle.message}
+				<p style="color:red; margin-bottom:0;">{error.errorInTitle.message}</p>
 			{/if}
 		</div>
 
@@ -87,8 +87,8 @@
 					post_option_str={expiration_post_option_str}
 					on:message={expirationOptionSelected}
 				></Select>
-				{#if error.errorInExpiration}
-					<p style="color:red; margin-bottom:0;">Expiration time required</p>
+				{#if error.errorInExpiration.message}
+					<p style="color:red; margin-bottom:0;">{error.errorInExpiration.message}</p>
 				{/if}
 				<input type="hidden" name="selected-expiration" value={expiration_selected_option} />
 			</div>
@@ -100,8 +100,8 @@
 					select_options={lang_select_options}
 					on:message={langOptionSelected}
 				></Select>
-				{#if error.errorInLanguages}
-					<p style="color:red; margin-bottom:0;">Programming language required</p>
+				{#if error.errorInLanguages.message}
+					<p style="color:red; margin-bottom:0;">{error.errorInLanguages.message}</p>
 				{/if}
 				<input
 					type="hidden"
@@ -111,8 +111,8 @@
 			</div>
 		</div>
 		<div class="col-span-full">
-			{#if error.errorInAddedExercises}
-				<p style="color:red; margin-bottom:0;">You must add an exercise to the session</p>
+			{#if error.errorInAddedExercises.message}
+				<p style="color:red; margin-bottom:0;">{error.errorInAddedExercises.message}</p>
 			{/if}
 			<ExerciseList {added_exercise_list} {remaining_exercise_list} on:message={handleMessage} />
 			<input type="hidden" name="added-exercise-list" value={JSON.stringify(added_exercise_list)} />

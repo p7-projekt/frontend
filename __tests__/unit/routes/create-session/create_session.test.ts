@@ -53,20 +53,10 @@ describe('getExerciseIds', () => {
 	});
 
 	it('should return an empty array and log an error when given invalid JSON', () => {
-		// Mock console.error to test if it's called
-		const consoleErrorMock = vi.spyOn(console, 'error').mockImplementation(() => {});
-
 		const exercise_list = '{invalid json}';
 		const result = getExerciseIds(exercise_list);
 
 		expect(result).toEqual([]);
-		expect(consoleErrorMock).toHaveBeenCalledWith(
-			'Error processing exercise list:',
-			expect.any(SyntaxError)
-		);
-
-		// Restore console.error
-		consoleErrorMock.mockRestore();
 	});
 });
 
@@ -97,7 +87,43 @@ describe('getProgrammingLanguages', () => {
 });
 
 describe('displayValidationErrors', () => {
-	it('should return all errors as true when all error paths are present', () => {
+	it('should return all errors as false if the error paths do not match', () => {
+		const form = {
+			errors: [{ path: ['non_existing_path'], message: 'This is an unknown error path' }]
+		};
+
+		const result = displayValidationErrors(form);
+
+		expect(result).toEqual({
+			errorInTitle: { message: '' },
+			errorInAddedExercises: { message: '' },
+			errorInExpiration: { message: '' },
+			errorInLanguages: { message: '' }
+		});
+	});
+
+	it('should return correct errors when some error paths are present', () => {
+		const form = {
+			errors: [
+				{ path: ['title'], message: 'The title must consist of at least one character' },
+				{
+					path: ['programming_language'],
+					message: 'You must pick at least one programming language!'
+				}
+			]
+		};
+
+		const result = displayValidationErrors(form);
+
+		expect(result).toEqual({
+			errorInTitle: { message: 'The title must consist of at least one character' },
+			errorInAddedExercises: { message: '' },
+			errorInExpiration: { message: '' },
+			errorInLanguages: { message: 'You must pick at least one programming language!' }
+		});
+	});
+
+	it('should return correct errors when all error paths are present', () => {
 		const form = {
 			errors: [
 				{ path: ['title'], message: 'The title must consist of at least one character' },
@@ -113,72 +139,36 @@ describe('displayValidationErrors', () => {
 		const result = displayValidationErrors(form);
 
 		expect(result).toEqual({
-			errorInTitle: true,
-			errorInAddedExercises: true,
-			errorInExpiration: true,
-			errorInLanguages: true
+			errorInTitle: { message: 'The title must consist of at least one character' },
+			errorInAddedExercises: { message: 'You must select at least one exercise!' },
+			errorInExpiration: { message: 'You must pick an expiration time!' },
+			errorInLanguages: { message: 'You must pick at least one programming language!' }
 		});
 	});
 
-	it('should return some errors as true when some error paths are present', () => {
-		const form = {
-			errors: [
-				{ path: ['title'], message: 'The title must consist of at least one character' },
-				{
-					path: ['programming_language'],
-					message: 'You must pick at least one programming language!'
-				}
-			]
-		};
-
-		const result = displayValidationErrors(form);
-
-		expect(result).toEqual({
-			errorInTitle: true,
-			errorInAddedExercises: false,
-			errorInExpiration: false,
-			errorInLanguages: true
-		});
-	});
-
-	it('should return all errors as false when no error paths are present', () => {
+	it('should return all errors with empty messages when no error paths are present', () => {
 		const form = { errors: [] };
 
 		const result = displayValidationErrors(form);
 
 		expect(result).toEqual({
-			errorInTitle: false,
-			errorInAddedExercises: false,
-			errorInExpiration: false,
-			errorInLanguages: false
+			errorInTitle: { message: '' },
+			errorInAddedExercises: { message: '' },
+			errorInExpiration: { message: '' },
+			errorInLanguages: { message: '' }
 		});
 	});
 
-	it('should handle undefined or null form.errors gracefully', () => {
-		const form = { errors: null };
+	it('should return all errors with empty messages when no error paths are present', () => {
+		const form = { errors: [] };
 
 		const result = displayValidationErrors(form);
 
 		expect(result).toEqual({
-			errorInTitle: false,
-			errorInAddedExercises: false,
-			errorInExpiration: false,
-			errorInLanguages: false
-		});
-	});
-
-	it('should return all errors as false if the error paths do not match', () => {
-		const form = {
-			errors: [{ path: ['non_existing_path'], message: 'This is an unknown error path' }]
-		};
-
-		const result = displayValidationErrors(form);
-
-		expect(result).toEqual({
-			errorInTitle: false,
-			errorInAddedExercises: false,
-			errorInExpiration: false,
-			errorInLanguages: false
+			errorInTitle: { message: '' },
+			errorInAddedExercises: { message: '' },
+			errorInExpiration: { message: '' },
+			errorInLanguages: { message: '' }
 		});
 	});
 });

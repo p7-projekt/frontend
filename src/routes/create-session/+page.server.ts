@@ -56,9 +56,7 @@ export const actions: Actions = {
 		const validation = formSchema.safeParse(new_session);
 
 		if (!validation.success) {
-			console.log(validation.error.errors);
 			// Return the validation errors if validation fails
-			console.log(validation.error.errors);
 			return fail(400, { errors: validation.error.errors, session_description });
 		}
 

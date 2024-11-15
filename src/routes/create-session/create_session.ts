@@ -1,4 +1,5 @@
 import type { ActionData } from './$types';
+import { debugCreateSession } from '$lib/debug';
 
 export function getExerciseIds(exercise_list: FormDataEntryValue | null) {
 	try {
@@ -6,7 +7,7 @@ export function getExerciseIds(exercise_list: FormDataEntryValue | null) {
 		// Ensure `added_exercises` is an array and map over it
 		return Array.isArray(added_exercises) ? added_exercises.map(({ id }) => id) : [];
 	} catch (error) {
-		console.error('Error processing exercise list:', error);
+		debugCreateSession('Error processing exercise list', error);
 		return [];
 	}
 }
@@ -15,36 +16,38 @@ export function getProgrammingLanguages(lang_list: FormDataEntryValue | null) {
 	try {
 		return lang_list ? JSON.parse(lang_list as string) : [];
 	} catch (error) {
-		console.error('Error parsing  added programming languages:', error);
+		debugCreateSession('Error parsing  added programming languages:', error);
 		return [];
 	}
 }
 
 export function displayValidationErrors(form: ActionData) {
 	const errors = {
-		errorInTitle: false,
-		errorInAddedExercises: false,
-		errorInExpiration: false,
-		errorInLanguages: false
+		errorInTitle: { message: '' },
+		errorInAddedExercises: { message: '' },
+		errorInExpiration: { message: '' },
+		errorInLanguages: { message: '' }
 	};
+
 	if (form?.errors) {
-		form?.errors.forEach((error) => {
+		form.errors.forEach((error) => {
 			switch (error.path[0]) {
 				case 'title':
-					errors.errorInTitle = true;
+					errors.errorInTitle = { message: error.message };
 					break;
 				case 'added_exercise_ids':
-					errors.errorInAddedExercises = true;
+					errors.errorInAddedExercises = { message: error.message };
 					break;
 				case 'expires_in_hours':
-					errors.errorInExpiration = true;
+					errors.errorInExpiration = { message: error.message };
 					break;
 				case 'programming_language':
-					errors.errorInLanguages = true;
+					errors.errorInLanguages = { message: error.message };
 					break;
 				default:
 			}
 		});
 	}
+
 	return errors;
 }
