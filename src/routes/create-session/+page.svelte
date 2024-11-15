@@ -12,7 +12,7 @@
 	export let form: ActionData;
 
 	let added_exercise_list: { id: number; content: string }[] = [];
-	let receive_message: string = '';
+	let receive_message;
 
 	// Values for the select expiration time Select component
 	let expiration_select_title: string = 'Expires in';
@@ -48,8 +48,7 @@
 		lang_selected_options = event.detail.chosen_options;
 	}
 
-	$: session_description =
-		typeof form?.session_description === 'string' ? form.session_description : '';
+	$: error = displayValidationErrors(form);
 </script>
 
 <form method="post" use:enhance>
@@ -73,12 +72,12 @@
 
 		<div class="w-1/4 col-span-full">
 			<TitleInput input_name="session-title" />
-			{#if form?.sessionTitleMissing}
+			{#if error.errorInTitle}
 				<p style="color:red; margin-bottom:0;">Session title is required</p>
 			{/if}
 		</div>
 
-		<DescriptionBox description_name="session-description" value={session_description} />
+		<DescriptionBox description_name="session-description" />
 		<div class="grid grid-cols-2">
 			<div class="grid grid-rows-[min-content] gap-1.5">
 				<Label class="text-base pl-1" for="expiration-time">Expiration Time</Label>
@@ -88,7 +87,7 @@
 					post_option_str={expiration_post_option_str}
 					on:message={expirationOptionSelected}
 				></Select>
-				{#if form?.expirationMissing}
+				{#if error.errorInExpiration}
 					<p style="color:red; margin-bottom:0;">Expiration time required</p>
 				{/if}
 				<input type="hidden" name="selected-expiration" value={expiration_selected_option} />
@@ -101,7 +100,7 @@
 					select_options={lang_select_options}
 					on:message={langOptionSelected}
 				></Select>
-				{#if form?.languageMissing}
+				{#if error.errorInLanguages}
 					<p style="color:red; margin-bottom:0;">Programming language required</p>
 				{/if}
 				<input
@@ -111,8 +110,13 @@
 				/>
 			</div>
 		</div>
-		<ExerciseList {added_exercise_list} {remaining_exercise_list} on:message={handleMessage} />
-		<input type="hidden" name="added-exercise-list" value={JSON.stringify(added_exercise_list)} />
+		<div class="col-span-full">
+			{#if error}
+				<p style="color:red; margin-bottom:0;">You must add an exercise to the session</p>
+			{/if}
+			<ExerciseList {added_exercise_list} {remaining_exercise_list} on:message={handleMessage} />
+			<input type="hidden" name="added-exercise-list" value={JSON.stringify(added_exercise_list)} />
+		</div>
 
 		<div></div>
 		<div class="flex justify-end">
@@ -125,10 +129,3 @@
 		</div>
 	</div>
 </form>
-
-<!-- <style>
-	.custom-grid {
-		display: grid;
-		grid-template-rows: min-content min-content min-content;
-	}
-</style> -->

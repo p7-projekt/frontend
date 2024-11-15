@@ -59,44 +59,11 @@ export const actions: Actions = {
 			console.log(validation.error.errors);
 			// Return the validation errors if validation fails
 			console.log(validation.error.errors);
-			return fail(400, { errors: validation.error.errors });
+			return fail(400, { errors: validation.error.errors, session_description });
 		}
 
 		// Proceed with the validated data
 		console.log('Validation successful:', validation.data);
-
-		// // TODO look into zod validation
-		// if (!session_title) {
-		// 	return fail(400, {
-		// 		sessionTitleMissing: true,
-		// 		session_description,
-		// 		expirationMissing: false,
-		// 		languageMissing: false
-		// 	});
-		// }
-		// if (!expires_in_hours) {
-		// 	return fail(400, {
-		// 		sessionTitleMissing: false,
-		// 		session_description,
-		// 		expirationMissing: true,
-		// 		languageMissing: false
-		// 	});
-		// }
-		// if (!programming_language) {
-		// 	return fail(400, {
-		// 		sessionTitleMissing: false,
-		// 		session_description,
-		// 		expirationMissing: false,
-		// 		languageMissing: true
-		// 	});
-		// }
-
-		// const new_session = {
-		// 	title: session_title.toString(),
-		// 	description: session_description?.toString(),
-		// 	expiresInHours: parseInt(expires_in_hours.toString()),
-		// 	exerciseIds: added_exercise_ids
-		// };
 
 		const response = await handleAuthenticatedRequest(
 			(token) => fetchCreateSession(backendUrl, api_version, token, new_session),
