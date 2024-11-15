@@ -8,7 +8,7 @@ import {convertFormData} from './helpers';
 import { debugCreateExercise } from '$lib/debug.js';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
-const apiVersion = import.meta.env.VITE_API_VERSION;
+const apiVersion = import.meta.env.VITE_API_VERSION_V1;
 
 export const load: PageServerLoad = async ({ url, cookies }) => {
 	const access_token = cookies.get('access_token') || '';

@@ -7,7 +7,7 @@ import { setIDEBoilerPlate } from '$lib/boilerplate';
 import { debugExercise } from '$lib/debug';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
-const apiVersion = import.meta.env.VITE_API_VERSION;
+const apiVersion = import.meta.env.VITE_API_VERSION_V1;
 
 export const load: PageServerLoad = async ({ cookies, url }) => {
 	const access_token: string = cookies.get('access_token') || '';

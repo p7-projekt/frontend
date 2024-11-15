@@ -5,7 +5,7 @@ import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { getExerciseIds } from './create_session';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
-const api_version = import.meta.env.VITE_API_VERSION;
+const api_version = import.meta.env.VITE_API_VERSION_V1;
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const access_token = cookies.get('access_token') || '';
