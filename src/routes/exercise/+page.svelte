@@ -9,6 +9,7 @@
 	import { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
 	import { formSchema, type FormSchema } from './schema';
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
+	import LanguageSelection from '$components/IDE/LanguageSelection.svelte';
 
 	export let data: PageData;
 	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form;
@@ -58,17 +59,22 @@
 					{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
 					{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
 
-					<div class="flex space-x-4">
-						{#if $submitting}
+					<div class="flex justify-between w-full items-center mx-8">
+						<div class="mx-8">
+							<LanguageSelection />
+						</div>
+						<div class="mx-8">
+							{#if $submitting}
 							<Button disabled>
 								<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
 								Please wait
 							</Button>
-						{:else}
-							<Form.Button>Confirm</Form.Button>
-						{/if}
+							{:else}
+								<Form.Button>Confirm</Form.Button>
+							{/if}
+						</div>
+						
 					</div>
-				</div>
 			</form>
 		</Resizable.Pane>
 	</Resizable.PaneGroup>
