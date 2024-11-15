@@ -4,6 +4,7 @@ import { fetchExerciseData, fetchCreateSession } from '$lib/fetchRequests';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { getExerciseIds, getProgrammingLanguages } from './create_session';
 import { formSchema } from './schema';
+import { debugCreateSession } from '$lib/debug';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const api_version = import.meta.env.VITE_API_VERSION;
@@ -59,6 +60,9 @@ export const actions: Actions = {
 			// Return the validation errors if validation fails
 			return fail(400, { errors: validation.error.errors, session_description });
 		}
+
+		// Proceed with the validated data
+		debugCreateSession('Validation successful:', validation.data);
 
 		const response = await handleAuthenticatedRequest(
 			(token) => fetchCreateSession(backendUrl, api_version, token, new_session),
