@@ -26,22 +26,21 @@
 			<Form.Field {form} name="email">
 				<Form.Control let:attrs>
 					<Form.Label class="!text-current">Email</Form.Label>
-					<Input {...attrs} bind:value={$formData.email} />
+					<Input placeholder="Enter your email address." {...attrs} bind:value={$formData.email} />
 				</Form.Control>
-				<Form.Description>Please enter your email address.</Form.Description>
 				<Form.FieldErrors />
+				<br />
 			</Form.Field>
 
 			<!-- Password Field -->
 			<Form.Field {form} name="password">
 				<Form.Control let:attrs>
 					<Form.Label class="!text-current">Password</Form.Label>
-					<Input type="password" {...attrs} bind:value={$formData.password} />
+					<Input placeholder="Enter your password." type="password" {...attrs} bind:value={$formData.password} />
 				</Form.Control>
-				<Form.Description>Enter your password to log in.</Form.Description>
 				<Form.FieldErrors />
 			</Form.Field>
-			{#if $errors.email}<span class="invalid">{$errors.email}</span>{/if}
+			<!--{#if $errors.email}<span class="invalid">{$errors.email}</span>{/if}-->
 			<Form.Button class="w-full mt-4">Login</Form.Button>
 		</form>
 	</div>

@@ -26,9 +26,8 @@
         <Form.Field {form} name="email">
           <Form.Control let:attrs>
             <Form.Label class="!text-current">Email</Form.Label>
-            <Input {...attrs} bind:value={$formData.email} />
+            <Input placeholder="Enter your email address." {...attrs} bind:value={$formData.email} />
           </Form.Control>
-          <Form.Description>Please enter your email address.</Form.Description>
           <Form.FieldErrors />
           <br />
         </Form.Field>
@@ -37,11 +36,8 @@
         <Form.Field {form} name="password">
           <Form.Control let:attrs>
             <Form.Label class="!text-current">Password</Form.Label>
-            <Input type="password" {...attrs} bind:value={$formData.password} />
+            <Input placeholder="Enter a password." type="password" {...attrs} bind:value={$formData.password} />
           </Form.Control>
-          {#if !$errors.password}
-          <Form.Description>Choose a strong password to secure your account.</Form.Description>
-          {/if}
           <Form.FieldErrors />
           <br />
         </Form.Field>
@@ -50,11 +46,9 @@
         <Form.Field {form} name="confirmPassword">
           <Form.Control let:attrs>
             <Form.Label class="!text-current">Confirm Password</Form.Label>
-            <Input type="password" {...attrs} bind:value={$formData.confirmPassword} />
+            <Input placeholder="Re-enter your password" type="password" {...attrs} bind:value={$formData.confirmPassword} />
           </Form.Control>
-          <Form.Description>Re-enter your password for confirmation.</Form.Description>
           <Form.FieldErrors />
-          <br />
         </Form.Field>
   
         <!-- Submit Button -->
