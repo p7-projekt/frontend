@@ -1,3 +1,3 @@
-<section class="w-full caption-bottom text-sm">
+<section class="w-full caption-bottom text-sm rounded-md">
 	<slot />
 </section>
