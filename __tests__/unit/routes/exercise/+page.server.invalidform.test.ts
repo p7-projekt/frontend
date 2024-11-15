@@ -5,59 +5,62 @@ import { setError } from 'sveltekit-superforms';
 import { redirect } from '@sveltejs/kit';
 
 vi.mock('sveltekit-superforms', () => ({
-    setError: vi.fn(),
-    superValidate: vi.fn(() => ({
-        valid: false,
-        data: {
-            title: '',
-            description: 'Test description',
-            codeText: '',
-            testCases: []
-        }
-    }))
+	setError: vi.fn(),
+	superValidate: vi.fn(() => ({
+		valid: false,
+		data: {
+			title: '',
+			description: 'Test description',
+			codeText: '',
+			testCases: []
+		}
+	}))
 }));
 
 vi.mock('@sveltejs/kit', () => ({
-    redirect: vi.fn(),
-    fail: vi.fn((status, body) => ({ status, body }))
+	redirect: vi.fn(),
+	fail: vi.fn((status, body) => ({ status, body }))
 }));
 
 vi.mock('sveltekit-superforms/adapters', () => ({
-    zod: vi.fn(),
+	zod: vi.fn()
 }));
 
 vi.mock('$lib/requestHandler', () => ({
-    handleAuthenticatedRequest: vi.fn()
+	handleAuthenticatedRequest: vi.fn()
 }));
 
 describe('Page Server Actions function', () => {
-    it('Return 400 if form is invalid', async () => {
- 
-        const mockCookies = {
-            get: vi.fn(() => 'valid_token'),
-            set: vi.fn(),
-            delete: vi.fn()
-        };
- 
-        const mockUrl = {
-            searchParams: {
-                get: vi.fn((param) => {
-                    if (param === 'exerciseid') return '1';
-                    if (param === 'seshid') return '1';
-                    return null;
-                })
-            }
-        };
+	it('Return 400 if form is invalid', async () => {
+		const mockCookies = {
+			get: vi.fn(() => 'valid_token'),
+			set: vi.fn(),
+			delete: vi.fn()
+		};
 
-        const mockResponse = {
-            ok: false,
-            text: vi.fn().mockResolvedValueOnce(JSON.stringify({ errors: { codeText: ['An error occurred on the server'] } }))
-        };
+		const mockUrl = {
+			searchParams: {
+				get: vi.fn((param) => {
+					if (param === 'exerciseid') return '1';
+					if (param === 'seshid') return '1';
+					return null;
+				})
+			}
+		};
 
-        handleAuthenticatedRequest.mockResolvedValueOnce(mockResponse);
+		const mockResponse = {
+			ok: false,
+			text: vi
+				.fn()
+				.mockResolvedValueOnce(
+					JSON.stringify({ errors: { codeText: ['An error occurred on the server'] } })
+				)
+		};
 
-        const result = await actions.default({ url: mockUrl, cookies: mockCookies });
+		handleAuthenticatedRequest.mockResolvedValueOnce(mockResponse);
 
-        expect(result.status).toBe(400);
-    });
+		const result = await actions.default({ url: mockUrl, cookies: mockCookies });
+
+		expect(result.status).toBe(400);
+	});
 });

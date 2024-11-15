@@ -73,7 +73,7 @@
 
 	function submitTestCase() {
 		testCasesStore.subscribe((store) => {
-			let testCases = store.testCases; 
+			let testCases = store.testCases;
 		});
 
 		const validInputs =

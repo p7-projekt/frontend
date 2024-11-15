@@ -111,7 +111,7 @@
 			</div>
 		</div>
 		<div class="col-span-full">
-			{#if error}
+			{#if error.errorInAddedExercises}
 				<p style="color:red; margin-bottom:0;">You must add an exercise to the session</p>
 			{/if}
 			<ExerciseList {added_exercise_list} {remaining_exercise_list} on:message={handleMessage} />
