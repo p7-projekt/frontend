@@ -4,7 +4,7 @@ import { error, redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;
-	const api_version = import.meta.env.VITE_API_VERSION;
+	const api_version = import.meta.env.VITE_API_VERSION_V1;
 	const anon_token = cookies.get('anon_token') || '';
 	const access_token = cookies.get('access_token') || '';
 	const refresh_token = cookies.get('refresh_token') || '';
