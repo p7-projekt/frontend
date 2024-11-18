@@ -1,15 +1,17 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+    import { goto } from '$app/navigation';
+    import StudentClassroomDisplay from '$components/Student/StudentClassroomDisplay.svelte';
+    import StudentSessionDisplay from '$components/Student/StudentSessionDisplay.svelte';
     import type { PageData } from './$types';
 
-    let data: PageData;
+    export let data: PageData;
 </script>
 
 <div class="container pl-6 w-full text-[#333] grid grid-cols-1 gap-y-8">
     <h1 class="text-2xl font-semibold col-span-full">Student Home</h1>
     <div class="flex gap-x-12 h-full">
         <main class="flex flex-1 flex-col w-1/2 h-[35.5rem]">
-            {#if !data}
+            {#if !data.classroomData || data.classroomData.length === 0}
                 <div
                     class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
                 >
@@ -25,11 +27,11 @@
                     </div>
                 </div>
             {:else}
-                <SessionDisplay {sessionData} />
+                <StudentClassroomDisplay classroomData={data.classroomData} />
             {/if}
         </main>
         <main class="flex flex-1 flex-col w-1/2 h-[35.5rem]">
-            {#if !data}
+            {#if !data.sessionData || data.sessionData.length === 0}
                 <div
                     class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
                 >
@@ -45,9 +47,8 @@
                     </div>
                 </div>
             {:else}
-                <!-- <SessionDisplay {sessionData} /> -->
+                <StudentSessionDisplay sessionData={data.sessionData} />
             {/if}
         </main>
     </div>
 </div>
-
