@@ -12,9 +12,9 @@ export const load: LayoutLoad = ({ data, url }) => {
 	};
 };
 
-export function _validate_url_path(user: { name: string } | null, urlp: string) {
+export function _validate_url_path(user: { name: string, role: string } | null, urlp: string) {
 	if (user && urlp === '/login') {
-		throw redirect(303, urlp);
+		throw redirect(303, '/');
 	}
 
 	if (
@@ -27,5 +27,14 @@ export function _validate_url_path(user: { name: string } | null, urlp: string) 
 		urlp !== '/signup'
 	) {
 		throw redirect(303, '/');
+	}
+	else if (
+		user?.role === "student" &&
+		urlp !== '/join' &&
+		!urlp.startsWith('/session') &&
+		urlp !== '/' &&
+		urlp !== '/exercise'
+	) {
+		throw redirect(303, '/')
 	}
 }

@@ -24,6 +24,6 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 		userData = await response.json();
 	}
 	return {
-		user: userData ? { name: userData.name } : null
+		user: userData ? { name: userData.name, role: "student" } : null
 	};
 };
