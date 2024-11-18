@@ -18,16 +18,11 @@
 				<h2 class="text-[1.375rem] mb-2 font-medium relative">
 					<a href="/session/{session.id}">
 						{session.title}
-					</a> 
-				</h2>
-				<div class="grid grid-cols-2"> 
-					<div class="relative">
-						<div class="absolute right-0 bottom-0 flex gap-1">
-							<span class="font-medium">Expires in:</span>
-							<Timer seconds_remaining={session.expiresInSeconds}></Timer>
-						</div>
-					</div>
-				</div>
+					</a> <div class="absolute right-0 bottom-0 flex gap-1">
+                        <span class="font-medium">Expires in:</span>
+                        <Timer seconds_remaining={session.expiresInSeconds}></Timer>
+                    </div>
+				</h2>  
 			</div>
 		{/each}
 	</div>
