@@ -58,7 +58,7 @@
 	}
 </script>
 
-{#if data.user?.role === "instructor"}
+{#if data.user?.role === "Instructor"}
 	<div class="container pl-6 w-full text-[#333] grid grid-cols-1 gap-y-8">
 		<h1 class="text-2xl font-semibold col-span-full">Instructor Home</h1>
 		<div class="flex gap-x-12 h-full">
