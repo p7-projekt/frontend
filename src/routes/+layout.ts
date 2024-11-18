@@ -37,4 +37,11 @@ export function _validate_url_path(user: { name: string, role: string } | null, 
 	) {
 		throw redirect(303, '/')
 	}
+	else if (
+		user?.role === "instructor" &&
+		urlp === 'signup' ||
+		urlp === 'login'
+	) {
+		throw redirect(303, '/')
+	}
 }
