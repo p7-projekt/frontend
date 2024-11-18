@@ -17,6 +17,7 @@ export function _validate_url_path(user: { name: string, role: string } | null, 
 		throw redirect(303, '/');
 	}
 
+	//Allowed endpoints anon
 	if (
 		!user &&
 		urlp !== '/join' &&
@@ -28,8 +29,9 @@ export function _validate_url_path(user: { name: string, role: string } | null, 
 	) {
 		throw redirect(303, '/');
 	}
+	//Allowed endpoints student
 	else if (
-		user?.role === "student" &&
+		user?.role === "Student" &&
 		urlp !== '/join' &&
 		!urlp.startsWith('/session') &&
 		urlp !== '/' &&
@@ -37,8 +39,9 @@ export function _validate_url_path(user: { name: string, role: string } | null, 
 	) {
 		throw redirect(303, '/')
 	}
+	//disallowed endpoints instructor
 	else if (
-		user?.role === "instructor" &&
+		user?.role === "Instructor" &&
 		urlp === 'signup' ||
 		urlp === 'login'
 	) {

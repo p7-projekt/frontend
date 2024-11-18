@@ -1,6 +1,7 @@
 import type { LayoutServerLoad } from './$types';
 import { fetchUserData } from '$lib/fetchRequests';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
+import { get_user_role } from '$lib/getrole';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -18,12 +19,13 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 		refresh_token,
 		cookies
 	);
-
+	let userRole;
 	let userData;
 	if (response.ok) {
 		userData = await response.json();
+		userRole = get_user_role(access_token);
 	}
 	return {
-		user: userData ? { name: userData.name, role: "student" } : null
+		user: userData && userRole? { name: userData.name, role: userRole } : null
 	};
 };
