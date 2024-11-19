@@ -44,6 +44,7 @@ describe('Layout Server Load Function', () => {
 
 		expect(result).toEqual({ user: { name: 'John Doe', role: 'Student' } });
 		expect(fetchUserData).toHaveBeenCalledWith(backendUrl, api_version, 'valid_token');
+		expect(get_user_role).toHaveBeenCalledWith('valid_token');
 	});
 
 	it('refreshes access token and fetch user data if access token is expired', async () => {
