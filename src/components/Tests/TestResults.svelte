@@ -46,12 +46,11 @@ export let testResults: { id: number, testResult: string, cause?: string, detail
             <p>Test ID: {test.id}</p>
             <p>Result: {test.testResult}</p>
             {#if test.testResult === 'failure'}
-                <p>Cause: {test.cause}</p>
-                <p>Details:</p>
+                <p>Cause: {test.cause}</p> 
                 <ul>
-                    <li>Input Parameters: {test.details.inputParameters.map(param => `${param.valueType}: ${param.value}`).join(', ')}</li>
-                    <li>Actual: {test.details.actual}</li>
-                    <li>Expected: {test.details.expected}</li>
+                    <li>Test Input Parameters: {test.details.inputParameters.map(param => `${param.valueType}: ${param.value}`).join(', ')}</li>
+                    <li>Actual Output: {test.details.actual}</li>
+                    <li>Expected Output: {test.details.expected}</li>
                 </ul>
             {/if}
         </Tooltip.Content>
