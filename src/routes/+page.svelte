@@ -58,7 +58,7 @@
 	}
 </script>
 
-{#if data.user}
+{#if data.user?.role === "Instructor"}
 	<div class="container pl-6 w-full text-[#333] grid grid-cols-1 gap-y-8">
 		<h1 class="text-2xl font-semibold col-span-full">Instructor Home</h1>
 		<div class="flex gap-x-12 h-full">
@@ -140,12 +140,14 @@
 			
 			<!-- Buttons -->
 			<div class="space-y-4">
+				{#if !data.user}
 				<Button href="/login" class="w-full bg-blue-500 hover:bg-blue-600 text-white">
 					Log In
 				</Button>
 				<Button href="/signup" class="w-full bg-green-500 hover:bg-green-600 text-white">
 					Sign Up
 				</Button>
+				{/if}
 				<Button href="/join" class="w-full bg-purple-500 hover:bg-purple-600 text-white">
 					Join a Room
 				</Button>
