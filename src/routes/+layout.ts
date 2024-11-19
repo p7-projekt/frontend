@@ -12,36 +12,34 @@ export const load: LayoutLoad = ({ data, url }) => {
 	};
 };
 
-export function _validate_url_path(user: { name: string, role: string } | null, urlp: string) {
+export function _validate_url_path(user: { name: string, role: string } | null, urlp: string) {	
+	const allowedAnonRoutes = [
+		'/join', '/login', '/', '/signup', '/exercise', '/session'
+	];
+	const allowedStudentRoutes = [
+		'/join', '/exercise', '/session', '/'
+	];
+	const allowedInstructorRoutes = [
+		'/join', '/exercise', '/', '/session', '/create-session', '/createexercise'
+	];
 	
-	//Allowed endpoints anon
-	if (
-		!user &&
-		urlp !== '/join' &&
-		!urlp.startsWith('/session') &&
-		urlp !== '/login' &&
-		urlp !== '/' &&
-		urlp !== '/exercise' &&
-		urlp !== '/signup'
-	) {
+	if (user && urlp === '/login') {
 		throw redirect(303, '/');
 	}
-	//Allowed endpoints student
-	else if (
-		user?.role === "Student" &&
-		urlp !== '/join' &&
-		!urlp.startsWith('/session') &&
-		urlp !== '/' &&
-		urlp !== '/exercise'
-	) {
-		throw redirect(303, '/')
+
+	if (!user || user.role === 'AnonymousUser') {
+		if (!allowedAnonRoutes.includes(urlp) && !urlp.startsWith('/session')) {
+			throw redirect(303, '/');
+		}
 	}
-	//disallowed endpoints instructor
-	else if (
-		user?.role === "Instructor" &&
-		urlp === 'signup' ||
-		urlp === 'login'
-	) {
-		throw redirect(303, '/')
+	else if (user.role === 'Student') {
+		if (!allowedStudentRoutes.includes(urlp) && !urlp.startsWith('/session')) {
+			throw redirect(303, '/');
+		}
+	}
+	else if (user.role === 'Instructor') {
+		if (!allowedInstructorRoutes.includes(urlp)) {
+			throw redirect(303, '/');
+		}
 	}
 }

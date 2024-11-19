@@ -23,7 +23,7 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 	let userData;
 	if (response.ok) {
 		userData = await response.json();
-		const access_token_: string = cookies.get('access_token') || '';
+		const access_token_: string = cookies.get('access_token') || 'AnonymousUser';
 		userRole = get_user_role(access_token_);
 	}
 	return {

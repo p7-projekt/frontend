@@ -74,7 +74,7 @@ describe('Layout Server Load Function', () => {
 		expect(result).toEqual({ user: { name: 'Jane Doe', role: 'Student' } });
 		expect(fetch).toHaveBeenCalledWith(`${backendUrl}/refresh`, expect.any(Object));
 		expect(fetchUserData).toHaveBeenCalledWith(backendUrl, api_version, 'new_access_token');
-
+		
 		expect(mockCookies.set).toHaveBeenCalledWith(
 			'access_token',
 			'new_access_token',
