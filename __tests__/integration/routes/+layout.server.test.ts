@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { load } from '$src/routes/+layout.server';
 import { fetchUserData } from '$lib/fetchRequests';
+import { get_user_role } from '$lib/getrole';
 
 const backendUrl = 'http://localhost:5015';
 const api_version = 'v1';
@@ -8,6 +9,9 @@ const api_version = 'v1';
 // Mock the required modules
 vi.mock('$lib/fetchRequests', () => ({
 	fetchUserData: vi.fn()
+}));
+vi.mock('$lib/getrole', () => ({
+    get_user_role: vi.fn()
 }));
 
 global.fetch = vi.fn();
@@ -33,11 +37,12 @@ describe('Layout Server Load Function', () => {
 		};
 
 		const mockUserData = { name: 'John Doe' };
+		get_user_role.mockReturnValueOnce("Student");
 		fetchUserData.mockResolvedValueOnce({ ok: true, json: async () => mockUserData });
 
 		const result = await load({ cookies: mockCookies });
 
-		expect(result).toEqual({ user: { name: 'John Doe' } });
+		expect(result).toEqual({ user: { name: 'John Doe', role: 'Student' } });
 		expect(fetchUserData).toHaveBeenCalledWith(backendUrl, api_version, 'valid_token');
 	});
 
@@ -49,6 +54,7 @@ describe('Layout Server Load Function', () => {
 		};
 
 		const mockUserData = { name: 'Jane Doe' };
+		get_user_role.mockReturnValueOnce("Student");
 		fetchUserData
 			.mockResolvedValueOnce({ ok: false, status: 401 })
 			.mockResolvedValueOnce({ ok: true, json: async () => mockUserData });
@@ -64,7 +70,7 @@ describe('Layout Server Load Function', () => {
 		});
 
 		const result = await load({ cookies: mockCookies });
-		expect(result).toEqual({ user: { name: 'Jane Doe' } });
+		expect(result).toEqual({ user: { name: 'Jane Doe', role: 'Student' } });
 		expect(fetch).toHaveBeenCalledWith(`${backendUrl}/refresh`, expect.any(Object));
 		expect(fetchUserData).toHaveBeenCalledWith(backendUrl, api_version, 'new_access_token');
 

@@ -13,10 +13,7 @@ export const load: LayoutLoad = ({ data, url }) => {
 };
 
 export function _validate_url_path(user: { name: string, role: string } | null, urlp: string) {
-	if (user && urlp === '/login') {
-		throw redirect(303, '/');
-	}
-
+	
 	//Allowed endpoints anon
 	if (
 		!user &&
