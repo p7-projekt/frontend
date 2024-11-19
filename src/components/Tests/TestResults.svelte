@@ -1,5 +1,7 @@
 <script lang="ts">
-    export let testResults: { id: number, testResult: string, cause?: string, details?: { inputParameters: any[], actual: any, expected: any } }[];
+import * as Tooltip from "$lib/components/ui/tooltip";
+
+export let testResults: { id: number, testResult: string, cause?: string, details?: { inputParameters: any[], actual: any, expected: any } }[];
 
     let selectedTest = null;
 
@@ -34,28 +36,31 @@
 </style>
 
 <div>
+    
     {#each testResults as test}
-        <div
-            class="circle {test.testResult === 'pass' ? 'pass' : 'failure'}"
-            on:click={() => handleCircleClick(test)}
-            on:mouseover={() => handleCircleClick(test)}
-            on:mouseleave={() => selectedTest = null}
-        ></div>
+    <Tooltip.Root>
+        <Tooltip.Trigger><div
+            class="circle {test.testResult === 'pass' ? 'pass' : 'failure'}" 
+        ></div></Tooltip.Trigger>
+        <Tooltip.Content>
+            <p>Test ID: {test.id}</p>
+            <p>Result: {test.testResult}</p>
+            {#if test.testResult === 'failure'}
+                <p>Cause: {test.cause}</p>
+                <p>Details:</p>
+                <ul>
+                    <li>Input Parameters: {test.details.inputParameters.map(param => `${param.valueType}: ${param.value}`).join(', ')}</li>
+                    <li>Actual: {test.details.actual}</li>
+                    <li>Expected: {test.details.expected}</li>
+                </ul>
+            {/if}
+        </Tooltip.Content>
+      </Tooltip.Root>    
+    
+    
     {/each}
 </div>
-
-{#if selectedTest}
-    <div class="tooltip">
-        <p>Test ID: {selectedTest.id}</p>
-        <p>Result: {selectedTest.testResult}</p>
-        {#if selectedTest.testResult === 'failure'}
-            <p>Cause: {selectedTest.cause}</p>
-            <p>Details:</p>
-            <ul>
-                <li>Input Parameters: {selectedTest.details.inputParameters.map(param => `${param.valueType}: ${param.value}`).join(', ')}</li>
-                <li>Actual: {selectedTest.details.actual}</li>
-                <li>Expected: {selectedTest.details.expected}</li>
-            </ul>
-        {/if}
-    </div>
-{/if}
+<div> 
+    <p>{testResults.filter(test => test.testResult === 'failure').length} test(s) have failed! Test(s) Passed: {testResults.filter(test => test.testResult === 'pass').length}.</p>
+</div>
+ 
