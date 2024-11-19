@@ -62,19 +62,23 @@ describe('Page Server Load function', () => {
 			outputParamaterType: ['string']
 		};
 
+        const mockUrl = {
+			searchParams: {
+				get: vi.fn((param) => {
+					if (param === 'exerciseid') return '1';
+					if (param === 'edit') return 'true';
+					return null;
+				})
+			}
+		};
+
 		global.fetch = vi.fn(() =>
 			Promise.resolve({
 				ok: true,
 				text: () => Promise.resolve(JSON.stringify(mockExerciseData))
 			})
 		);
-
-        global.fetch = vi.fn(() =>
-            Promise.resolve({
-                ok: true,
-                text: () => Promise.resolve(JSON.stringify(mockExerciseData))
-            })
-        );
+ 
         
         // Act
         const result = await load({ url: mockUrl, cookies: mockCookies, depends: mockDepends });

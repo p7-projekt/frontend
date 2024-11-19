@@ -11,22 +11,55 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const apiVersion = import.meta.env.VITE_API_VERSION_V1;
 
 export const load: PageServerLoad = async ({ url, cookies }) => {
-    const access_token = cookies.get('access_token') || '';
-    const exerciseId = url.searchParams.get('exerciseid');
+	const access_token = cookies.get('access_token') || '';
+	const exerciseId = url.searchParams.get('exerciseid');
 
-    let form = await superValidate(zod(formSchema));
-    let exerciseData = null;
+	let form = await superValidate(zod(formSchema));
+	let exerciseData = null;
+	 
+	debugCreateExercise("loading");
 
-    debugCreateExercise('loading');
+	if (exerciseId) {
+		const response = await fetch(`${backendUrl}/${apiVersion}/exercises/${exerciseId}`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${access_token}`
+			}
+		});
 
-    if (exerciseId) {
-        // Fetch exercise data logic here...
-    }
+		const responseBody = await response.text();
+		if (responseBody) {
+			try {
+				exerciseData = JSON.parse(responseBody);
+				// Populate form with exercise data
+				form.data.title = exerciseData.title;
+				form.data.description = exerciseData.description;
+				form.data.codeText = exerciseData.solution || '';
+				form.data.testCases = exerciseData.testCases.map((testCase) => ({
+					parameters: {
+						input: testCase.inputParams.map((value, index) => ({
+							type: exerciseData.inputParameterType[index],
+							value
+						})),
+						output: testCase.outputParams.map((value, index) => ({
+							type: exerciseData.outputParamaterType[index],
+							value
+						}))
+					},
+					publicVisible: testCase.publicVisible
+				}));
+			} catch (error) {
+				debugCreateExercise('Failed to parse JSON response:', error);
+				throw new Error('Failed to parse JSON response');
+			}
+		}
+	}
 
-    return {
-        form,
-        exerciseData
-    };
+	return {
+		form,
+		exerciseData
+	};
 };
 
 async function postExercise(
