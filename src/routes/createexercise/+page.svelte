@@ -16,6 +16,8 @@
 	import { setIDEBoilerPlate } from '../../lib/boilerplate';
 	import { onMount } from 'svelte';
 	import LanguageSelection from '$components/IDE/LanguageSelection.svelte';
+	import TestResults from '$components/Tests/TestResults.svelte';
+	
 	export { formSchema as form };
 
 	export let actionData: ActionData; 
@@ -211,21 +213,7 @@
 							>Set a Test Case Schema before you can start creating your solution</span
 						>{/if}
 					{#if $errors.test}
-						{#each $errors.test as error}
-							<div class="invalid">
-								<p>Test ID: {error.id}</p>
-								<p>Result: {error.testResult}</p>
-								{#if error.testResult === 'failure'}
-									<p>Cause: {error.cause}</p>
-									<p>Details:</p>
-									<ul>
-										<li>Input Parameters: {error.details.inputParameters.join(', ')}</li>
-										<li>Actual: {error.details.actual}</li>
-										<li>Expected: {error.details.expected}</li>
-									</ul>
-								{/if}
-							</div>
-						{/each}
+						<TestResults testResults={$errors.test} />
 					{/if}
 					{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
 					{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
