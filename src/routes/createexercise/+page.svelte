@@ -18,6 +18,7 @@
 	import LanguageSelection from '$components/IDE/LanguageSelection.svelte';
 	export { formSchema as form };
 
+	export let actionData: ActionData; 
 	export let data: PageData;
 
 	let open: boolean = false;
@@ -209,6 +210,23 @@
 							class="invalid"
 							>Set a Test Case Schema before you can start creating your solution</span
 						>{/if}
+					{#if $errors.test}
+						{#each $errors.test as error}
+							<div class="invalid">
+								<p>Test ID: {error.id}</p>
+								<p>Result: {error.testResult}</p>
+								{#if error.testResult === 'failure'}
+									<p>Cause: {error.cause}</p>
+									<p>Details:</p>
+									<ul>
+										<li>Input Parameters: {error.details.inputParameters.join(', ')}</li>
+										<li>Actual: {error.details.actual}</li>
+										<li>Expected: {error.details.expected}</li>
+									</ul>
+								{/if}
+							</div>
+						{/each}
+					{/if}
 					{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
 					{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
 					

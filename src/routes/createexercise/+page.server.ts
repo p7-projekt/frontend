@@ -117,12 +117,9 @@ export const actions: Actions = {
                 try {
                     const resJSON = JSON.parse(responseBody); // Try to parse the response as JSON
                     if (resJSON.testCaseResults) {
-                        // Handle test case error response
-                        const testCaseErrors = resJSON.testCaseResults
-                            .filter((result) => result.testResult === 'failure')
-                            .map((result) => `Test case ${result.id} failed: ${result.cause}`);
-                        debugCreateExercise('Test case errors:', testCaseErrors);
-                        return setError(form, 'codeText', testCaseErrors.join('\n') || 'An error occurred on the server');
+                        
+                        debugCreateExercise('Test case errors:', resJSON.testCaseResults);
+                        return setError(form, 'test', resJSON.testCaseResults); 
                     } else if (resJSON.message) {
                         // Handle compiler error response
                         debugCreateExercise('resJSON.message:', resJSON.message);

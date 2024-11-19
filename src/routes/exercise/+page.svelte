@@ -12,8 +12,10 @@
 	import LanguageSelection from '$components/IDE/LanguageSelection.svelte';
 	import { debugExercise } from '$lib/debug';
 	import { setIDEBoilerPlate } from '$lib/boilerplate';
+	import type { ActionData } from '../$types';
 
 	export let data: PageData;
+	export let actionData: ActionData; 
 	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form;
 	export let exerciseData = data.exerciseData;
 	let selectedLanguage: string = '';
