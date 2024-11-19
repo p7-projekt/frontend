@@ -13,6 +13,7 @@
 	import { debugExercise } from '$lib/debug';
 	import { setIDEBoilerPlate } from '$lib/boilerplate';
 	import type { ActionData } from '../$types';
+	import TestResultsStudent from '$components/Tests/TestResultsStudent.svelte';
 
 	export let data: PageData;
 	export let actionData: ActionData; 
@@ -69,6 +70,9 @@
 					<div class="ide-container w-full h-full">
 						<Ide editable={selectedLanguage!=''} bind:solutionLanguage={selectedLanguage}  bind:codeSolutionText={$formData.codeText} />
 					</div>
+					{#if $errors.test}
+						<TestResultsStudent testResults={$errors.test} />
+					{/if}
 					{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
 					{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
 

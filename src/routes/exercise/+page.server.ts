@@ -118,36 +118,43 @@ export const actions: Actions = {
 			} else {
 				resJSON = { detail: 'No response body' }; // Handle empty response body
 			}
-
-			if (resJSON.isFailed) {
-				const errorMessages = resJSON.errors.map((err) => err.message).join('\n');
-				debugExercise('Epic fail from server:', resJSON);
-				return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
-			} else {
-				debugExercise('Epic Win:', resJSON);
-				throw redirect(303, '/session');
-			}
+ 
+			debugExercise('Epic Win:', resJSON);
+			throw redirect(303, '/session'); 
+			
 		} else {
-			const responseBody = await response.text(); // Read the response as text
-			debugExercise('responseBody:', responseBody);
-			let error;
-			if (responseBody) {
-				try {
-					const resJSON = JSON.parse(responseBody); // Try to parse the response as JSON
-					if (resJSON.errors) {
-						const errorMessages = Object.values(resJSON.errors).flat().join('\n'); // Flatten and join all error messages
-						return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
-					} else {
-						error = { detail: responseBody }; // If no errors field, use the text as the error detail
-					}
-				} catch (e) {
-					error = { detail: responseBody }; // If parsing fails, use the text as the error detail
-				}
-			} else {
-				error = { detail: 'An unknown error occurred' }; // Handle empty response body
-			}
+            const responseBody = await response.text(); // Read the response as text
+            debugExercise('responseBody:', responseBody);
+            let error;
+            if (responseBody) {
+                try {
+                    const resJSON = JSON.parse(responseBody); // Try to parse the response as JSON
+                    if (resJSON.testCaseResults) {
+                        
+                        debugExercise('Test case errors:', resJSON.testCaseResults);
+                        return setError(form, 'test', resJSON.testCaseResults); 
+                    } else if (resJSON.message) {
+                        // Handle compiler error response
+                        debugExercise('resJSON.message:', resJSON.message);
+                        return setError(form, 'codeText', resJSON.message || 'An error occurred on the server');
+                    } else if (resJSON.errors) {
+                        // Handle validation error response
+                        const errorMessages = Object.values(resJSON.errors)
+                            .flat()
+                            .join('\n');
+                        debugExercise('Validation errors:', errorMessages);
+                        return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
+                    } else {
+                        error = { detail: responseBody }; // If no specific error field, use the text as the error detail
+                    }
+                } catch (e) {
+                    error = { detail: responseBody }; // If parsing fails, use the text as the error detail
+                }
+            } else {
+                error = { detail: 'An unknown error occurred' }; // Handle empty response body
+            }
 
-			return setError(form, 'codeText', error.detail || 'An error occurred on the server');
-		}
+            return setError(form, 'codeText', error.detail || 'An error occurred on the server');
+        }
 	}
 };
