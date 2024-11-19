@@ -10,6 +10,6 @@ export function get_user_role(access_token: string) {
 		}
 	} catch (error) {
 		console.error('Invalid access_token', error.message);
-        return null
+        return 'AnonymousUser'
 	}
 }

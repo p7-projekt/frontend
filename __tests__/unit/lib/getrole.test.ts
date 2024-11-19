@@ -8,4 +8,11 @@ describe("get_user_role", () => {
         const result = get_user_role(input);
         expect(result).toEqual(expected);
     });
+
+    test("Should return default value if unable to decode token", () =>{
+        const expected = "AnonymousUser";
+        const input = "eruwg";
+        const result = get_user_role(input);
+        expect(result).toEqual(expected);
+    });
 });
