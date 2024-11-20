@@ -6,13 +6,26 @@ import { formSchema } from './schema';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { convertFormData } from './helpers';
 import { debugCreateExercise } from '$lib/debug.js';
+import { language } from '@codemirror/language';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
-const apiVersion = import.meta.env.VITE_API_VERSION_V1;
+const apiVersionV1 = import.meta.env.VITE_API_VERSION_V1;
+const apiVersionV2 = import.meta.env.VITE_API_VERSION_V2;
 
 export const load: PageServerLoad = async ({ url, cookies }) => {
 	const access_token = cookies.get('access_token') || '';
 	const exerciseId = url.searchParams.get('exerciseid');
+    const languagesResponse = await getLanguages(backendUrl, apiVersionV2, access_token);
+    let languages;
+
+    if (!languagesResponse.ok) {
+        debugCreateExercise('Failed to fetch languages:', languagesResponse.status);
+        throw redirect(303, '/');
+    } else {
+        languages = await languagesResponse.json();
+        debugCreateExercise('Languages:', languages);
+    }
+
 
 	let form = await superValidate(zod(formSchema));
 	let exerciseData = null;
@@ -20,7 +33,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 	debugCreateExercise("loading");
 
 	if (exerciseId) {
-		const response = await fetch(`${backendUrl}/${apiVersion}/exercises/${exerciseId}`, {
+		const response = await fetch(`${backendUrl}/${apiVersionV1}/exercises/${exerciseId}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -58,7 +71,8 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 
 	return {
 		form,
-		exerciseData
+		exerciseData,
+        languages
 	};
 };
 
@@ -75,6 +89,20 @@ async function postExercise(
             Authorization: `Bearer ${access_token}`
         },
         body: JSON.stringify(apiData)
+    });
+}
+
+async function getLanguages(
+    backendUrl: string,
+    api_version: string,
+    access_token: string
+): Promise<Response> {
+    return await fetch(`${backendUrl}/${api_version}/languages`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${access_token}`
+        }
     });
 }
 
@@ -112,14 +140,14 @@ export const actions: Actions = {
         let response;
         if (isEditMode && exerciseId) {
             response = await handleAuthenticatedRequest(
-                (token) => updateExercise(backendUrl, apiVersion, token, exerciseId, apiData),
+                (token) => updateExercise(backendUrl, apiVersionV1, token, exerciseId, apiData),
                 access_token,
                 refresh_token,
                 event.cookies
             );
         } else {
             response = await handleAuthenticatedRequest(
-                (token) => postExercise(backendUrl, apiVersion, token, apiData),
+                (token) => postExercise(backendUrl, apiVersionV1, token, apiData),
                 access_token,
                 refresh_token,
                 event.cookies
