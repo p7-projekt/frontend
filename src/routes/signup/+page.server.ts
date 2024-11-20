@@ -38,7 +38,7 @@ export const actions: Actions = {
       });
     } else {
       const error = await response.json();
-      return setError(form, 'confirmPassword', error.errors.Password.join('\n') || "Signup failed");
+      return setError(form, 'confirmPassword', error?.errors?.Password.join('\n') || "Signup failed");
     }
   },
 };
