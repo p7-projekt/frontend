@@ -132,6 +132,7 @@ export const actions: Actions = {
 
         // Convert form data to API format
         const apiData = convertFormData(form.data);
+        debugCreateExercise('apiData:', apiData);
         const access_token = event.cookies.get('access_token');
         const refresh_token = event.cookies.get('refresh_token');
         const exerciseId = event.url.searchParams.get('exerciseid');

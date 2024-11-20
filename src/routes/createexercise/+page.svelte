@@ -19,8 +19,7 @@
 	import TestResults from '$components/Tests/TestResults.svelte';
 	
 	export { formSchema as form };
-
-	export let actionData: ActionData; 
+ 
 	export let data: PageData;
 
 	let open: boolean = false;
@@ -28,8 +27,8 @@
 	let exerciseId: number;
 	let overwriteCodeText: boolean = false;
 	let isLoading: boolean = false;
-	let selectedLanguage: string = '';
-
+	let selectedLanguage: { languageId: number; language: string }= { languageId: 0, language: '' };
+	let languages = data.data.languages;
 
 	onMount(() => {
 		const urlParams = new URLSearchParams(window.location.search);
@@ -82,12 +81,12 @@
         if (selectedLanguage) {
             console.log(`Selected language changed to: ${selectedLanguage}`);
 			$formData.selectedLanguage = selectedLanguage;
-            $formData.codeText = setIDEBoilerPlate(testCaseSchema, selectedLanguage);
+            $formData.codeText = setIDEBoilerPlate(testCaseSchema, selectedLanguage.language);
         }  
     }
  
 	function createBoilerplate() {
-		if ((!$formData.codeText || overwriteCodeText) && selectedLanguage!='') {
+		if ((!$formData.codeText || overwriteCodeText) && selectedLanguage!=null) {
 			$formData.codeText = setIDEBoilerPlate(testCaseSchema);
 			overwriteCodeText = false; // Reset the flag after overwriting codeText
 		}
@@ -204,7 +203,7 @@
 							editable={!(
 								testCaseSchema.parameters.input.length === 0 &&
 								testCaseSchema.parameters.output.length === 0 || 
-								selectedLanguage==''
+								selectedLanguage.language==''
 							)}
 						/>
 					</div>
@@ -221,7 +220,7 @@
 					
 					<div class="flex justify-between w-full items-center mx-8">
 						<div class="mx-8"  >
-							<LanguageSelection bind:selected={selectedLanguage}/>
+							<LanguageSelection bind:selected={selectedLanguage} {languages}/>
 						</div>
 						<div class="mx-8">
 							{#if $submitting}
@@ -234,7 +233,7 @@
 							{/if}
 						</div>
 					</div>
-					{#if selectedLanguage==''}<span class="invalid">Select a language to begin coding your solution</span>{/if}
+					{#if selectedLanguage.language==''}<span class="invalid">Select a language to begin coding your solution</span>{/if}
 					{#if $errors.selectedLanguage}<span class="invalid">{$errors.selectedLanguage}</span>{/if}
 				</div>
 			</Resizable.Pane>

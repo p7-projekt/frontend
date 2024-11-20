@@ -2,11 +2,12 @@
     import * as Select from "$lib/components/ui/select/index.js";
     import { debugLanguageSelector } from "$lib/debug";
 
-    export let languages: string[] = ["Python", "Haskell"];
-    export let selected: string = '';
+    export let languages: { languageId: number; language: string }[] = [];
+    export let selected;
     
-    function selectLanguage(language: string) { 
+    function selectLanguage(language: { languageId: number; language: string }) { 
         selected = language;
+        console.log(language);
     }
 </script>
 
@@ -20,8 +21,8 @@
       <Select.Group>
         <Select.Label>Language</Select.Label>
         {#each languages as language}
-          <Select.Item on:click={() => selectLanguage(language)} value={language} label={language}
-            >{language}</Select.Item
+          <Select.Item on:click={() => selectLanguage(language)} value={language.languageId} label={language.language}
+            >{language.language}</Select.Item
           >
         {/each}
       </Select.Group>
