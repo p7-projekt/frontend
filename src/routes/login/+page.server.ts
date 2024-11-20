@@ -54,7 +54,7 @@ export const actions: Actions = {
 			throw redirect(303, '/');
 		} else {
 			const error = await response.json();
-			return setError(form, 'email', error?.detail || 'Login failed');
+			return setError(form, 'password', error?.detail || 'Wrong Email or Password');
 		}
 	}
 };
