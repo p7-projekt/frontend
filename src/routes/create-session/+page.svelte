@@ -17,12 +17,17 @@
 	let post_option_str = 'hour(s)';
 
 	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
-	let remaining_exercise_list = data.instructor_exercises.map(
+	let remaining_exercise_list;
+	if(data.instructor_exercises) {
+		remaining_exercise_list = data.instructor_exercises.map(
 		(exercise: { id: number; name: string }) => ({
 			id: exercise.id,
 			content: exercise.name
 		})
 	);
+	} else {
+		remaining_exercise_list = [];
+	}
 
 	function handleMessage(event) {
 		receive_message = event.detail;
