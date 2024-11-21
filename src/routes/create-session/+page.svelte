@@ -22,18 +22,22 @@
 
 	// Values for the programming language Select component
 	let lang_select_title: string = 'Choose Language';
-	let lang_select_options: string[] = ['Haskell', 'Python'];
+	let lang_select_options: string[] = data.programming_languages.map(
+		(language: { languageId: number; language: string }) =>
+			language.language.charAt(0).toUpperCase() + language.language.slice(1)
+	);
+
 	let lang_selected_options: string[];
 
 	$: displayValidationErrors(form);
 
 	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
-	let remaining_exercise_list = data.instructor_exercises.map(
-		(exercise: { id: number; name: string }) => ({
-			id: exercise.id,
-			content: exercise.name
-		})
-	);
+	let remaining_exercise_list = data.instructor_exercises
+		? data.instructor_exercises.map((exercise: { id: number; name: string }) => ({
+				id: exercise.id,
+				content: exercise.name
+			}))
+		: [];
 
 	function handleMessage(event) {
 		receive_message = event.detail;
@@ -45,7 +49,17 @@
 	}
 
 	function langOptionSelected(event) {
-		lang_selected_options = event.detail.chosen_options;
+		const lang_select_strings: string[] = event.detail.chosen_options;
+
+		// Make a lookup in the original data and get the corresponding IDs
+		lang_selected_options = lang_select_strings
+			.map((lang) => {
+				const match = data.programming_languages.find(
+					(language) => language.language.toLowerCase() === lang.toLowerCase()
+				);
+				return match ? match.languageId : null; // Return the ID if found, or null if not found
+			})
+			.filter((id) => id !== null); // Remove null values for unmatched items
 	}
 
 	$: error = displayValidationErrors(form);

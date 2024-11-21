@@ -4,7 +4,13 @@ export async function fetchCreateSession(
 	backendUrl: string,
 	api_version: string,
 	access_token: string,
-	new_session: { title: string; description: string; expiresInHours: number; exerciseIds: number[] }
+	new_session: {
+		title: string;
+		description: string;
+		expiresInHours: number;
+		exerciseIds: number[];
+		languageIds: number[];
+	}
 ): Promise<Response> {
 	return await fetch(`${backendUrl}/${api_version}/sessions`, {
 		method: 'POST',
@@ -111,4 +117,17 @@ export function get_userID(access_token: string) {
 		console.error('Invalid token:', error.message);
 		return null;
 	}
+}
+
+export async function fetchLanguageData(
+	backendUrl: string,
+	api_version: string,
+	access_token: string
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/languages`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${access_token}`
+		}
+	});
 }

@@ -12,9 +12,9 @@ export function getExerciseIds(exercise_list: FormDataEntryValue | null) {
 	}
 }
 
-export function getProgrammingLanguages(lang_list: FormDataEntryValue | null) {
+export function getProgrammingLanguages(lang_ids_str: FormDataEntryValue | null) {
 	try {
-		return lang_list ? JSON.parse(lang_list as string) : [];
+		return lang_ids_str ? JSON.parse(lang_ids_str as string) : [];
 	} catch (error) {
 		debugCreateSession('Error parsing  added programming languages:', error);
 		return [];
