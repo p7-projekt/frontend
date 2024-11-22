@@ -1,7 +1,10 @@
-<script>
+<script lang="ts">
 	import TitleInput from '$components/Input/TitleInput.svelte';
 	import { enhance } from '$app/forms';
 	import DescriptionBox from '$components/Textarea/DescriptionBox.svelte';
+	import type { ActionData, PageData } from './$types';
+
+	export let form: ActionData;
 </script>
 
 <form method="post" use:enhance>

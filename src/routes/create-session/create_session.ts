@@ -35,13 +35,13 @@ export function displayValidationErrors(form: ActionData) {
 				case 'title':
 					errors.errorInTitle = { message: error.message };
 					break;
-				case 'added_exercise_ids':
+				case 'exerciseIds':
 					errors.errorInAddedExercises = { message: error.message };
 					break;
-				case 'expires_in_hours':
+				case 'expiresInHours':
 					errors.errorInExpiration = { message: error.message };
 					break;
-				case 'programming_language':
+				case 'languageIds':
 					errors.errorInLanguages = { message: error.message };
 					break;
 				default:
