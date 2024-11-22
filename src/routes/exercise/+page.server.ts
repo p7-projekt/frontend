@@ -8,10 +8,25 @@ import { debugExercise } from '$lib/debug';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const apiVersion = import.meta.env.VITE_API_VERSION_V1;
+const apiVersionV2 = import.meta.env.VITE_API_VERSION_V2;
+
+
 
 export const load: PageServerLoad = async ({ cookies, url }) => {
 	const access_token: string = cookies.get('access_token') || '';
 	const exerciseId = url.searchParams.get('exerciseid'); 
+		
+	const languagesResponse = await getLanguages(backendUrl, apiVersionV2, access_token);
+    let languages;
+
+    if (!languagesResponse.ok) {
+        debugExercise('Failed to fetch languages:', languagesResponse.status);
+        throw redirect(303, '/');
+    } else {
+        languages = await languagesResponse.json();
+        debugExercise('Languages:', languages);
+    }
+	
 	const response = await fetch(`${backendUrl}/${apiVersion}/exercises/${exerciseId}`, {
 		method: 'GET',
 		headers: {
@@ -19,6 +34,10 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 			Authorization: `Bearer ${access_token}`
 		}
 	});
+
+		
+	
+	
 
 	const responseBody = await response.text();
 	let jsonResponse;
@@ -53,9 +72,23 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 
 	return {
 		form,
-		exerciseData: jsonResponse, testTemplate
+		exerciseData: jsonResponse, testTemplate, languages
 	};
 };
+
+async function getLanguages (
+    backendUrl: string,
+    api_version: string,
+    access_token: string
+): Promise<Response> {
+    return await fetch(`${backendUrl}/${api_version}/languages`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${access_token}`
+        }
+    });
+}
 
 function convertFormData(formData, sessionId) {
 	return {

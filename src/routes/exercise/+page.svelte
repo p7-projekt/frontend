@@ -19,6 +19,8 @@
 	export let actionData: ActionData; 
 	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form;
 	export let exerciseData = data.exerciseData;
+	let languages = data.data.languages;
+
 	let selectedLanguage: string = '';
 
 	$: {
@@ -78,7 +80,7 @@
 
 					<div class="flex justify-between w-full items-center mx-8">
 						<div class="mx-8"  >
-							<LanguageSelection bind:selected={selectedLanguage}/>
+							<LanguageSelection bind:selected={selectedLanguage} {languages}/>
 						</div>
 						<div class="mx-8">
 							{#if $submitting}
