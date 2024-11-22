@@ -21,13 +21,13 @@
 	export let exerciseData = data.exerciseData;
 	let languages = data.languages;
 
-	let selectedLanguage: string = '';
+	let selectedLanguage: { languageId: number; language: string };
 
 	$: {
         if (selectedLanguage) {
             console.log(`Selected language changed to: ${selectedLanguage}`);
 			$formData.selectedLanguage = selectedLanguage;
-            $formData.codeText = setIDEBoilerPlate(data.testTemplate, selectedLanguage);
+            $formData.codeText = setIDEBoilerPlate(data.testTemplate, selectedLanguage.language);
         }  
     }
 

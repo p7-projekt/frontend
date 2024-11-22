@@ -105,7 +105,8 @@ async function getLanguages (
 function convertFormData(formData, sessionId) {
 	return {
 		solution: formData.codeText,
-		sessionId: sessionId
+		sessionId: sessionId,
+		languageId: formData.selectedLanguage.languageId,
 	};
 }
 
@@ -141,7 +142,7 @@ export const actions: Actions = {
 
 		const access_token = event.cookies.get('anon_token');
 
-		const response = await fetch(`${backendUrl}/${apiVersion}/exercises/${exerciseId}/submission`, {
+		const response = await fetch(`${backendUrl}/${apiVersionV2}/exercises/${exerciseId}/submission`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
