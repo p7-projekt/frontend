@@ -34,7 +34,7 @@ describe('Page Server Load function', () => {
 		};
 
 		const result = await load({ cookies: mockCookies, depends: mockDepends });
-		expect(result).toEqual({ instructor_exercises: null });
+		expect(result).toEqual({ instructor_exercises: null, programming_languages: null });
 	});
 
 	it('fetches instructor exercises successfully', async () => {
@@ -49,17 +49,29 @@ describe('Page Server Load function', () => {
 			{ id: 1, name: 'Exercise 1' },
 			{ id: 2, name: 'Exercise 2' }
 		];
+		const mockProgrammingLanguages = [
+			{ languageId: 1, language: 'haskell' },
+			{ languageId: 2, name: 'python' }
+		];
 
 		handleAuthenticatedRequest.mockResolvedValueOnce({
 			ok: true,
 			json: async () => mockInstructorExercises
 		});
 
+		handleAuthenticatedRequest.mockResolvedValueOnce({
+			ok: true,
+			json: async () => mockProgrammingLanguages
+		});
+
 		// Act
 		const result = await load({ cookies: mockCookies, depends: mockDepends });
 
 		// Assert
-		expect(result).toEqual({ instructor_exercises: mockInstructorExercises });
+		expect(result).toEqual({
+			instructor_exercises: mockInstructorExercises,
+			programming_languages: mockProgrammingLanguages
+		});
 	});
 });
 
@@ -96,14 +108,14 @@ describe('Page Server Actions function', () => {
 					code: 'invalid_type',
 					expected: 'array',
 					message: 'Required',
-					path: ['added_exercise_ids'],
+					path: ['exerciseIds'],
 					received: 'undefined'
 				}),
 				expect.objectContaining({
 					code: 'invalid_type',
 					expected: 'array',
 					message: 'Required',
-					path: ['programming_language'],
+					path: ['languageIds'],
 					received: 'undefined'
 				})
 			])
@@ -134,23 +146,23 @@ describe('Page Server Actions function', () => {
 			expect.arrayContaining([
 				expect.objectContaining({
 					code: 'invalid_type',
-					expected: 'string',
-					message: 'Expected string, received null',
-					path: ['expires_in_hours'],
-					received: 'null'
+					expected: 'number',
+					message: 'Expected number, received nan',
+					path: ['expiresInHours'],
+					received: 'nan'
 				}),
 				expect.objectContaining({
 					code: 'invalid_type',
 					expected: 'array',
 					message: 'Required',
-					path: ['added_exercise_ids'],
+					path: ['exerciseIds'],
 					received: 'undefined'
 				}),
 				expect.objectContaining({
 					code: 'invalid_type',
 					expected: 'array',
 					message: 'Required',
-					path: ['programming_language'],
+					path: ['languageIds'],
 					received: 'undefined'
 				})
 			])
@@ -183,7 +195,7 @@ describe('Page Server Actions function', () => {
 					code: 'invalid_type',
 					expected: 'array',
 					message: 'Required',
-					path: ['programming_language'],
+					path: ['languageIds'],
 					received: 'undefined'
 				})
 			])
@@ -197,7 +209,7 @@ describe('Page Server Actions function', () => {
 		formData.set('session-description', 'Test description');
 		formData.set('added-exercise-list', '1,2');
 		formData.set('selected-expiration', '2');
-		formData.set('selected-language', '["JavaScript"]');
+		formData.set('selected-language', '["1"]');
 
 		const mockCookies = {
 			get: vi.fn((name) => (name === 'access_token' ? 'valid_token' : 'refresh_token')),
@@ -207,7 +219,7 @@ describe('Page Server Actions function', () => {
 
 		// Mock the exercise IDs conversion and authenticated request
 		getExerciseIds.mockReturnValue([1, 2]);
-		getProgrammingLanguages.mockReturnValue(['JavaScript']);
+		getProgrammingLanguages.mockReturnValue([1]);
 		handleAuthenticatedRequest.mockResolvedValueOnce({ ok: true });
 
 		const request = { formData: async () => formData };
