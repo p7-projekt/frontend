@@ -7,7 +7,7 @@ import { formSchema } from './schema';
 import { debugCreateSession } from '$lib/debug';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
-const api_version = import.meta.env.VITE_API_VERSION;
+const api_version_v1 = import.meta.env.VITE_API_VERSION_V1;
 const api_version_v2 = import.meta.env.VITE_API_VERSION_V2;
 
 export const load: PageServerLoad = async ({ cookies }) => {
@@ -21,12 +21,12 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	}
 
 	const exercise_response = await handleAuthenticatedRequest(
-		(token) => fetchExerciseData(backendUrl, api_version, token),
+		(token) => fetchExerciseData(backendUrl, api_version_v1, token),
 		access_token,
 		refresh_token,
 		cookies
 	);
-
+	console.log(exercise_response);
 	let instructor_exercises;
 	if (exercise_response.ok) {
 		instructor_exercises = await exercise_response.json();
@@ -81,7 +81,7 @@ export const actions: Actions = {
 		debugCreateSession('Validation successful:', validation.data);
 
 		const response = await handleAuthenticatedRequest(
-			(token) => fetchCreateSession(backendUrl, api_version, token, new_session),
+			(token) => fetchCreateSession(backendUrl, api_version_v1, token, new_session),
 			access_token,
 			refresh_token,
 			cookies

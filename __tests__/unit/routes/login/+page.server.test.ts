@@ -1,6 +1,5 @@
 import { load, actions } from '$src//routes/login/+page.server';
 import { describe, it, expect, vi } from 'vitest';
-import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { redirect } from '@sveltejs/kit';
 
 vi.mock('sveltekit-superforms', () => ({
@@ -31,7 +30,7 @@ vi.mock('$lib/requestHandler', () => ({
 	handleAuthenticatedRequest: vi.fn()
 }));
 
-describe('login load function', () => {
+describe('login load function (useless)', () => {
 	it('form is returned', async () => {
 		const result = await load();
 		expect(result.form).toEqual({
@@ -47,20 +46,11 @@ describe('login load function', () => {
 describe('login action function', () => {
 	it('form is posted', async () => {
 		const event = {
-			request: {
-				formData: async () => {
-					const formData = new FormData();
-					formData.set('email', 'madabc@madabc.dk');
-					formData.set('password', 'madabc');
-					return formData;
-				}
-			},
 			cookies: {
 				get: vi.fn(),
 				set: vi.fn(),
 				delete: vi.fn()
-			},
-			url: new URL('http://localhost')
+			}
 		};
 
 		global.fetch = vi.fn(() =>

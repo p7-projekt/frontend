@@ -63,8 +63,8 @@ Create file '.env' with content:
 
 ```
 VITE_BACKEND_URL=http://localhost:5015
-VITE_API_VERSION = v1
-VITE_API_VERSION_V2 = v2
+VITE_API_VERSION_V1=v1
+VITE_API_VERSION_V2=v2
 ```
 
 # Set Environment variables for production
@@ -73,6 +73,7 @@ Create file '.env' with content:
 
 ```
 VITE_BACKEND_URL=http://api-service:8080
-VITE_API_VERSION=v1
-VITE_API_VERSION_V2 = v2
+VITE_API_VERSION_V1=v1
+VITE_API_VERSION_V2=v2
+
 ```

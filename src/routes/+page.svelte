@@ -6,6 +6,7 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { _deleteExercise } from './+page';
 	import { toast } from 'svelte-sonner';
+	import { Button } from '$lib/components/ui/button';
 
 	export let data: PageData;
 
@@ -57,7 +58,7 @@
 	}
 </script>
 
-{#if data.user}
+{#if data.user?.role === "Instructor"}
 	<div class="container pl-6 w-full text-[#333] grid grid-cols-1 gap-y-8">
 		<h1 class="text-2xl font-semibold col-span-full">Instructor Home</h1>
 		<div class="flex gap-x-12 h-full">
@@ -133,6 +134,26 @@
 		</div>
 	</div>
 {:else}
-	<h1>Welcome to SvelteKit</h1>
-	<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+	<div class="flex min-h-screen items-start pt-32 justify-center bg-gray-100">
+		<div class="w-full max-w-md p-8 bg-white shadow-md rounded-lg text-center">
+			<!-- Page Title -->
+			<h1 class="text-4xl font-bold mb-4 text-gray-800">SyntaxShift</h1>
+			<p class="text-lg text-gray-600 mb-8">Welcome to SyntaxShift!</p>
+			
+			<!-- Buttons -->
+			<div class="space-y-4">
+				{#if !data.user}
+				<Button href="/login" class="w-full bg-blue-500 hover:bg-blue-600 text-white">
+					Log In
+				</Button>
+				<Button href="/signup" class="w-full bg-green-500 hover:bg-green-600 text-white">
+					Sign Up
+				</Button>
+				{/if}
+				<Button href="/join" class="w-full bg-purple-500 hover:bg-purple-600 text-white">
+					Join a Room
+				</Button>
+			</div>
+		</div>
+	</div>
 {/if}
