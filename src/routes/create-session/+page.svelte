@@ -16,12 +16,22 @@
 
 	// Values for the select expiration time Select component
 	let expiration_select_title: string = 'Expires in';
-	let expiration_select_options: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+	let expiration_select_options: string[] = [
+		'1 hour',
+		'2 hours',
+		'3 hours',
+		'4 hours',
+		'5 hours',
+		'6 hours',
+		'7 hours',
+		'8 hours',
+		'9 hours',
+		'10 hours'
+	];
 	let expiration_selected_option: string = '';
-	let expiration_post_option_str = 'hour(s)';
 
 	// Values for the programming language Select component
-	let lang_select_title: string = 'Choose Language';
+	let lang_select_title: string = 'Choose Language(s)';
 	let lang_select_options: string[] = data.programming_languages.map(
 		(language: { languageId: number; language: string }) =>
 			language.language.charAt(0).toUpperCase() + language.language.slice(1)
@@ -45,7 +55,8 @@
 	}
 
 	function expirationOptionSelected(event) {
-		expiration_selected_option = event.detail.chosen_option;
+		expiration_selected_option = event.detail.chosen_option.split(' ')[0];
+		console.log(expiration_selected_option);
 	}
 
 	function langOptionSelected(event) {
@@ -98,7 +109,6 @@
 				<Select
 					select_title={expiration_select_title}
 					select_options={expiration_select_options}
-					post_option_str={expiration_post_option_str}
 					on:message={expirationOptionSelected}
 				></Select>
 				{#if error.errorInExpiration.message}

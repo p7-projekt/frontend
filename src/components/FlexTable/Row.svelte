@@ -1,7 +1,8 @@
 <script lang="ts">
 	export let nr_cols = 4;
+	export let cssClass = '';
 </script>
 
-<header class="grid grid-cols-{nr_cols} hover:bg-muted/50 rounded-md">
+<div class="grid grid-cols-{nr_cols} rounded-md {cssClass}">
 	<slot />
-</header>
+</div>
