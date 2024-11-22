@@ -26,7 +26,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
 		refresh_token,
 		cookies
 	);
-	console.log(exercise_response);
 	let instructor_exercises;
 	if (exercise_response.ok) {
 		instructor_exercises = await exercise_response.json();
