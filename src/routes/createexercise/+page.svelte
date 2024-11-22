@@ -59,7 +59,7 @@
 			input: { type: string; value: string }[];
 			output: { type: string; value: string }[];
 		};
-	} = data.testCaseSchema; 
+	} = data.testCaseSchema;
 
 	data.testCasesStore.subscribe((store) => {
 		$formData.testCases = store.testCases;
@@ -172,7 +172,7 @@
 							</Dialog.Root>
 
 							<TestCaseList
-								testCasesStore={data.testCasesStore} 
+								testCasesStore={data.testCasesStore}
 								bind:testCaseTemplate={testCaseSchema}
 							/>
 							{#if $errors.testCases && $errors.testCases._errors}<span class="invalid"

@@ -103,7 +103,9 @@
 						<AlertDialog.Footer>
 							<AlertDialog.Cancel on:click={() => (isDialogOpen = false)}>Cancel</AlertDialog.Cancel
 							>
-							<AlertDialog.Action on:click={clickDelete}>Delete</AlertDialog.Action>
+							<AlertDialog.Action class="bg-[#e63946]" on:click={clickDelete}
+								>Delete</AlertDialog.Action
+							>
 						</AlertDialog.Footer>
 					</AlertDialog.Content>
 				</AlertDialog.Root>

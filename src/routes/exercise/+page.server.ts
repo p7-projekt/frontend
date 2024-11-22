@@ -36,7 +36,6 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 	} else {
 		jsonResponse = {};
 	}
- 
 
 	const testTemplate = {
 		parameters: {
@@ -96,7 +95,6 @@ export const actions: Actions = {
 
 		// Convert form data to API format
 		const apiData = convertFormData(form.data, sessionId);
- 
 
 		const access_token = event.cookies.get('anon_token');
 
@@ -122,7 +120,6 @@ export const actions: Actions = {
 			} else {
 				resJSON = { detail: 'No response body' }; // Handle empty response body
 			}
- 
 
 			if (resJSON.isFailed) {
 				const errorMessages = resJSON.errors.map((err) => err.message).join('\n');

@@ -3,8 +3,8 @@ import { fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
-import { handleAuthenticatedRequest } from '$lib/requestHandler'; 
-import {convertFormData} from './helpers';
+import { handleAuthenticatedRequest } from '$lib/requestHandler';
+import { convertFormData } from './helpers';
 import { debugCreateExercise } from '$lib/debug.js';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -16,8 +16,8 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 
 	let form = await superValidate(zod(formSchema));
 	let exerciseData = null;
-	 
-	debugCreateExercise("loading");
+
+	debugCreateExercise('loading');
 
 	if (exerciseId) {
 		const response = await fetch(`${backendUrl}/${apiVersion}/exercises/${exerciseId}`, {
@@ -142,7 +142,7 @@ export const actions: Actions = {
 
 			if (resJSON.isFailed) {
 				const errorMessages = resJSON.errors.map((err) => err.message).join('\n');
-				debugCreateExercise('Create exercise failed:', e); 
+				debugCreateExercise('Create exercise failed:', e);
 				return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
 			} else {
 				debugCreateExercise('Successfull post:', resJSON);
