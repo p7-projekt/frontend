@@ -1,40 +1,17 @@
-<script lang="ts">
-	import type { PageData } from './$types';
-	import FlexTable from '$components/FlexTable/index';
-	import { Checkbox } from '$lib/components/ui/checkbox';
-	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
-	import Row from '$components/FlexTable/Row.svelte';
-
-	export let data: PageData;
-	const session: {
-		title: string;
-		description: string;
-		author: string;
-		sessionExpiresUtc: string;
-		exercises: { id: number; name: string; solved: boolean };
-	} = data.session;
-
-	let sessionId: string;
-	onMount(() => {
-		const url = new URL(window.location.href);
-		const pathSegments = url.pathname.split('/');
-		sessionId = pathSegments[pathSegments.length - 1];
-	});
-</script>
-
 <div class="container grid grid-cols-1 gap-y-8 w-full text-[#333] mt-3">
-	<h1 class=" text-3xl font-semibold col-span-full">{session.title}</h1>
+	<h1 class=" text-3xl font-semibold col-span-full">Random Classroom title</h1>
 
 	<div>
 		<h2 class="text-2xl font-semibold col-span-full mb-3">Description</h2>
 		<p>
-			{session.description}
+			Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit eligendi eius, maxime culpa
+			nemo fugit magnam quod placeat recusandae unde. Ipsa, magni odio sunt a deserunt molestias
+			dolorem eveniet placeat!
 		</p>
 	</div>
 	<section>
-		<h2 class="text-2xl font-semibold col-span-full mb-3">Exercises</h2>
-		<div class=" border-[1.5px]">
+		<h2 class="text-2xl font-semibold col-span-full mb-3">Sessions</h2>
+		<!-- <div class=" border-[1.5px]">
 			<FlexTable>
 				<FlexTable.Header nr_cols={3}>
 					<FlexTable.Column>Title</FlexTable.Column>
@@ -64,6 +41,6 @@
 					{/each}
 				</FlexTable.Body>
 			</FlexTable>
-		</div>
+		</div> -->
 	</section>
 </div>
