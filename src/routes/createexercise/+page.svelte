@@ -234,7 +234,9 @@
 						</div>
 					</div>
 					{#if selectedLanguage.language==''}<span class="invalid">Select a language to begin coding your solution</span>{/if}
-					{#if $errors.selectedLanguage}<span class="invalid">{$errors.selectedLanguage}</span>{/if}
+					{#if $errors.selectedLanguage && Object.keys($errors.selectedLanguage).length > 0 && JSON.stringify($errors.selectedLanguage) !== '{}'}
+						<span class="invalid">Select a language before proceeding!</span>
+					{/if}
 				</div>
 			</Resizable.Pane>
 		</Resizable.PaneGroup>

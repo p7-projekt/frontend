@@ -13,7 +13,7 @@
 	import { debugExercise } from '$lib/debug';
 	import { setIDEBoilerPlate } from '$lib/boilerplate';
 	import type { ActionData } from '../$types';
-	import TestResultsStudent from '$components/Tests/TestResultsStudent.svelte';
+	import TestResultsStudent from '$components/Tests/TestResultsStudent.svelte'; 
 
 	export let data: PageData;
 	export let actionData: ActionData; 
@@ -26,9 +26,10 @@
 	$: {
         if (selectedLanguage) {
             console.log(`Selected language changed to: ${selectedLanguage}`);
+            console.log(`Error print: ${$errors.selectedLanguage}`);
 			$formData.selectedLanguage = selectedLanguage;
-            $formData.codeText = setIDEBoilerPlate(data.testTemplate, selectedLanguage.language);
-        }  
+            $formData.codeText = setIDEBoilerPlate(data.testTemplate, selectedLanguage.language); 
+        }
     }
 
 	const form = superForm(superFormData, {
@@ -94,7 +95,9 @@
 						</div>
 					</div> 
 					{#if selectedLanguage==''}<span class="invalid">Select a language to begin coding!</span>{/if}
-					{#if $errors.selectedLanguage}<span class="invalid">{$errors.selectedLanguage}</span>{/if}
+					{#if $errors.selectedLanguage && Object.keys($errors.selectedLanguage).length > 0 && JSON.stringify($errors.selectedLanguage) !== '{}'}
+						<span class="invalid">Select a language before proceeding!</span>
+					{/if}
 			</form>
 		</Resizable.Pane>
 	</Resizable.PaneGroup>
