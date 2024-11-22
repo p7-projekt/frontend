@@ -1,15 +1,17 @@
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { formSchema } from './schema';
+import { debugCreateClassroom } from '$lib/debug';
 
 export const actions: Actions = {
 	default: async ({ request, cookies }) => {
 		const access_token = cookies.get('access_token') || '';
 		const refresh_token = cookies.get('refresh_token') || '';
-
 		const form = await request.formData();
 
 		const classroom_title = form.get('classroom-title');
 		const classroom_description = form.get('classroom-description');
+		console.log(classroom_title);
+		console.log(classroom_description);
 
 		// Create the data object to validate
 		const new_classroom = {
@@ -25,7 +27,7 @@ export const actions: Actions = {
 		}
 
 		// 	// Proceed with the validated data
-		// 	debugCreateSession('Validation successful:', validation.data);
+		debugCreateClassroom('Validation successful:', validation.data);
 
 		// 	const response = await handleAuthenticatedRequest(
 		// 		(token) => fetchCreateSession(backendUrl, api_version_v1, token, new_session),

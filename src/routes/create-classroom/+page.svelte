@@ -5,6 +5,8 @@
 	import type { ActionData, PageData } from './$types';
 
 	export let form: ActionData;
+
+	$: console.log(form?.errors[0].message);
 </script>
 
 <form method="post" use:enhance>
@@ -28,9 +30,9 @@
 
 		<div class="w-1/4">
 			<TitleInput input_name="classroom-title" />
-			<!-- {#if error.errorInTitle.message}
-				<p style="color:red; margin-bottom:0;">{error.errorInTitle.message}</p>
-			{/if} -->
+			{#if form?.errors}
+				<p style="color:red; margin-bottom:0;">{form?.errors[0].message}</p>
+			{/if}
 		</div>
 
 		<DescriptionBox customClass="w-3/4 h-[16rem]" description_name="classroom-description" />
