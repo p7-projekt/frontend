@@ -3,6 +3,7 @@ import type { PageServerLoad } from './$types';
 import { fetchExerciseData, fetchCreateSession } from '$lib/fetchRequests';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { getExerciseIds } from './create_session';
+import { debugCreateSession } from '$lib/debug';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const api_version = import.meta.env.VITE_API_VERSION_V1;
@@ -73,6 +74,9 @@ export const actions: Actions = {
 
 		if (response.ok) {
 			throw redirect(303, '/');
+		} else {
+			const responseBody = await response.text(); // Read the response as text
+            debugCreateSession('responseBody:', responseBody);
 		}
 	}
 };

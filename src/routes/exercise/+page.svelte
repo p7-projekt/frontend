@@ -19,7 +19,7 @@
 	export let actionData: ActionData; 
 	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form;
 	export let exerciseData = data.exerciseData;
-	let languages = data.data.languages;
+	let languages = data.languages;
 
 	let selectedLanguage: string = '';
 
