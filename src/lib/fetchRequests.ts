@@ -164,3 +164,30 @@ export async function fetchSpecificClassroom(
 		}
 	});
 }
+
+export async function fetchClassroomData(
+	backendUrl: string,
+	api_version: string,
+	access_token: string
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${access_token}`
+		}
+	});
+}
+
+export async function fetchDeleteClassroom(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	classroom_id: number
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms/${classroom_id}`, {
+		method: 'DELETE',
+		headers: {
+			Authorization: `Bearer ${access_token}`
+		}
+	});
+}

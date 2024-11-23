@@ -7,11 +7,14 @@
 	import { _deleteExercise } from './+page';
 	import { toast } from 'svelte-sonner';
 	import { Button } from '$lib/components/ui/button';
+	import ClassroomDisplay from './ClassroomDisplay.svelte';
 
 	export let data: PageData;
 
 	const sessionData = data.sessions;
 	const classrooms = data.classrooms;
+
+	console.log(classrooms);
 
 	let instructor_exercises: { id: number; content: string }[];
 	if (data.instructor_exercises) {
@@ -64,18 +67,21 @@
 		<h1 class="text-2xl font-semibold col-span-full">Instructor Dashboard</h1>
 		<div class="flex gap-x-12 h-full">
 			<main class="flex flex-1 flex-col w-1/2 h-[35.5rem]">
+				{#if classrooms}
+					<ClassroomDisplay classroom_list={classrooms} />
+				{/if}
 				{#if !data.sessions}
 					<div
 						class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
 					>
 						<div class="flex flex-col items-center gap-1 text-center">
-							<h3 class="text-2xl font-bold tracking-tight">You have no one-off session</h3>
+							<h3 class="text-2xl font-bold tracking-tight">One-off Sessions</h3>
 							<p class="text-muted-foreground text-sm">
-								You can start instructing as soon as you add a one-off session.
+								If you simply desire to create a temporary session for your students.
 							</p>
 							<button
 								class="bg-[#1f2937] text-white hover:bg-transparent hover:text-[#1f2937] ease-in-out duration-300 p-6 rounded-lg shadow-lg text-xl py-5 px-10 mt-8"
-								on:click={handleClickCreateSession}>Create one-off Session</button
+								on:click={handleClickCreateSession}>Create Session</button
 							>
 						</div>
 					</div>
