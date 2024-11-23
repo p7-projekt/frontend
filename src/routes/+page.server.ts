@@ -13,7 +13,8 @@ export const load: PageServerLoad = async ({ cookies, depends }) => {
 	if (!access_token && !refresh_token) {
 		return {
 			instructor_exercises: null,
-			sessions: null
+			sessions: null,
+			classrooms: null
 		};
 	}
 
@@ -44,6 +45,7 @@ export const load: PageServerLoad = async ({ cookies, depends }) => {
 	return {
 		instructor_exercises:
 			instructor_exercises && instructor_exercises.length > 0 ? instructor_exercises : null,
-		sessions: sessions && sessions.length > 0 ? sessions : null
+		sessions: sessions && sessions.length > 0 ? sessions : null,
+		classrooms: true
 	};
 };
