@@ -21,7 +21,8 @@ export function _validate_url_path(user: { name: string; role: string } | null, 
 		'/',
 		'/session',
 		'/create-session',
-		'/createexercise'
+		'/createexercise',
+		'/create-classroom'
 	];
 
 	if (user && urlp === '/login') {
