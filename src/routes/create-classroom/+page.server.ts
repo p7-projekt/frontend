@@ -1,6 +1,11 @@
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { formSchema } from './schema';
 import { debugCreateClassroom } from '$lib/debug';
+import { handleAuthenticatedRequest } from '$lib/requestHandler';
+import { fetchCreateClassroom } from '$lib/fetchRequests';
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const api_version = import.meta.env.VITE_API_VERSION_V2;
 
 export const actions: Actions = {
 	default: async ({ request, cookies }) => {
@@ -29,14 +34,14 @@ export const actions: Actions = {
 		// 	// Proceed with the validated data
 		debugCreateClassroom('Validation successful:', validation.data);
 
-		// 	const response = await handleAuthenticatedRequest(
-		// 		(token) => fetchCreateSession(backendUrl, api_version_v1, token, new_session),
-		// 		access_token,
-		// 		refresh_token,
-		// 		cookies
-		// 	);
-		// 	if (response.ok) {
-		// 		throw redirect(303, '/');
-		// 	}
+		const response = await handleAuthenticatedRequest(
+			(token) => fetchCreateClassroom(backendUrl, api_version, token, new_classroom),
+			access_token,
+			refresh_token,
+			cookies
+		);
+		if (response.ok) {
+			throw redirect(303, '/');
+		}
 	}
 };
