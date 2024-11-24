@@ -65,7 +65,7 @@
 	<div class="container pl-6 w-full text-[#333] grid grid-cols-1 gap-y-8">
 		<h1 class="text-2xl font-semibold col-span-full">Instructor Dashboard</h1>
 		<div class="flex gap-x-12 h-full">
-			<main class="flex flex-1 flex-col w-1/2 h-[35.5rem]">
+			<main class="flex flex-1 flex-col w-1/2 h-[36.5rem]">
 				<ScrollArea>
 					{#if classrooms}
 						<ClassroomDisplay classroom_list={classrooms} />
@@ -90,7 +90,7 @@
 					{/if}
 				</ScrollArea>
 			</main>
-			<div class=" h-[35.5rem] w-1/2">
+			<div class=" h-[36.5rem] w-1/2">
 				<ListBox
 					list={instructor_exercises}
 					list_title="Private"

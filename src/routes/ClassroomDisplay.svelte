@@ -41,7 +41,7 @@
 <Card.Header class="p-0 mb-2">
 	<Card.Title class="text-[1.25rem]">Classrooms</Card.Title>
 </Card.Header>
-<Card.Content class="p-0 mb-4">
+<Card.Content class="p-0 mb-2">
 	<ul class="grid grid-cols-2 gap-[2rem]">
 		{#each classroom_list.slice(0, visibleRows * columns) as classroom (classroom.id)}
 			<li>
@@ -72,7 +72,7 @@
 
 <!-- Show More Button -->
 {#if visibleRows * columns < classroom_list.length}
-	<div class="mt-2 text-center mb-2">
+	<div class=" text-center mb-0">
 		<button on:click={showMore} class="py-2 px-4 bg-gray-200 rounded hover:bg-gray-300">
 			...
 		</button>
