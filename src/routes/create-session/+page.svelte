@@ -54,7 +54,6 @@
 
 	function expirationOptionSelected(event) {
 		expiration_selected_option = event.detail.chosen_option.split(' ')[0];
-		console.log(expiration_selected_option);
 	}
 
 	function langOptionSelected(event) {

@@ -15,8 +15,6 @@ export const actions: Actions = {
 
 		const classroom_title = form.get('classroom-title');
 		const classroom_description = form.get('classroom-description');
-		console.log(classroom_title);
-		console.log(classroom_description);
 
 		// Create the data object to validate
 		const new_classroom = {

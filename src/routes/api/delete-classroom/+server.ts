@@ -20,7 +20,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		refresh_token,
 		cookies
 	);
-	console.log(response);
 	// Ensure that a response is returned in all cases
 	if (response.ok) {
 		return json({ message: 'Classroom deleted' }, { status: 200 });

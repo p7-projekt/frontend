@@ -6,7 +6,6 @@
 
 	export let form: ActionData;
 
-	$: console.log(form?.errors[0].message);
 </script>
 
 <form method="post" use:enhance>

@@ -8,13 +8,12 @@
 	import { toast } from 'svelte-sonner';
 	import { Button } from '$lib/components/ui/button';
 	import ClassroomDisplay from './ClassroomDisplay.svelte';
+	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
 
 	export let data: PageData;
 
 	const sessionData = data.sessions;
 	const classrooms = data.classrooms;
-
-	console.log(classrooms);
 
 	let instructor_exercises: { id: number; content: string }[];
 	if (data.instructor_exercises) {
@@ -67,27 +66,29 @@
 		<h1 class="text-2xl font-semibold col-span-full">Instructor Dashboard</h1>
 		<div class="flex gap-x-12 h-full">
 			<main class="flex flex-1 flex-col w-1/2 h-[35.5rem]">
-				{#if classrooms}
-					<ClassroomDisplay classroom_list={classrooms} />
-				{/if}
-				{#if !data.sessions}
-					<div
-						class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
-					>
-						<div class="flex flex-col items-center gap-1 text-center">
-							<h3 class="text-2xl font-bold tracking-tight">One-off Sessions</h3>
-							<p class="text-muted-foreground text-sm">
-								If you simply desire to create a temporary session for your students.
-							</p>
-							<button
-								class="bg-[#1f2937] text-white hover:bg-transparent hover:text-[#1f2937] ease-in-out duration-300 p-6 rounded-lg shadow-lg text-xl py-5 px-10 mt-8"
-								on:click={handleClickCreateSession}>Create Session</button
-							>
+				<ScrollArea>
+					{#if classrooms}
+						<ClassroomDisplay classroom_list={classrooms} />
+					{/if}
+					{#if !data.sessions}
+						<div
+							class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
+						>
+							<div class="flex flex-col items-center gap-1 text-center">
+								<h3 class="text-2xl font-bold tracking-tight">One-off Sessions</h3>
+								<p class="text-muted-foreground text-sm">
+									If you simply desire to create a temporary session for your students.
+								</p>
+								<button
+									class="bg-[#1f2937] text-white hover:bg-transparent hover:text-[#1f2937] ease-in-out duration-300 p-6 rounded-lg shadow-lg text-xl py-5 px-10 mt-8"
+									on:click={handleClickCreateSession}>Create Session</button
+								>
+							</div>
 						</div>
-					</div>
-				{:else}
-					<SessionDisplay {sessionData} />
-				{/if}
+					{:else}
+						<SessionDisplay {sessionData} />
+					{/if}
+				</ScrollArea>
 			</main>
 			<div class=" h-[35.5rem] w-1/2">
 				<ListBox

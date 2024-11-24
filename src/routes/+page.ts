@@ -77,3 +77,8 @@ export async function _deleteClassroom(
 		};
 	}
 }
+
+export function _getDescriptionExcerpt(description: string) {
+	if (!description) return ''; // Handle empty or null input
+	return description.length > 250 ? description.substring(0, 250) + '...' : description;
+}
