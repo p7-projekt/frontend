@@ -2,26 +2,48 @@
 	import FlexTable from '$components/FlexTable';
 	import Row from '$components/FlexTable/Row.svelte';
 	import Select from '$components/Select/Select.svelte';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import { _deleteClassroomSession } from './classroom.ts';
 	import type { PageData } from './$types';
+	import { toast } from 'svelte-sonner';
+	import { invalidate } from '$app/navigation';
 
 	export let data: PageData;
 
-	const classroom: {
+	let classroom: {
 		id: number;
 		title: string;
 		description: string;
 		roomcode: string;
 		isOpen: boolean;
+		sessions: { id: number; title: string; active: boolean }[];
 	} = data.classroom;
 	console.log(classroom);
 
 	let activation_select_title: string = 'Inactive';
 	let activation_select_options: string[] = ['Active', 'Inactive'];
 	let selected_activation_status: string = 'Inactive';
+	let isDialogOpen = false;
 
 	function activationStatusSelected(event) {
 		selected_activation_status = event.detail.chosen_option;
 	}
+
+	function openDeleteDialog(event) {
+		isDialogOpen = true;
+	}
+
+	const clickDelete = async (session_id) => {
+		const result = await _deleteClassroomSession(session_id, classroom);
+
+		if (result) {
+			({ classroom, isDialogOpen } = result);
+			toast('Session Deleted');
+			if (classroom.sessions.length === 0) {
+				invalidate('data:classroom');
+			}
+		}
+	};
 </script>
 
 <div class="container grid grid-cols-1 gap-y-8 w-full text-[#333] mt-3">
@@ -50,7 +72,7 @@
 				<FlexTable.Body>
 					{#each classroom.sessions as session}
 						<FlexTable.Row nr_cols={2} cssClass="mb-6 mt-6">
-							<FlexTable.Column cssClass="pr-[36rem]">
+							<FlexTable.Column>
 								<a href="#">
 									<h2 class="text-[1.375rem] mb-2 font-medium relative text-[#1971c2]">
 										{session.title}
@@ -70,7 +92,7 @@
 										value={selected_activation_status}
 									/>
 								</div>
-								<button class="hover:bg-[#f4f5f5] p-2 rounded-md">
+								<button type="button" class="hover:bg-[#f4f5f5] p-2 rounded-md">
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
 										fill="none"
@@ -86,7 +108,11 @@
 										/>
 									</svg>
 								</button>
-								<button class="hover:bg-[#f4f5f5] p-2 rounded-md">
+								<button
+									type="button"
+									class="hover:bg-[#f4f5f5] p-2 rounded-md"
+									on:click={openDeleteDialog}
+								>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
 										fill="none"
@@ -104,27 +130,28 @@
 								</button>
 							</FlexTable.Column>
 						</FlexTable.Row>
-					{/each}
-					<!-- {#each session.exercises as exercise (exercise.id)}
-							<FlexTable.Row nr_cols={3}>
-								<FlexTable.Column>{exercise.name}</FlexTable.Column>
-								<FlexTable.Column>
-									<Checkbox
-										checked={exercise.solved}
-										disabled
-										style="cursor: default !important; opacity: 1;"
-									/>
-								</FlexTable.Column>
-								<FlexTable.Column>
-									<button
-										on:click={() => goto(`/exercise?exerciseid=${exercise.id}&seshid=${sessionId}`)}
-										class="text-[1.125rem] px-4 py-2 text-sm rounded-sm font-bold text-white border-2 border-[#1f2937] bg-[#1f2937] hover:bg-transparent hover:text-[#1f2937]"
+						<!-- Create a alert dialog that forces user to confirm deletion of exercise -->
+						<AlertDialog.Root open={isDialogOpen} on:close={() => (isDialogOpen = false)}>
+							<AlertDialog.Content>
+								<AlertDialog.Header>
+									<AlertDialog.Title
+										>Are you sure you want to delete {session.title}?</AlertDialog.Title
 									>
-										Code
-									</button>
-								</FlexTable.Column>
-							</FlexTable.Row>
-						{/each} -->
+									<AlertDialog.Description>
+										This action cannot be undone. This will permanently delete the session.
+									</AlertDialog.Description>
+								</AlertDialog.Header>
+								<AlertDialog.Footer>
+									<AlertDialog.Cancel on:click={() => (isDialogOpen = false)}
+										>Cancel</AlertDialog.Cancel
+									>
+									<AlertDialog.Action class="bg-[#e63946]" on:click={() => clickDelete(session.id)}
+										>Delete</AlertDialog.Action
+									>
+								</AlertDialog.Footer>
+							</AlertDialog.Content>
+						</AlertDialog.Root>
+					{/each}
 				</FlexTable.Body>
 			</FlexTable>
 		</div>

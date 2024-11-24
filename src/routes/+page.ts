@@ -51,6 +51,7 @@ export async function _deleteSession(
 		};
 	}
 }
+
 export async function _deleteClassroom(
 	classroomID: number | null,
 	classrooms: {

@@ -1,3 +1,3 @@
-<div class="border-b rounded-md">
+<div class="rounded-md">
 	<slot />
 </div>

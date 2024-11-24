@@ -37,22 +37,22 @@
 		<div class=" border-[1.5px]">
 			<FlexTable>
 				<FlexTable.Header nr_cols={3}>
-					<FlexTable.Column>Title</FlexTable.Column>
-					<FlexTable.Column>Completed</FlexTable.Column>
-					<FlexTable.Column />
+					<FlexTable.Column cssClass="justify-center">Title</FlexTable.Column>
+					<FlexTable.Column cssClass="justify-center">Completed</FlexTable.Column>
+					<FlexTable.Column cssClass="justify-center" />
 				</FlexTable.Header>
 				<FlexTable.Body>
 					{#each session.exercises as exercise (exercise.id)}
 						<FlexTable.Row nr_cols={3}>
-							<FlexTable.Column>{exercise.name}</FlexTable.Column>
-							<FlexTable.Column>
+							<FlexTable.Column cssClass="justify-center">{exercise.name}</FlexTable.Column>
+							<FlexTable.Column cssClass="justify-center">
 								<Checkbox
 									checked={exercise.solved}
 									disabled
 									style="cursor: default !important; opacity: 1;"
 								/>
 							</FlexTable.Column>
-							<FlexTable.Column>
+							<FlexTable.Column cssClass="justify-center">
 								<button
 									on:click={() => goto(`/exercise?exerciseid=${exercise.id}&seshid=${sessionId}`)}
 									class="text-[1.125rem] px-4 py-2 text-sm rounded-sm font-bold text-white border-2 border-[#1f2937] bg-[#1f2937] hover:bg-transparent hover:text-[#1f2937]"
