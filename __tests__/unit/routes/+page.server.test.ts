@@ -23,15 +23,34 @@ describe('Page Server Load function', () => {
 		};
 
 		const result = await load({ cookies: mockCookies, depends: mockDepends });
-		expect(result).toEqual({ instructor_exercises: null, sessions: null });
+		expect(result).toEqual({ classrooms: null, instructor_exercises: null, sessions: null });
 	});
 
-	it('successfully fetches session but not instructor exercise data', async () => {
+	it('successfully fetches session and classroom but not instructor exercise data', async () => {
 		const mockCookies = {
 			get: vi.fn((name) => (name === 'access_token' ? 'valid_token' : 'refresh_token')),
 			set: vi.fn(),
 			delete: vi.fn()
 		};
+
+		const mockClassroomData = [
+			{
+				id: 1,
+				title: 'My first classroom',
+				description: 'This is a description',
+				roomcode: '8927DB',
+				isOpen: false,
+				sessions: [{ id: 7, title: 'My first classroom session', active: false }]
+			},
+			{
+				id: 2,
+				title: 'My second classroom',
+				description: 'This is a description',
+				roomcode: 'lol123',
+				isOpen: true,
+				sessions: [{ id: 7, title: 'My first classroom session', active: false }]
+			}
+		];
 
 		const mockSessionData = [
 			{
@@ -44,17 +63,19 @@ describe('Page Server Load function', () => {
 
 		handleAuthenticatedRequest
 			.mockResolvedValueOnce({ ok: false })
-			.mockResolvedValueOnce({ ok: true, json: async () => mockSessionData });
+			.mockResolvedValueOnce({ ok: true, json: async () => mockSessionData })
+			.mockResolvedValueOnce({ ok: true, json: async () => mockClassroomData });
 
 		const result = await load({ cookies: mockCookies, depends: mockDepends });
 
 		expect(result).toEqual({
+			classrooms: mockClassroomData,
 			instructor_exercises: null,
 			sessions: mockSessionData
 		});
 	});
 
-	it('successfully fetches instructor exercise data but not session data', async () => {
+	it('successfully fetches instructor exercise data but not session and classroom data', async () => {
 		const mockCookies = {
 			get: vi.fn((name) => (name === 'access_token' ? 'valid_token' : 'refresh_token')),
 			set: vi.fn(),
@@ -78,6 +99,7 @@ describe('Page Server Load function', () => {
 				ok: true,
 				json: async () => mockInstructorExerciseData
 			})
+			.mockResolvedValueOnce({ ok: false })
 			.mockResolvedValueOnce({ ok: false });
 
 		// Call the load function with mock cookies and depends
@@ -85,6 +107,7 @@ describe('Page Server Load function', () => {
 
 		// Verify that the instructor exercises are returned and sessions are null
 		expect(result).toEqual({
+			classrooms: null,
 			instructor_exercises: mockInstructorExerciseData,
 			sessions: null
 		});

@@ -50,7 +50,7 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 	}
 
 	// if related to classroom return classroom
-	const classroom_id = url.searchParams.get('classroom');
+	const classroom_id = url.searchParams.get('classroom') || null;
 	return {
 		instructor_exercises,
 		programming_languages,
@@ -121,7 +121,6 @@ export const actions: Actions = {
 			return fail(400, { errors: validation.error.errors, session_description });
 		}
 		debugCreateSession('Validation successful for classroom session:', validation.data);
-
 		const response = await handleAuthenticatedRequest(
 			(token) =>
 				fetchCreateClassroomSession(
@@ -135,7 +134,6 @@ export const actions: Actions = {
 			refresh_token,
 			cookies
 		);
-		console.log(response);
 		if (response.ok) {
 			throw redirect(303, `/classroom/${classroom_id}`);
 		}
