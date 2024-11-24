@@ -47,6 +47,8 @@
 			}))
 		: [];
 
+	const classroom_id = data.classroom_id ? data.classroom_id : null;
+
 	function handleMessage(event) {
 		receive_message = event.detail;
 		added_exercise_list = receive_message.added_exercise_list;
@@ -74,7 +76,7 @@
 	$: error = displayValidationErrors(form);
 </script>
 
-<form method="post" use:enhance>
+<form method="post" action={!classroom_id ? '?/oneOffSession' : '?/classroomSession'} use:enhance>
 	<div class="container grid grid-cols-2 gap-6 pl-6 w-full text-[#333] mt-3">
 		<div></div>
 		<div class="flex justify-end cursor-pointer">
@@ -102,18 +104,22 @@
 
 		<DescriptionBox description_name="session-description" />
 		<div class="grid grid-cols-2">
-			<div class="grid grid-rows-[min-content] gap-1.5">
-				<Label class="text-base pl-1" for="expiration-time">Expiration Time</Label>
-				<Select
-					select_title={expiration_select_title}
-					select_options={expiration_select_options}
-					on:message={expirationOptionSelected}
-				></Select>
-				{#if error.errorInExpiration.message}
-					<p style="color:red; margin-bottom:0;">{error.errorInExpiration.message}</p>
-				{/if}
-				<input type="hidden" name="selected-expiration" value={expiration_selected_option} />
-			</div>
+			{#if !classroom_id}
+				<div class="grid grid-rows-[min-content] gap-1.5">
+					<Label class="text-base pl-1" for="expiration-time">Expiration Time</Label>
+					<Select
+						select_title={expiration_select_title}
+						select_options={expiration_select_options}
+						on:message={expirationOptionSelected}
+					></Select>
+					{#if error.errorInExpiration.message}
+						<p style="color:red; margin-bottom:0;">{error.errorInExpiration.message}</p>
+					{/if}
+					<input type="hidden" name="selected-expiration" value={expiration_selected_option} />
+				</div>
+			{:else}
+				<input type="hidden" name="classroom-id" value={classroom_id} />
+			{/if}
 			<div class="grid grid-rows-[min-content] gap-1.5">
 				<Label class="text-base pl-1" for="programming-language">Programming Language</Label>
 				<Select

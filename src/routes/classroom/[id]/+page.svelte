@@ -34,7 +34,16 @@
 		</p>
 	</div>
 	<section>
-		<h2 class="text-2xl font-semibold col-span-full mb-3">Sessions</h2>
+		<div class="flex justify-between">
+			<h2 class="text-2xl font-semibold mb-3">Sessions</h2>
+			<div class="flex justify-end items-end flex-col mb-1.5">
+				<a
+					href="/create-session?classroom={classroom.id}"
+					class=" text-[1.125rem] px-2 py-1 text-sm rounded-sm text-white border-2 border-[#1f2937] bg-[#1f2937] transition-all ease-in-out duration-300 hover:bg-transparent hover:text-[#1f2937]"
+					>Create Session</a
+				>
+			</div>
+		</div>
 		<div class="justify-between">
 			<FlexTable>
 				<FlexTable.Header />
@@ -43,7 +52,9 @@
 						<FlexTable.Row nr_cols={2} cssClass="mb-6 mt-6">
 							<FlexTable.Column cssClass="pr-[36rem]">
 								<a href="#">
-									<h2 class="text-[1.375rem] mb-2 font-medium relative text-[#1971c2]">Title</h2>
+									<h2 class="text-[1.375rem] mb-2 font-medium relative text-[#1971c2]">
+										{session.title}
+									</h2>
 								</a>
 							</FlexTable.Column>
 							<FlexTable.Column cssClass="gap-[2rem] pl-[22rem]">

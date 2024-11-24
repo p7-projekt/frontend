@@ -38,14 +38,16 @@
 	};
 </script>
 
-<Card.Header class="p-0 mb-2">
+<Card.Header class="p-0  mb-2">
 	<Card.Title class="text-[1.25rem]">Classrooms</Card.Title>
 </Card.Header>
 <Card.Content class="p-0 mb-2">
 	<ul class="grid grid-cols-2 gap-[2rem]">
 		{#each classroom_list.slice(0, visibleRows * columns) as classroom (classroom.id)}
 			<li>
-				<div class="h-[19rem] w-full border pb-[0.25rem] pt-[2.25rem] px-[0.75rem] relative">
+				<div
+					class="h-[19rem] w-full border pb-[0.25rem] pt-[2.25rem] px-[0.75rem] relative overflow-hidden h-full"
+				>
 					<div>
 						<a href="/classroom/{classroom.id}">
 							<h2 class="text-[1.25rem] mb-2 font-medium">{classroom.title}</h2>

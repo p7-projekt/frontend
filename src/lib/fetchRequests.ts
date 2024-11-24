@@ -191,3 +191,25 @@ export async function fetchDeleteClassroom(
 		}
 	});
 }
+
+export async function fetchCreateClassroomSession(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	new_session: {
+		title: string;
+		description: string;
+		exerciseIds: number[];
+		languageIds: number[];
+	},
+	classroom_id: number
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms/${classroom_id}/session`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${access_token}`
+		},
+		body: JSON.stringify(new_session)
+	});
+}
