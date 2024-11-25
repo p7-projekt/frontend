@@ -22,6 +22,7 @@ export function _validate_url_path(user: { name: string; role: string } | null, 
 		'/session',
 		'/create-session',
 		'/createexercise',
+		'/dashboard',
 		'/create-classroom'
 	];
 
@@ -38,7 +39,7 @@ export function _validate_url_path(user: { name: string; role: string } | null, 
 			throw redirect(303, '/');
 		}
 	} else if (user.role === 'Instructor') {
-		if (!allowedInstructorRoutes.includes(urlp) && !urlp.startsWith('/classroom')) {
+		if (!allowedInstructorRoutes.includes(urlp) && !urlp.startsWith('/classroom') && !urlp.endsWith('/dashboard'))  {
 			throw redirect(303, '/');
 		}
 	}

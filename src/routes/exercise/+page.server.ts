@@ -17,8 +17,6 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 	const access_token: string = cookies.get('access_token') || '';
 	const exerciseId = url.searchParams.get('exerciseid'); 
 		
-
-	// Virker ikke endnu for anynom brugere har ikke adhanh til languages endpointet
 	// const languagesResponse = await getLanguages(backendUrl, apiVersionV2, access_token);
 	let languages;
 	availableLanguages.subscribe(value => {
