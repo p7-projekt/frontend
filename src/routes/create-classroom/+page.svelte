@@ -5,7 +5,6 @@
 	import type { ActionData, PageData } from './$types';
 
 	export let form: ActionData;
-
 </script>
 
 <form method="post" use:enhance>

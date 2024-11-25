@@ -11,7 +11,7 @@ vi.mock('$lib/fetchRequests', () => ({
 	fetchUserData: vi.fn()
 }));
 vi.mock('$lib/getrole', () => ({
-    get_user_role: vi.fn()
+	get_user_role: vi.fn()
 }));
 
 global.fetch = vi.fn();
@@ -37,7 +37,7 @@ describe('Layout Server Load Function', () => {
 		};
 
 		const mockUserData = { name: 'John Doe' };
-		get_user_role.mockReturnValueOnce("Student");
+		get_user_role.mockReturnValueOnce('Student');
 		fetchUserData.mockResolvedValueOnce({ ok: true, json: async () => mockUserData });
 
 		const result = await load({ cookies: mockCookies });
@@ -55,7 +55,7 @@ describe('Layout Server Load Function', () => {
 		};
 
 		const mockUserData = { name: 'Jane Doe' };
-		get_user_role.mockReturnValueOnce("Student");
+		get_user_role.mockReturnValueOnce('Student');
 		fetchUserData
 			.mockResolvedValueOnce({ ok: false, status: 401 })
 			.mockResolvedValueOnce({ ok: true, json: async () => mockUserData });
@@ -74,7 +74,7 @@ describe('Layout Server Load Function', () => {
 		expect(result).toEqual({ user: { name: 'Jane Doe', role: 'Student' } });
 		expect(fetch).toHaveBeenCalledWith(`${backendUrl}/refresh`, expect.any(Object));
 		expect(fetchUserData).toHaveBeenCalledWith(backendUrl, api_version, 'new_access_token');
-		
+
 		expect(mockCookies.set).toHaveBeenCalledWith(
 			'access_token',
 			'new_access_token',
