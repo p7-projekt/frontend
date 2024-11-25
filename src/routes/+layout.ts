@@ -38,7 +38,7 @@ export function _validate_url_path(user: { name: string; role: string } | null, 
 			throw redirect(303, '/');
 		}
 	} else if (user.role === 'Instructor') {
-		if (!allowedInstructorRoutes.includes(urlp)) {
+		if (!allowedInstructorRoutes.includes(urlp) && !urlp.startsWith('/classroom')) {
 			throw redirect(303, '/');
 		}
 	}
