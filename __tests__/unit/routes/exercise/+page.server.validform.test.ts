@@ -1,4 +1,4 @@
-import { load, actions } from '../../../../src/routes/exercise/+page.server';
+import { load, actions } from '$src//routes/exercise/+page.server';
 import { describe, it, expect, vi } from 'vitest';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { redirect } from '@sveltejs/kit';
@@ -7,19 +7,15 @@ vi.mock('sveltekit-superforms', () => ({
 	setError: vi.fn(),
 	superValidate: vi.fn(() => ({
 		valid: true,
-		data: {
-			title: 'Valid Title',
-			description: 'Valid Description',
+		data: { 
 			codeText: 'Valid Code',
-			testCases: [
-				{
+			selectedLanguage:  {
 					parameters: {
-						input: [{ type: 'string', value: 'input1' }],
-						output: [{ type: 'string', value: 'output1' }]
+						languageId: 1,
+						language: "Haskell"
 					},
 					publicVisible: true
-				}
-			]
+				} 
 		}
 	}))
 }));
@@ -37,75 +33,69 @@ vi.mock('$lib/requestHandler', () => ({
 	handleAuthenticatedRequest: vi.fn()
 }));
 
+
 describe('Page Server Load function', () => {
-	const mockDepends = vi.fn();
+    it('Loads exercise data correctly if url parameter is provided', async () => {
+        // Arrange
+        const cookies = {
+            get: vi.fn().mockReturnValue('mock_access_token')
+        };
+        const url = {
+            searchParams: {
+                get: vi.fn().mockReturnValue('mock_exercise_id')
+            }
+        };
 
-	it('Loads exercise data correctly if url parameter is provided', async () => {
-		// Arrange
-		const mockCookies = {
-			get: vi.fn((name) => (name === 'access_token' ? 'valid_token' : 'refresh_token')),
-			set: vi.fn(),
-			delete: vi.fn()
-		};
-
-		const mockUrl = {
-			searchParams: {
-				get: vi.fn((param) => (param === 'exerciseid' ? '1' : null))
-			}
-		};
-
-		const mockExerciseData = {
-			title: 'Exercise 1',
-			description: 'Description 1',
-			solution: 'Solution 1',
-			testCases: [
-				{
-					inputParams: ['input1'],
-					outputParams: ['output1'],
-					publicVisible: true
-				}
-			],
-			inputParameterType: ['string'],
-			outputParamaterType: ['string']
-		};
-
-		global.fetch = vi.fn(() =>
+        global.fetch = vi.fn(() =>
 			Promise.resolve({
 				ok: true,
-				text: () => Promise.resolve(JSON.stringify(mockExerciseData))
+				json: () =>
+					Promise.resolve({
+						title: 'Exercise 1',
+						description: 'Description 1',
+						inputParameterType: ['string'],
+						outputParamaterType: ['string'],
+						testCases: [
+							{
+								inputParams: ['input1'],
+								outputParams: ['output1'],
+								publicVisible: true
+							}
+						]
+					}),
+				text: () => Promise.resolve(JSON.stringify({
+					title: 'Exercise 1',
+					description: 'Description 1',
+					inputParameterType: ['string'],
+					outputParamaterType: ['string'],
+					testCases: [
+						{
+							inputParams: ['input1'],
+							outputParams: ['output1'],
+							publicVisible: true
+						}
+					]
+				},))
+				
 			})
 		);
 
-		// Act
-		const result = await load({ url: mockUrl, cookies: mockCookies, depends: mockDepends });
+        // Act
+        const result = await load({ cookies, url });
 
-		// Assert
+        // Assert
 		expect(result).toEqual({
 			form: {
 				valid: true,
 				data: {
-					title: 'Valid Title',
-					description: 'Valid Description',
-					codeText: 'solution :: String -> String\nsolution input0 = output0',
-					testCases: [
-						{
-							parameters: {
-								input: [
-									{
-										type: 'string',
-										value: 'input1'
-									}
-								],
-								output: [
-									{
-										type: 'string',
-										value: 'output1'
-									}
-								]
-							},
-							publicVisible: true
-						}
-					]
+					codeText: 'Valid Code',
+					selectedLanguage: {
+						parameters: {
+							languageId: 1,
+							language: 'Haskell'
+						},
+						publicVisible: true
+					}
 				}
 			},
 			exerciseData: {
@@ -120,9 +110,26 @@ describe('Page Server Load function', () => {
 						publicVisible: true
 					}
 				]
+			},
+			languages: [],
+			testTemplate: {
+				parameters: {
+					input: [
+						{
+							type: 'string',
+							value: 'input1'
+						}
+					],
+					output: [
+						{
+							type: 'string',
+							value: 'output1'
+						}
+					]
+				}
 			}
 		});
-	});
+    });
 });
 
 describe('Page Server Actions function', () => {
@@ -141,11 +148,6 @@ describe('Page Server Actions function', () => {
 			get: vi.fn((name) => (name === 'anon_token' ? 'valid_token' : 'refresh_token')),
 			set: vi.fn(),
 			delete: vi.fn()
-		};
-
-		const mockResponse = {
-			ok: true,
-			text: vi.fn().mockResolvedValueOnce(JSON.stringify({ isFailed: false }))
 		};
 
 		global.fetch = vi.fn(() =>

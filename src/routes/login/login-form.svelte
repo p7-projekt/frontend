@@ -14,26 +14,39 @@
 	const { form: formData, enhance, errors } = form;
 </script>
 
-<form method="POST" use:enhance>
-	<!-- Email Field -->
-	<Form.Field {form} name="email">
-		<Form.Control let:attrs>
-			<Form.Label>Email</Form.Label>
-			<Input {...attrs} bind:value={$formData.email} />
-		</Form.Control>
-		<Form.Description>Please enter your email address.</Form.Description>
-		<Form.FieldErrors />
-	</Form.Field>
+<div class="flex min-h-screen items-start pt-16 justify-center bg-gray-100">
+	<!-- Outer wrapper to center both the title and form together -->
+	<div class="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
+		<!-- Application Title -->
+		<h1 class="text-2xl font-bold text-center mb-6">Sign in to SyntaxShift!</h1>
 
-	<!-- Password Field -->
-	<Form.Field {form} name="password">
-		<Form.Control let:attrs>
-			<Form.Label>Password</Form.Label>
-			<Input type="password" {...attrs} bind:value={$formData.password} />
-		</Form.Control>
-		<Form.Description>Enter your password to log in.</Form.Description>
-		<Form.FieldErrors />
-	</Form.Field>
-	{#if $errors.email}<span class="invalid">{$errors.email}</span>{/if}
-	<Form.Button>Login</Form.Button>
-</form>
+		<!-- Form -->
+		<form method="POST" use:enhance>
+			<!-- Email Field -->
+			<Form.Field {form} name="email">
+				<Form.Control let:attrs>
+					<Form.Label class="!text-current">Email</Form.Label>
+					<Input placeholder="Enter your email address." {...attrs} bind:value={$formData.email} />
+				</Form.Control>
+				<Form.FieldErrors />
+				<br />
+			</Form.Field>
+
+			<!-- Password Field -->
+			<Form.Field {form} name="password">
+				<Form.Control let:attrs>
+					<Form.Label class="!text-current">Password</Form.Label>
+					<Input
+						placeholder="Enter your password."
+						type="password"
+						{...attrs}
+						bind:value={$formData.password}
+					/>
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+			<!--{#if $errors.email}<span class="invalid">{$errors.email}</span>{/if}-->
+			<Form.Button class="w-full mt-4">Login</Form.Button>
+		</form>
+	</div>
+</div>

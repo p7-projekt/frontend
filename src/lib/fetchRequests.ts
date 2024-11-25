@@ -4,7 +4,13 @@ export async function fetchCreateSession(
 	backendUrl: string,
 	api_version: string,
 	access_token: string,
-	new_session: { title: string; description: string; expiresInHours: number; exerciseIds: number[] }
+	new_session: {
+		title: string;
+		description: string;
+		expiresInHours: number;
+		exerciseIds: number[];
+		languageIds: number[];
+	}
 ): Promise<Response> {
 	return await fetch(`${backendUrl}/${api_version}/sessions`, {
 		method: 'POST',
@@ -111,4 +117,113 @@ export function get_userID(access_token: string) {
 		console.error('Invalid token:', error.message);
 		return null;
 	}
+}
+
+export async function fetchLanguageData(
+	backendUrl: string,
+	api_version: string,
+	access_token: string
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/languages`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${access_token}`
+		}
+	});
+}
+
+export async function fetchCreateClassroom(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	new_classroom: {
+		title: string;
+		description: string;
+	}
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${access_token}`
+		},
+		body: JSON.stringify(new_classroom)
+	});
+}
+
+export async function fetchSpecificClassroom(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	classroom_id: number
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms/${classroom_id}`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${access_token}`
+		}
+	});
+}
+
+export async function fetchClassroomData(
+	backendUrl: string,
+	api_version: string,
+	access_token: string
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${access_token}`
+		}
+	});
+}
+
+export async function fetchDeleteClassroom(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	classroom_id: number
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms/${classroom_id}`, {
+		method: 'DELETE',
+		headers: {
+			Authorization: `Bearer ${access_token}`
+		}
+	});
+}
+
+export async function fetchCreateClassroomSession(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	new_session: {
+		title: string;
+		description: string;
+		exerciseIds: number[];
+		languageIds: number[];
+	},
+	classroom_id: number
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms/${classroom_id}/session`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${access_token}`
+		},
+		body: JSON.stringify(new_session)
+	});
+}
+
+export async function getLanguages(
+    backendUrl: string,
+    api_version: string,
+    access_token: string
+): Promise<Response> {
+    return await fetch(`${backendUrl}/${api_version}/languages`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${access_token}`
+        }
+    });
 }

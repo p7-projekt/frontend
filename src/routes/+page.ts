@@ -51,3 +51,35 @@ export async function _deleteSession(
 		};
 	}
 }
+
+export async function _deleteClassroom(
+	classroomID: number | null,
+	classrooms: {
+		id: number;
+		title: string;
+	}[]
+) {
+	const response = await fetch('/api/delete-classroom', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ classroom_id: classroomID })
+	});
+
+	if (response.ok) {
+		classrooms = classrooms.filter((classroom) => classroom.id !== classroomID);
+
+		return {
+			classroom_list: classrooms,
+			isDialogOpen: false,
+			selected_classroom_id: null,
+			selected_classroom_title: null
+		};
+	}
+}
+
+export function _getDescriptionExcerpt(description: string) {
+	if (!description) return ''; // Handle empty or null input
+	return description.length > 250 ? description.substring(0, 250) + '...' : description;
+}

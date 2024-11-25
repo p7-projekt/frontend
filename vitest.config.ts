@@ -27,9 +27,6 @@ export default defineConfig({
 			exclude: [
 				'src/lib/debug.ts',
 				'src/components/Tests/testcasetypes.ts',
-				'src/routes/createexercise/schema.ts',
-				'src/routes/exercise/schema.ts',
-				'src/routes/login/schema.ts',
 				'src/routes/createexercise/testCasesStore.ts',
 				'src/components/FlexTable/index.ts',
 				'**/*.d.ts', // Exclude type declaration files

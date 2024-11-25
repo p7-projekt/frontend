@@ -1,0 +1,158 @@
+<script lang="ts">
+	import FlexTable from '$components/FlexTable';
+	import Row from '$components/FlexTable/Row.svelte';
+	import Select from '$components/Select/Select.svelte';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import { _deleteClassroomSession } from './classroom.ts';
+	import type { PageData } from './$types';
+	import { toast } from 'svelte-sonner';
+	import { invalidate } from '$app/navigation';
+
+	export let data: PageData;
+
+	let classroom: {
+		id: number;
+		title: string;
+		description: string;
+		roomcode: string;
+		isOpen: boolean;
+		sessions: { id: number; title: string; active: boolean }[];
+	} = data.classroom;
+
+	let activation_select_title: string = 'Inactive';
+	let activation_select_options: string[] = ['Active', 'Inactive'];
+	let selected_activation_status: string = 'Inactive';
+	let isDialogOpen = false;
+
+	function activationStatusSelected(event) {
+		selected_activation_status = event.detail.chosen_option;
+	}
+
+	function openDeleteDialog(event) {
+		isDialogOpen = true;
+	}
+
+	const clickDelete = async (session_id) => {
+		const result = await _deleteClassroomSession(session_id, classroom);
+
+		if (result) {
+			({ classroom, isDialogOpen } = result);
+			toast('Session Deleted');
+			if (classroom.sessions.length === 0) {
+				invalidate('data:classroom');
+			}
+		}
+	};
+</script>
+
+<div class="container grid grid-cols-1 gap-y-8 w-full text-[#333] mt-3">
+	<h1 class=" text-3xl font-semibold col-span-full">{classroom.title}</h1>
+
+	<div>
+		<h2 class="text-2xl font-semibold col-span-full mb-3">Description</h2>
+		<p>
+			{classroom.description}
+		</p>
+	</div>
+	<section>
+		<div class="flex justify-between">
+			<h2 class="text-2xl font-semibold mb-3">Sessions</h2>
+			<div class="flex justify-end items-end flex-col mb-1.5">
+				<a
+					href="/create-session?classroom={classroom.id}"
+					class=" text-[1.125rem] px-2 py-1 text-sm rounded-sm text-white border-2 border-[#1f2937] bg-[#1f2937] transition-all ease-in-out duration-300 hover:bg-transparent hover:text-[#1f2937]"
+					>Create Session</a
+				>
+			</div>
+		</div>
+		<div class="justify-between">
+			<FlexTable>
+				<FlexTable.Header />
+				<FlexTable.Body>
+					{#each classroom.sessions as session}
+						<FlexTable.Row nr_cols={2} cssClass="mb-6 mt-6">
+							<FlexTable.Column>
+								<a href="#">
+									<h2 class="text-[1.375rem] mb-2 font-medium relative text-[#1971c2]">
+										{session.title}
+									</h2>
+								</a>
+							</FlexTable.Column>
+							<FlexTable.Column cssClass="gap-[2rem] pl-[22rem]">
+								<div>
+									<Select
+										select_title={activation_select_title}
+										select_options={activation_select_options}
+										on:message={activationStatusSelected}
+									></Select>
+									<input
+										type="hidden"
+										name="selected-activation-status"
+										value={selected_activation_status}
+									/>
+								</div>
+								<button type="button" class="hover:bg-[#f4f5f5] p-2 rounded-md">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="size-6"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+										/>
+									</svg>
+								</button>
+								<button
+									type="button"
+									class="hover:bg-[#f4f5f5] p-2 rounded-md"
+									on:click={openDeleteDialog}
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="#e63946"
+										class="size-6"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+										/>
+									</svg>
+								</button>
+							</FlexTable.Column>
+						</FlexTable.Row>
+						<!-- Create a alert dialog that forces user to confirm deletion of exercise -->
+						<AlertDialog.Root open={isDialogOpen} on:close={() => (isDialogOpen = false)}>
+							<AlertDialog.Content>
+								<AlertDialog.Header>
+									<AlertDialog.Title
+										>Are you sure you want to delete {session.title}?</AlertDialog.Title
+									>
+									<AlertDialog.Description>
+										This action cannot be undone. This will permanently delete the session.
+									</AlertDialog.Description>
+								</AlertDialog.Header>
+								<AlertDialog.Footer>
+									<AlertDialog.Cancel on:click={() => (isDialogOpen = false)}
+										>Cancel</AlertDialog.Cancel
+									>
+									<AlertDialog.Action class="bg-[#e63946]" on:click={() => clickDelete(session.id)}
+										>Delete</AlertDialog.Action
+									>
+								</AlertDialog.Footer>
+							</AlertDialog.Content>
+						</AlertDialog.Root>
+					{/each}
+				</FlexTable.Body>
+			</FlexTable>
+		</div>
+	</section>
+</div>

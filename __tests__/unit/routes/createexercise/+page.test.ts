@@ -1,5 +1,5 @@
-import { load } from '../../../../src/routes/createexercise/+page';
-import { testCasesStore } from '../../../../src/routes/createexercise/testCasesStore';
+import { load } from '$src/routes/createexercise/+page';
+import { testCasesStore } from '$src/routes/createexercise/testCasesStore';
 import { get } from 'svelte/store';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
