@@ -131,3 +131,22 @@ export async function fetchLanguageData(
 		}
 	});
 }
+
+export async function fetchCreateClassroom(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	new_classroom: {
+		title: string;
+		description: string;
+	}
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${access_token}`
+		},
+		body: JSON.stringify(new_classroom)
+	});
+}

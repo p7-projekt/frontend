@@ -29,8 +29,6 @@
 
 	let lang_selected_options: string[];
 
-	$: displayValidationErrors(form);
-
 	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
 	let remaining_exercise_list = data.instructor_exercises
 		? data.instructor_exercises.map((exercise: { id: number; name: string }) => ({
@@ -62,6 +60,7 @@
 			.filter((id) => id !== null); // Remove null values for unmatched items
 	}
 
+	// Update validation errors given events
 	$: error = displayValidationErrors(form);
 </script>
 

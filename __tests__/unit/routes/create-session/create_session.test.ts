@@ -107,7 +107,7 @@ describe('displayValidationErrors', () => {
 			errors: [
 				{ path: ['title'], message: 'The title must consist of at least one character' },
 				{
-					path: ['programming_language'],
+					path: ['languageIds'],
 					message: 'You must pick at least one programming language!'
 				}
 			]
@@ -127,10 +127,10 @@ describe('displayValidationErrors', () => {
 		const form = {
 			errors: [
 				{ path: ['title'], message: 'The title must consist of at least one character' },
-				{ path: ['added_exercise_ids'], message: 'You must select at least one exercise!' },
-				{ path: ['expires_in_hours'], message: 'You must pick an expiration time!' },
+				{ path: ['exerciseIds'], message: 'You must select at least one exercise!' },
+				{ path: ['expiresInHours'], message: 'You must pick an expiration time!' },
 				{
-					path: ['programming_language'],
+					path: ['languageIds'],
 					message: 'You must pick at least one programming language!'
 				}
 			]
