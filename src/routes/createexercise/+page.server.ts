@@ -5,8 +5,8 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { convertFormData } from './helpers';
-import { debugCreateExercise } from '$lib/debug.js';
-import { language } from '@codemirror/language';
+import { debugCreateExercise } from '$lib/debug.js'; 
+import { getLanguages } from '$lib/fetchRequests.js';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const apiVersionV1 = import.meta.env.VITE_API_VERSION_V1;
@@ -92,19 +92,7 @@ async function postExercise(
     });
 }
 
-async function getLanguages(
-    backendUrl: string,
-    api_version: string,
-    access_token: string
-): Promise<Response> {
-    return await fetch(`${backendUrl}/${api_version}/languages`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${access_token}`
-        }
-    });
-}
+
 
 async function updateExercise(
     backendUrl: string,
