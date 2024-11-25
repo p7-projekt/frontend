@@ -1,6 +1,7 @@
 import { fetchSpecificSession } from '$lib/fetchRequests';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { error, redirect } from '@sveltejs/kit';
+import { availableLanguages } from '$lib/availableLanguages';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -20,6 +21,7 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		let session;
 		if (response.ok) {
 			session = await response.json();
+			availableLanguages.set(session.languages);
 		} else if (response.status === 404) {
 			throw error(404, 'Session not found');
 		} else {

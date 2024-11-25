@@ -5,6 +5,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
 import { setIDEBoilerPlate } from '$lib/boilerplate';
 import { debugExercise } from '$lib/debug';
+import { availableLanguages } from '$lib/availableLanguages';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const apiVersion = import.meta.env.VITE_API_VERSION_V1;
@@ -19,16 +20,10 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 
 	// Virker ikke endnu for anynom brugere har ikke adhanh til languages endpointet
 	// const languagesResponse = await getLanguages(backendUrl, apiVersionV2, access_token);
-    let languages = [
-		{
-		  "languageId": 1,
-		  "language": "haskell"
-		},
-		{
-		  "languageId": 2,
-		  "language": "python"
-		}
-	  ];
+	let languages;
+	availableLanguages.subscribe(value => {
+		languages = value;
+	})();
 
     // if (!languagesResponse.ok) {
     //     debugExercise('Failed to fetch languages:', languagesResponse.status);
