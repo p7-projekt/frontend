@@ -19,7 +19,7 @@
 	<div class="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
 		<!-- Application Title -->
 		<h1 class="text-2xl font-bold text-center mb-6">Sign in to SyntaxShift!</h1>
-		
+
 		<!-- Form -->
 		<form method="POST" use:enhance>
 			<!-- Email Field -->
@@ -36,7 +36,12 @@
 			<Form.Field {form} name="password">
 				<Form.Control let:attrs>
 					<Form.Label class="!text-current">Password</Form.Label>
-					<Input placeholder="Enter your password." type="password" {...attrs} bind:value={$formData.password} />
+					<Input
+						placeholder="Enter your password."
+						type="password"
+						{...attrs}
+						bind:value={$formData.password}
+					/>
 				</Form.Control>
 				<Form.FieldErrors />
 			</Form.Field>

@@ -29,8 +29,8 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 
 	let form = await superValidate(zod(formSchema));
 	let exerciseData = null;
-	 
-	debugCreateExercise("loading");
+
+	debugCreateExercise('loading');
 
 	if (exerciseId) {
 		const response = await fetch(`${backendUrl}/${apiVersionV1}/exercises/${exerciseId}`, {

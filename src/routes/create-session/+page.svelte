@@ -3,41 +3,80 @@
 	import TitleInput from '$components/Input/TitleInput.svelte';
 	import ExerciseList from '$components/Lists/ExerciseList.svelte';
 	import Select from '$components/Select/Select.svelte';
+	import { Label } from '$lib/components/ui/label/index.js';
 	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
+	import { displayValidationErrors } from './create_session';
 
 	export let data: PageData;
 	export let form: ActionData;
 
 	let added_exercise_list: { id: number; content: string }[] = [];
-	let receive_message: string = '';
-	let select_title: string = 'Expires in';
-	let select_options: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-	let selected_option: string = '';
-	let post_option_str = 'hour(s)';
+	let receive_message;
+
+	// Values for the select expiration time Select component
+	let expiration_select_title: string = 'Expires in';
+	let expiration_select_options: string[] = [
+		'1 hour',
+		'2 hours',
+		'3 hours',
+		'4 hours',
+		'5 hours',
+		'6 hours',
+		'7 hours',
+		'8 hours',
+		'9 hours',
+		'10 hours'
+	];
+	let expiration_selected_option: string = '';
+
+	// Values for the programming language Select component
+	let lang_select_title: string = 'Choose Language(s)';
+	let lang_select_options: string[] = data.programming_languages.map(
+		(language: { languageId: number; language: string }) =>
+			language.language.charAt(0).toUpperCase() + language.language.slice(1)
+	);
+
+	let lang_selected_options: string[];
 
 	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
-	let remaining_exercise_list = data.instructor_exercises.map(
-		(exercise: { id: number; name: string }) => ({
-			id: exercise.id,
-			content: exercise.name
-		})
-	);
+	let remaining_exercise_list = data.instructor_exercises
+		? data.instructor_exercises.map((exercise: { id: number; name: string }) => ({
+				id: exercise.id,
+				content: exercise.name
+			}))
+		: [];
+
+	const classroom_id = data.classroom_id ? data.classroom_id : null;
 
 	function handleMessage(event) {
 		receive_message = event.detail;
 		added_exercise_list = receive_message.added_exercise_list;
 	}
 
-	function optionSelected(event) {
-		selected_option = event.detail.chosen_option;
+	function expirationOptionSelected(event) {
+		expiration_selected_option = event.detail.chosen_option.split(' ')[0];
 	}
 
-	$: session_description =
-		typeof form?.session_description === 'string' ? form.session_description : '';
+	function langOptionSelected(event) {
+		const lang_select_strings: string[] = event.detail.chosen_options;
+
+		// Make a lookup in the original data and get the corresponding IDs
+		lang_selected_options = lang_select_strings
+			.map((lang) => {
+				const match = data.programming_languages.find(
+					(language) => language.language.toLowerCase() === lang.toLowerCase()
+				);
+				return match ? match.languageId : null; // Return the ID if found, or null if not found
+			})
+			.filter((id) => id !== null); // Remove null values for unmatched items
+	}
+
+	// Update validation errors given events
+	$: error = displayValidationErrors(form);
 </script>
 
-<form method="post" use:enhance>
+<form method="post" action={!classroom_id ? '?/oneOffSession' : '?/classroomSession'} use:enhance>
 	<div class="container grid grid-cols-2 gap-6 pl-6 w-full text-[#333] mt-3">
 		<div></div>
 		<div class="flex justify-end cursor-pointer">
@@ -58,22 +97,54 @@
 
 		<div class="w-1/4 col-span-full">
 			<TitleInput input_name="session-title" />
-			{#if form?.sessionTitleMissing}
-				<p style="color:red; margin-bottom:0;">Session title is required</p>
+			{#if error.errorInTitle.message}
+				<p style="color:red; margin-bottom:0;">{error.errorInTitle.message}</p>
 			{/if}
 		</div>
 
-		<DescriptionBox description_name="session-description" value={session_description} />
-		<div class="flex items-center gap-4">
-			<Select {select_title} {select_options} {post_option_str} on:message={optionSelected}
-			></Select>
-			{#if form?.expirationMissing}
-				<p style="color:red; margin-bottom:0;">Expiration time required</p>
+		<DescriptionBox description_name="session-description" />
+		<div class="grid grid-cols-2">
+			{#if !classroom_id}
+				<div class="grid grid-rows-[min-content] gap-1.5">
+					<Label class="text-base pl-1" for="expiration-time">Expiration Time</Label>
+					<Select
+						select_title={expiration_select_title}
+						select_options={expiration_select_options}
+						on:message={expirationOptionSelected}
+					></Select>
+					{#if error.errorInExpiration.message}
+						<p style="color:red; margin-bottom:0;">{error.errorInExpiration.message}</p>
+					{/if}
+					<input type="hidden" name="selected-expiration" value={expiration_selected_option} />
+				</div>
+			{:else}
+				<input type="hidden" name="classroom-id" value={classroom_id} />
 			{/if}
-			<input type="hidden" name="selected-expiration" value={selected_option} />
+			<div class="grid grid-rows-[min-content] gap-1.5">
+				<Label class="text-base pl-1" for="programming-language">Programming Language</Label>
+				<Select
+					multiple={true}
+					select_title={lang_select_title}
+					select_options={lang_select_options}
+					on:message={langOptionSelected}
+				></Select>
+				{#if error.errorInLanguages.message}
+					<p style="color:red; margin-bottom:0;">{error.errorInLanguages.message}</p>
+				{/if}
+				<input
+					type="hidden"
+					name="selected-language"
+					value={JSON.stringify(lang_selected_options)}
+				/>
+			</div>
 		</div>
-		<ExerciseList {added_exercise_list} {remaining_exercise_list} on:message={handleMessage} />
-		<input type="hidden" name="added-exercise-list" value={JSON.stringify(added_exercise_list)} />
+		<div class="col-span-full">
+			{#if error.errorInAddedExercises.message}
+				<p style="color:red; margin-bottom:0;">{error.errorInAddedExercises.message}</p>
+			{/if}
+			<ExerciseList {added_exercise_list} {remaining_exercise_list} on:message={handleMessage} />
+			<input type="hidden" name="added-exercise-list" value={JSON.stringify(added_exercise_list)} />
+		</div>
 
 		<div></div>
 		<div class="flex justify-end">

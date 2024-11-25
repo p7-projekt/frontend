@@ -4,6 +4,7 @@
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import Row from '$components/FlexTable/Row.svelte';
 
 	export let data: PageData;
 	const session: {
@@ -22,48 +23,47 @@
 	});
 </script>
 
-<div class="container grid grid-cols-1 gap-y-8 pl-6 w-full text-[#333] mt-3">
+<div class="container grid grid-cols-1 gap-y-8 w-full text-[#333] mt-3">
 	<h1 class=" text-3xl font-semibold col-span-full">{session.title}</h1>
 
-	<div class="w-3/4">
+	<div>
 		<h2 class="text-2xl font-semibold col-span-full mb-3">Description</h2>
 		<p>
 			{session.description}
 		</p>
 	</div>
-	<section class="w-3/4">
+	<section>
 		<h2 class="text-2xl font-semibold col-span-full mb-3">Exercises</h2>
 		<div class=" border-[1.5px]">
 			<FlexTable>
 				<FlexTable.Header nr_cols={3}>
-					<FlexTable.Column>Title</FlexTable.Column>
-					<FlexTable.Column>Completed</FlexTable.Column>
-					<FlexTable.Column />
+					<FlexTable.Column cssClass="justify-center">Title</FlexTable.Column>
+					<FlexTable.Column cssClass="justify-center">Completed</FlexTable.Column>
+					<FlexTable.Column cssClass="justify-center" />
 				</FlexTable.Header>
-				<FlexTable.Body nr_cols={3}>
+				<FlexTable.Body>
 					{#each session.exercises as exercise (exercise.id)}
-						<FlexTable.Column>{exercise.name}</FlexTable.Column>
-						<FlexTable.Column>
-							<Checkbox
-								checked={exercise.solved}
-								disabled
-								style="cursor: default !important; opacity: 1;"
-							/>
-						</FlexTable.Column>
-						<FlexTable.Column>
-							<button
-								on:click={() => goto(`/exercise?exerciseid=${exercise.id}&seshid=${sessionId}`)}
-								class="text-[1.125rem] px-4 py-2 text-sm rounded-sm font-bold text-white border-2 border-[#1f2937] bg-[#1f2937] hover:bg-transparent hover:text-[#1f2937]"
-							>
-								Code
-							</button>
-						</FlexTable.Column>
+						<FlexTable.Row nr_cols={3}>
+							<FlexTable.Column cssClass="justify-center">{exercise.name}</FlexTable.Column>
+							<FlexTable.Column cssClass="justify-center">
+								<Checkbox
+									checked={exercise.solved}
+									disabled
+									style="cursor: default !important; opacity: 1;"
+								/>
+							</FlexTable.Column>
+							<FlexTable.Column cssClass="justify-center">
+								<button
+									on:click={() => goto(`/exercise?exerciseid=${exercise.id}&seshid=${sessionId}`)}
+									class="text-[1.125rem] px-4 py-2 text-sm rounded-sm font-bold text-white border-2 border-[#1f2937] bg-[#1f2937] hover:bg-transparent hover:text-[#1f2937]"
+								>
+									Code
+								</button>
+							</FlexTable.Column>
+						</FlexTable.Row>
 					{/each}
 				</FlexTable.Body>
 			</FlexTable>
 		</div>
 	</section>
 </div>
-
-<style>
-</style>

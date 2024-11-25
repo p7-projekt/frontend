@@ -8,7 +8,7 @@ vi.mock('@sveltejs/kit', () => ({
 
 describe('load function', () => {
 	it('redirects to the home page if a logged-in user accesses /login', () => {
-		const mockUser = { name: 'John Doe', role: "Student" };
+		const mockUser = { name: 'John Doe', role: 'Student' };
 		const data = { user: mockUser };
 		const url = { pathname: '/login' };
 
@@ -45,7 +45,7 @@ describe('get_anon_userID', () => {
 	});
 
 	it('should redirect authorized user when accessing login url ', () => {
-		const user = { name: 'Andreas', role: "Student" };
+		const user = { name: 'Andreas', role: 'Student' };
 		const url_path = '/login';
 		expect(() => _validate_url_path(user, url_path)).toThrow();
 		expect(redirect).toHaveBeenCalledWith(303, '/');

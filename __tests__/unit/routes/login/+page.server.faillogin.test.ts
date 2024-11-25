@@ -55,8 +55,7 @@ describe('login action function', () => {
 		// Act
 		const result = await actions.default(event);
 
-        // Assert 
-        expect(setError).toHaveBeenCalledWith(expect.any(Object), 'password', 'Invalid credentials');
-       
-    });
+		// Assert
+		expect(setError).toHaveBeenCalledWith(expect.any(Object), 'password', 'Invalid credentials');
+	});
 });

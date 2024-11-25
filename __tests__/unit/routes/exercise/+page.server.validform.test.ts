@@ -4,24 +4,24 @@ import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { redirect } from '@sveltejs/kit';
 
 vi.mock('sveltekit-superforms', () => ({
-    setError: vi.fn(),
-    superValidate: vi.fn(() => ({
-        valid: true,
-        data: {
-            title: 'Valid Title',
-            description: 'Valid Description',
-            codeText: 'solution :: String -> String\nsolution input0 = output0',
-            testCases: [
-                {
-                    parameters: {
-                        input: [{ type: 'string', value: 'input1' }],
-                        output: [{ type: 'string', value: 'output1' }]
-                    },
-                    publicVisible: true
-                }
-            ], 
-        }
-    }))
+	setError: vi.fn(),
+	superValidate: vi.fn(() => ({
+		valid: true,
+		data: {
+			title: 'Valid Title',
+			description: 'Valid Description',
+			codeText: 'Valid Code',
+			testCases: [
+				{
+					parameters: {
+						input: [{ type: 'string', value: 'input1' }],
+						output: [{ type: 'string', value: 'output1' }]
+					},
+					publicVisible: true
+				}
+			]
+		}
+	}))
 }));
 
 vi.mock('@sveltejs/kit', () => ({
@@ -38,14 +38,21 @@ vi.mock('$lib/requestHandler', () => ({
 }));
 
 describe('Page Server Load function', () => {
-    const mockDepends = vi.fn(); 
-    it('Loads exercise data correctly if url parameter is provided', async () => {
-        // Arrange
-        const mockCookies = {
-            get: vi.fn((name) => (name === 'access_token' ? 'valid_token' : 'refresh_token')),
-            set: vi.fn(),
-            delete: vi.fn()
-        };
+	const mockDepends = vi.fn();
+
+	it('Loads exercise data correctly if url parameter is provided', async () => {
+		// Arrange
+		const mockCookies = {
+			get: vi.fn((name) => (name === 'access_token' ? 'valid_token' : 'refresh_token')),
+			set: vi.fn(),
+			delete: vi.fn()
+		};
+
+		const mockUrl = {
+			searchParams: {
+				get: vi.fn((param) => (param === 'exerciseid' ? '1' : null))
+			}
+		};
 
 		const mockExerciseData = {
 			title: 'Exercise 1',
@@ -62,87 +69,60 @@ describe('Page Server Load function', () => {
 			outputParamaterType: ['string']
 		};
 
-        const mockUrl = {
-			searchParams: {
-				get: vi.fn((param) => {
-					if (param === 'exerciseid') return '1';
-					if (param === 'edit') return 'true';
-					return null;
-				})
-			}
-		};
-
 		global.fetch = vi.fn(() =>
 			Promise.resolve({
 				ok: true,
 				text: () => Promise.resolve(JSON.stringify(mockExerciseData))
 			})
 		);
- 
-        
-        // Act
-        const result = await load({ url: mockUrl, cookies: mockCookies, depends: mockDepends });
-        
-        // Assert
-        expect(result).toEqual({
-            form: {
-                valid: true,
-                data: {
-                    title: 'Valid Title',
-                    description: 'Valid Description',
-                    codeText: 'solution :: String -> String\nsolution input0 = output0',
-                    testCases: [
-                        {
-                            parameters: {
-                                input: [
-                                    {
-                                        type: 'string',
-                                        value: 'input1',
-                                    },
-                                ],
-                                output: [
-                                    {
-                                        type: 'string',
-                                        value: 'output1',
-                                    },
-                                ],
-                            },
-                            publicVisible: true,
-                        },
-                    ],
-                },
-            },
-            exerciseData: {
-                title: 'Exercise 1',
-                description: 'Description 1',
-                inputParameterType: ['string'],
-                outputParamaterType: ['string'],
-                testCases: [
-                    {
-                        inputParams: ['input1'],
-                        outputParams: ['output1'],
-                        publicVisible: true,
-                    },
-                ], 
-            },
-            testTemplate: {
-                parameters:  {
-                    input:  [
-                        {
-                        "type": "string",
-                        "value": "input1",
-                        },
-                    ],
-                    output: [
-                    {
-                        "type": "string",
-                        "value": "output1",
-                        },
-                    ],
-                },
-            },
-        });
-    });
+
+		// Act
+		const result = await load({ url: mockUrl, cookies: mockCookies, depends: mockDepends });
+
+		// Assert
+		expect(result).toEqual({
+			form: {
+				valid: true,
+				data: {
+					title: 'Valid Title',
+					description: 'Valid Description',
+					codeText: 'solution :: String -> String\nsolution input0 = output0',
+					testCases: [
+						{
+							parameters: {
+								input: [
+									{
+										type: 'string',
+										value: 'input1'
+									}
+								],
+								output: [
+									{
+										type: 'string',
+										value: 'output1'
+									}
+								]
+							},
+							publicVisible: true
+						}
+					]
+				}
+			},
+			exerciseData: {
+				title: 'Exercise 1',
+				description: 'Description 1',
+				inputParameterType: ['string'],
+				outputParamaterType: ['string'],
+				testCases: [
+					{
+						inputParams: ['input1'],
+						outputParams: ['output1'],
+						publicVisible: true
+					}
+				]
+			}
+		});
+	});
 });
 
 describe('Page Server Actions function', () => {
