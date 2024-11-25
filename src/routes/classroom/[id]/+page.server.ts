@@ -27,7 +27,6 @@ export const load: PageServerLoad = async ({ cookies, params, depends }) => {
 	if (response.ok) {
 		classroom = await response.json();
 	} else redirect(303, '/');
-	console.log(classroom);
 	return {
 		classroom: classroom ? classroom : null
 	};

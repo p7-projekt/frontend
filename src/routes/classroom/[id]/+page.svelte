@@ -18,7 +18,6 @@
 		isOpen: boolean;
 		sessions: { id: number; title: string; active: boolean }[];
 	} = data.classroom;
-	console.log(classroom);
 
 	let activation_select_title: string = 'Inactive';
 	let activation_select_options: string[] = ['Active', 'Inactive'];
