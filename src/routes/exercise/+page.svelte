@@ -20,11 +20,12 @@
 	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form;
 	export let exerciseData = data.exerciseData;
 	let languages = data.languages;
-
+	let previousSelectedLanguage: { languageId: number; language: string };
 	let selectedLanguage: { languageId: number; language: string };
 
 	$: {
-        if (selectedLanguage) {
+        if (selectedLanguage !== previousSelectedLanguage) {
+			previousSelectedLanguage = selectedLanguage;
             console.log(`Selected language changed to: ${selectedLanguage}`);
             console.log(`Error print: ${$errors.selectedLanguage}`);
 			$formData.selectedLanguage = selectedLanguage;
