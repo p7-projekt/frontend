@@ -27,17 +27,17 @@
         <h1 class="text-2xl font-medium col-span-full text-center">Attempted</h1>
     </div>
 
-    {#each data.testData.exercises as exercise}
+    {#each data.dashData.exerciseDetails as exercise}
         <div class="tile col-span-2">
             <Accordion.Root>
-                <Accordion.Item value={`item-${exercise.exerciseId}`}>
+                <Accordion.Item value={`item-${exercise.id}`}>
                     <Accordion.Trigger>{exercise.title}</Accordion.Trigger>
                     <Accordion.Content>
                         <div class="container m-auto grid grid-cols-4">
-                            {#each exercise.submissions as submission}
+                            {#each exercise.userDetails as user}
                                 <div class="tile flex items-center justify-center">
-                                    <h1 class="tile-marker cursor-pointer" on:click={() => handleSubmissionClick(submission)}>
-                                        {submission.name}
+                                    <h1 class="tile-marker cursor-pointer" on:click={() => handleSubmissionClick(user)}>
+                                        {user.name}
                                     </h1>
                                 </div>
                             {/each}
@@ -47,10 +47,10 @@
             </Accordion.Root>
         </div>
         <div class="tile flex items-center justify-center">
-            <h1 class="tile-marker">{exercise.completedCount}/{data.testData.totalStudents}</h1>
+            <h1 class="tile-marker">{exercise.solved}/{data.dashData.participants}</h1>
         </div>
         <div class="tile flex items-center justify-center">
-            <h1 class="tile-marker">{exercise.attemptedCount}/{data.testData.totalStudents}</h1>
+            <h1 class="tile-marker">{exercise.attemped}/{data.dashData.participants}</h1>
         </div>
     {/each}
 </div>
