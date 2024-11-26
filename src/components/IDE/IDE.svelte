@@ -4,13 +4,28 @@
 	import { haskell } from '@codemirror/legacy-modes/mode/haskell';
 
 	export let codeSolutionText: string = '';
-	export let solutionLanguage: string = 'haskell';
+	export let solutionLanguage: { languageId: number; language: string };
 	export let editable: boolean = true;
+	let previousSolutionLanguage: { languageId: number; language: string };
+	let unique = {}
+
+	function restart() {
+   		unique = {}
+	}
+
+	$: {
+		if (solutionLanguage != previousSolutionLanguage) {
+			console.log("solution language i ide" + solutionLanguage.language);
+			getExtension();
+			restart();
+			previousSolutionLanguage = solutionLanguage;
+		}
+	}
 
 	const haskellExtension = [StreamLanguage.define(haskell)];
 
 	function getExtension() {
-		switch (solutionLanguage.toLowerCase()) {
+		switch (solutionLanguage.language.toLowerCase()) {
 			case 'haskell':
 				return haskellExtension;
 			default:
@@ -18,10 +33,13 @@
 		}
 	}
 </script>
-
-<CodeMirror
-	{editable}
-	class="w-full h-full"
-	bind:value={codeSolutionText}
-	extensions={getExtension()}
-/>
+{#if solutionLanguage != undefined}
+{#key unique}
+	<CodeMirror
+		{editable}
+		class="w-full h-full"
+		bind:value={codeSolutionText}
+		extensions={getExtension()}
+	/>
+{/key}
+{/if}
