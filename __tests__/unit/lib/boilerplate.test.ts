@@ -10,7 +10,7 @@ describe('setIDEBoilerPlate', () => {
 			}
 		};
 		const result = setIDEBoilerPlate(testTemplate, 'haskell');
-		expect(result).toBe('solution :: Int -> Int\nsolution input0 = output0');
+		expect(result).toBe('module Solution where\nsolution :: Int -> Int\nsolution input0 = output0');
 	});
 
 	it('should generate Haskell boilerplate for multiple inputs and a single output', () => {
@@ -24,7 +24,7 @@ describe('setIDEBoilerPlate', () => {
 			}
 		};
 		const result = setIDEBoilerPlate(testTemplate, 'haskell');
-		expect(result).toBe('solution :: Int -> String -> Bool\nsolution input0 input1 = output0');
+		expect(result).toBe('module Solution where\nsolution :: Int -> String -> Bool\nsolution input0 input1 = output0');
 	});
 
 	it('should generate Haskell boilerplate for multiple inputs and multiple outputs', () => {
@@ -42,7 +42,7 @@ describe('setIDEBoilerPlate', () => {
 		};
 		const result = setIDEBoilerPlate(testTemplate, 'haskell');
 		expect(result).toBe(
-			'solution :: Int -> String -> (Bool, Char)\nsolution input0 input1 = (output0, output1)'
+			'module Solution where\nsolution :: Int -> String -> (Bool, Char)\nsolution input0 input1 = (output0, output1)'
 		);
 	});
 });
