@@ -126,7 +126,7 @@
 						</div>
 					</Resizable.Pane>
 					<Resizable.Handle />
-					<Resizable.Pane defaultSize={40}>
+					<Resizable.Pane defaultSize={40} style="overflow:auto">
 						<div class="m-8 content">
 							<p>Test Case Schema</p>
 

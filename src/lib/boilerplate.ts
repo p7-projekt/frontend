@@ -20,12 +20,13 @@ export function setIDEBoilerPlate(
 	} 
 }
 
-function createHaskellBoilerplate(testTemplate: {
+function createHaskellBoilerplate(testTemplate: { 
 	parameters: {
 		input: { type: string; value: string }[];
 		output: { type: string; value: string }[];
 	};
 }) {
+	let module = `module Solution where`;
 	let functionSignature = `solution :: ${testTemplate.parameters.input
 		.map((input) => {
 			return convertType(input.type);
@@ -38,7 +39,7 @@ function createHaskellBoilerplate(testTemplate: {
 		})
 		.join(' ')} = ${convertOutputValues(testTemplate.parameters.output)}`;
 
-	return `${functionSignature}\n${functionBody}`;
+	return `${module}\n${functionSignature}\n${functionBody}`;
 }
 
 function convertType(type: string): string {
