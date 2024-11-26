@@ -27,11 +27,23 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 	// Ensure that a response is returned in all cases
 	if (response.ok) {
 		const session = await response.json();
-		session.active = activation_status;
-		console.log(session);
+		const updated_session = {
+			id: session.id,
+			title: session.title,
+			description: session.description,
+			active: activation_status,
+			exerciseIds: session.exerciseIds.map((exercise) => exercise.exerciseId),
+			languageIds: session.languages
+		};
 		response = await handleAuthenticatedRequest(
 			(token) =>
-				fetchUpdateClassroomSessionStatus(backendUrl, api_version_v2, token, session, classroom_id),
+				fetchUpdateClassroomSessionStatus(
+					backendUrl,
+					api_version_v2,
+					token,
+					updated_session,
+					classroom_id
+				),
 			access_token,
 			refresh_token,
 			cookies

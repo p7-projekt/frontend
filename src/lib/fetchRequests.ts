@@ -243,7 +243,7 @@ export async function fetchUpdateClassroomSessionStatus(
 	classroom_id: number
 ): Promise<Response> {
 	return await fetch(`${backendUrl}/${api_version}/classrooms/${classroom_id}/session`, {
-		method: 'POST',
+		method: 'PUT',
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: `Bearer ${access_token}`

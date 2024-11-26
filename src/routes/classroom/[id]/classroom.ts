@@ -52,10 +52,16 @@ export async function _updateSessionActivationStatus(
 	});
 
 	if (response.ok) {
-		classroom.sessions = classroom.sessions.filter((session) => session.id !== sessionId);
+		// Update the session.active property on the client side to avoid reloading page
+		const updatedClassroom = {
+			...classroom,
+			sessions: classroom.sessions.map((session) =>
+				session.id === sessionId ? { ...session, active: activationStatus } : session
+			)
+		};
 
 		return {
-			classroom
+			classroom: updatedClassroom
 		};
 	}
 }

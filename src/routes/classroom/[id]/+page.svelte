@@ -90,6 +90,7 @@
 										select_title={activation_select_title}
 										select_options={activation_select_options}
 										on:message={(event) => activationStatusSelected(event, session.id)}
+										value={{ value: session.id, label: session.active ? 'Active' : 'Inactive' }}
 									></Select>
 									<input
 										type="hidden"

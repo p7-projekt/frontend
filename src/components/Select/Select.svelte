@@ -6,6 +6,7 @@
 	export let select_options: string[] = [];
 	export let post_option_str = '';
 	export let multiple = false;
+	export let value;
 
 	let multiple_selected: string[] = [];
 
@@ -32,7 +33,7 @@
 	}
 </script>
 
-<Select.Root {multiple}>
+<Select.Root {multiple} selected={value}>
 	<Select.Trigger class="w-[180px]">
 		<Select.Value placeholder={select_title} />
 	</Select.Trigger>
