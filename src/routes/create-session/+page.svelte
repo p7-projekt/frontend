@@ -80,7 +80,7 @@
 	<div class="container grid grid-cols-2 gap-6 pl-6 w-full text-[#333] mt-3">
 		<div></div>
 		<div class="flex justify-end cursor-pointer">
-			<a href="/">
+			<a href={!classroom_id ? '/' : `/classroom/${classroom_id}`}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"

@@ -213,3 +213,41 @@ export async function fetchCreateClassroomSession(
 		body: JSON.stringify(new_session)
 	});
 }
+
+export async function fetchSpecificClassroomSession(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	session_id: number
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms/session/${session_id}`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${access_token}`
+		}
+	});
+}
+
+export async function fetchUpdateClassroomSessionStatus(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	session: {
+		id: number;
+		title: string;
+		description: string;
+		exerciseIds: number[];
+		languageIds: number[];
+		status: boolean;
+	},
+	classroom_id: number
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms/${classroom_id}/session`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${access_token}`
+		},
+		body: JSON.stringify(session)
+	});
+}

@@ -3,7 +3,7 @@
 	import Row from '$components/FlexTable/Row.svelte';
 	import Select from '$components/Select/Select.svelte';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
-	import { _deleteClassroomSession } from './classroom.ts';
+	import { _deleteClassroomSession, _updateSessionActivationStatus } from './classroom.ts';
 	import type { PageData } from './$types';
 	import { toast } from 'svelte-sonner';
 	import { invalidate } from '$app/navigation';
@@ -19,14 +19,20 @@
 		sessions: { id: number; title: string; active: boolean }[];
 	} = data.classroom;
 
+	let selected_activation_status = 'Inactive';
 	let activation_select_title: string = 'Inactive';
 	let activation_select_options: string[] = ['Active', 'Inactive'];
-	let selected_activation_status: string = 'Inactive';
 	let isDialogOpen = false;
 
-	function activationStatusSelected(event) {
+	const activationStatusSelected = async (event, session_id) => {
 		selected_activation_status = event.detail.chosen_option;
-	}
+		const activation_status = selected_activation_status === 'Inactive' ? false : true;
+		const result = await _updateSessionActivationStatus(session_id, classroom, activation_status);
+		if (result) {
+			({ classroom } = result);
+			toast('Session status updated');
+		}
+	};
 
 	function openDeleteDialog(event) {
 		isDialogOpen = true;
@@ -83,7 +89,7 @@
 									<Select
 										select_title={activation_select_title}
 										select_options={activation_select_options}
-										on:message={activationStatusSelected}
+										on:message={(event) => activationStatusSelected(event, session.id)}
 									></Select>
 									<input
 										type="hidden"
