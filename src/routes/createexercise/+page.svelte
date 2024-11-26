@@ -207,17 +207,17 @@
 							)}
 						/>
 					</div>
+					<div style="max-height: 30%; overflow-y: auto;">
 					{#if testCaseSchema.parameters.input.length === 0 && testCaseSchema.parameters.output.length === 0}<span
 							class="invalid"
 							>Set a Test Case Schema before you can start creating your solution</span
-						>{/if}
+						>{/if} 
+					{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
+					{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
+					</div>
 					{#if $errors.test}
 						<TestResults testResults={$errors.test} />
 					{/if}
-					{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
-					{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
-					
-					
 					<div class="flex justify-between w-full items-center mx-8">
 						<div class="mx-8"  >
 							<LanguageSelection bind:selected={selectedLanguage} {languages}/>
