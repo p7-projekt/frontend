@@ -1,6 +1,6 @@
 import { fetchSpecificClassroom } from '$lib/fetchRequests';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
-import { error, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ cookies, params, depends }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -22,11 +22,11 @@ export const load: PageServerLoad = async ({ cookies, params, depends }) => {
 		refresh_token,
 		cookies
 	);
-
 	let classroom;
 	if (response.ok) {
 		classroom = await response.json();
 	} else redirect(303, '/');
+
 	return {
 		classroom: classroom ? classroom : null
 	};

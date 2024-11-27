@@ -29,7 +29,7 @@
 
 	const activationStatusSelected = async (event, session_id) => {
 		selected_activation_status = event.detail.chosen_option;
-		const activation_status = selected_activation_status === 'Inactive' ? false : true;
+		const activation_status = selected_activation_status.value;
 		const result = await _updateSessionActivationStatus(session_id, classroom, activation_status);
 		if (result) {
 			({ classroom } = result);
@@ -93,7 +93,7 @@
 										select_title={activation_select_title}
 										select_options={activation_select_options}
 										on:message={(event) => activationStatusSelected(event, session.id)}
-										values={{ value: session.id, label: session.active ? 'Active' : 'Inactive' }}
+										values={[{ value: session.id, label: session.active ? 'Active' : 'Inactive' }]}
 									></Select>
 									<input
 										type="hidden"

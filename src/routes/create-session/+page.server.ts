@@ -188,7 +188,6 @@ export const actions: Actions = {
 			return fail(400, { errors: validation.error.errors, session_description });
 		}
 		debugCreateSession('Validation successful for editing classroom session:', validation.data);
-		console.log(updated_classroom_session);
 		const response = await handleAuthenticatedRequest(
 			(token) =>
 				fetchUpdateClassroomSession(
