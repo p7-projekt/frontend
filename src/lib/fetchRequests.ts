@@ -131,7 +131,7 @@ export async function fetchLanguageData(
 		}
 	});
 }
-
+  
 export async function fetchCreateClassroom(
 	backendUrl: string,
 	api_version: string,
@@ -212,21 +212,7 @@ export async function fetchCreateClassroomSession(
 		},
 		body: JSON.stringify(new_session)
 	});
-}
-
-export async function getLanguages(
-    backendUrl: string,
-    api_version: string,
-    access_token: string
-): Promise<Response> {
-    return await fetch(`${backendUrl}/${api_version}/languages`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${access_token}`
-        }
-    });
-}
+} 
 
 export async function getUserSolution(
     backendUrl: string,

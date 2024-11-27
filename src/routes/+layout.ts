@@ -39,7 +39,7 @@ export function _validate_url_path(user: { name: string; role: string } | null, 
 			throw redirect(303, '/');
 		}
 	} else if (user.role === 'Instructor') {
-		if (!allowedInstructorRoutes.includes(urlp) && !urlp.startsWith('/classroom') && !urlp.endsWith('/dashboard'))  {
+		if (!allowedInstructorRoutes.includes(urlp) && !urlp.startsWith('/classroom') && !urlp.endsWith('/dashboard') && !urlp.startsWith('/session'))  { 
 			throw redirect(303, '/');
 		}
 	}

@@ -1,13 +1,11 @@
 <script lang="ts">
-    import * as Select from "$lib/components/ui/select/index.js";
-    import { debugLanguageSelector } from "$lib/debug";
+    import * as Select from "$lib/components/ui/select/index.js"; 
 
     export let languages: { languageId: number; language: string }[] = [];
     export let selected;
     
     function selectLanguage(language: { languageId: number; language: string }) { 
         selected = language;
-        console.log(language);
     }
 </script>
 

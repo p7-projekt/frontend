@@ -41,6 +41,8 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		let session;
 		if (response.ok) {
 			session = await response.json();
+			availableLanguages.set(session.languages);
+
 		}
 		return {
 			session: session

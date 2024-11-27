@@ -14,7 +14,7 @@ vi.mock('sveltekit-superforms', () => ({
 }));
 
 vi.mock('$lib/fetchRequests', () => ({ 
-getLanguages: vi.fn(() =>
+	fetchLanguageData: vi.fn(() =>
 	Promise.resolve({
 		ok: true,
 		json: () => Promise.resolve()

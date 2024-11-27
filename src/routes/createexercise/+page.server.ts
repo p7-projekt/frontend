@@ -6,7 +6,7 @@ import { formSchema } from './schema';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { convertFormData } from './helpers';
 import { debugCreateExercise } from '$lib/debug.js'; 
-import { getLanguages } from '$lib/fetchRequests.js';
+import { fetchLanguageData } from '$lib/fetchRequests.js';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const apiVersionV1 = import.meta.env.VITE_API_VERSION_V1;
@@ -15,7 +15,7 @@ const apiVersionV2 = import.meta.env.VITE_API_VERSION_V2;
 export const load: PageServerLoad = async ({ url, cookies }) => {
 	const access_token = cookies.get('access_token') || '';
 	const exerciseId = url.searchParams.get('exerciseid');
-    const languagesResponse = await getLanguages(backendUrl, apiVersionV2, access_token);
+    const languagesResponse = await fetchLanguageData(backendUrl, apiVersionV2, access_token);
     let languages;
 
     if (!languagesResponse.ok) {

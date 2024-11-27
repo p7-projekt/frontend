@@ -27,8 +27,6 @@
 	$: {
         if (selectedLanguage !== previousSelectedLanguage) {
 			previousSelectedLanguage = selectedLanguage;
-            console.log(`Selected language changed to: ${selectedLanguage}`);
-            console.log(`Error print: ${$errors.selectedLanguage}`);
 			$formData.selectedLanguage = selectedLanguage;
             $formData.codeText = setIDEBoilerPlate(data.testTemplate, selectedLanguage.language); 
 			enableIDE=true;
