@@ -2,6 +2,7 @@
 	import CodeMirror from 'svelte-codemirror-editor';
 	import { StreamLanguage } from '@codemirror/language';
 	import { haskell } from '@codemirror/legacy-modes/mode/haskell';
+	import { python } from '@codemirror/legacy-modes/mode/python';
 
 	export let codeSolutionText: string = '';
 	export let solutionLanguage: { languageId: number; language: string };
@@ -23,11 +24,14 @@
 	}
 
 	const haskellExtension = [StreamLanguage.define(haskell)];
+	const pythonExtension = [StreamLanguage.define(python)];
 
 	function getExtension() {
 		switch (solutionLanguage.language.toLowerCase()) {
 			case 'haskell':
 				return haskellExtension;
+			case 'python':
+				return pythonExtension;
 			default:
 				return [];
 		}
