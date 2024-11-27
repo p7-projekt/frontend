@@ -6,12 +6,20 @@
 	import { Label } from '$lib/components/ui/label/index.js';
 	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
-	import { displayValidationErrors } from './create_session';
+	import {
+		displayValidationErrors,
+		getEditAddedExercises,
+		getEditLanguages,
+		getEditRemainingExercises
+	} from './create_session';
 
 	export let data: PageData;
 	export let form: ActionData;
 
-	let added_exercise_list: { id: number; content: string }[] = [];
+	const classroom_id = data.classroom_id ? data.classroom_id : null;
+	const edit_session = data.session ? data.session : null;
+	console.log(edit_session);
+
 	let receive_message;
 
 	// Values for the select expiration time Select component
@@ -40,14 +48,18 @@
 	let lang_selected_options: string[];
 
 	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
-	let remaining_exercise_list = data.instructor_exercises
-		? data.instructor_exercises.map((exercise: { id: number; name: string }) => ({
-				id: exercise.id,
-				content: exercise.name
-			}))
-		: [];
-
-	const classroom_id = data.classroom_id ? data.classroom_id : null;
+	let added_exercise_list: { id: number; content: string }[] = !edit_session
+		? []
+		: getEditAddedExercises(edit_session.exerciseIds);
+	let remaining_exercise_list =
+		edit_session && data.instructor_exercises
+			? getEditRemainingExercises(data.instructor_exercises, edit_session.exerciseIds)
+			: data.instructor_exercises
+				? data.instructor_exercises.map((exercise: { id: number; name: string }) => ({
+						id: exercise.id,
+						content: exercise.name
+					}))
+				: [];
 
 	function handleMessage(event) {
 		receive_message = event.detail;
@@ -76,7 +88,15 @@
 	$: error = displayValidationErrors(form);
 </script>
 
-<form method="post" action={!classroom_id ? '?/oneOffSession' : '?/classroomSession'} use:enhance>
+<form
+	method="post"
+	action={!classroom_id
+		? '?/oneOffSession'
+		: !edit_session
+			? '?/classroomSession'
+			: '?/updateClassroomSession'}
+	use:enhance
+>
 	<div class="container grid grid-cols-2 gap-6 pl-6 w-full text-[#333] mt-3">
 		<div></div>
 		<div class="flex justify-end cursor-pointer">
@@ -96,13 +116,16 @@
 		<h1 class=" text-2xl font-medium col-span-full">Create Session</h1>
 
 		<div class="w-1/4 col-span-full">
-			<TitleInput input_name="session-title" />
+			<TitleInput input_name="session-title" value={edit_session ? edit_session.title : ''} />
 			{#if error.errorInTitle.message}
 				<p style="color:red; margin-bottom:0;">{error.errorInTitle.message}</p>
 			{/if}
 		</div>
 
-		<DescriptionBox description_name="session-description" />
+		<DescriptionBox
+			description_name="session-description"
+			value={edit_session ? edit_session.description : ''}
+		/>
 		<div class="grid grid-cols-2">
 			{#if !classroom_id}
 				<div class="grid grid-rows-[min-content] gap-1.5">
@@ -127,6 +150,9 @@
 					select_title={lang_select_title}
 					select_options={lang_select_options}
 					on:message={langOptionSelected}
+					value={edit_session
+						? getEditLanguages(edit_session.languages, data.programming_languages)
+						: null}
 				></Select>
 				{#if error.errorInLanguages.message}
 					<p style="color:red; margin-bottom:0;">{error.errorInLanguages.message}</p>
@@ -146,6 +172,10 @@
 			<input type="hidden" name="added-exercise-list" value={JSON.stringify(added_exercise_list)} />
 		</div>
 
+		{#if edit_session}
+			<input type="hidden" name="session-id" value={JSON.stringify(edit_session.id)} />
+			<input type="hidden" name="activation-status" value={JSON.stringify(edit_session.active)} />
+		{/if}
 		<div></div>
 		<div class="flex justify-end">
 			<button

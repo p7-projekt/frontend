@@ -228,7 +228,7 @@ export async function fetchSpecificClassroomSession(
 	});
 }
 
-export async function fetchUpdateClassroomSessionStatus(
+export async function fetchUpdateClassroomSession(
 	backendUrl: string,
 	api_version: string,
 	access_token: string,

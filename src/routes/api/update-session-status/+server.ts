@@ -1,10 +1,7 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
-import {
-	fetchSpecificClassroomSession,
-	fetchUpdateClassroomSessionStatus
-} from '$lib/fetchRequests';
+import { fetchSpecificClassroomSession, fetchUpdateClassroomSession } from '$lib/fetchRequests';
 
 // Internal API endpoint to log the user out
 export const POST: RequestHandler = async ({ request, cookies }) => {
@@ -37,7 +34,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		};
 		response = await handleAuthenticatedRequest(
 			(token) =>
-				fetchUpdateClassroomSessionStatus(
+				fetchUpdateClassroomSession(
 					backendUrl,
 					api_version_v2,
 					token,
@@ -48,7 +45,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 			refresh_token,
 			cookies
 		);
-		console.log(response);
 
 		if (response.ok) {
 			return json({ message: 'Session deleted' }, { status: 200 });

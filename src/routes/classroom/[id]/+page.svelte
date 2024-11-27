@@ -6,7 +6,7 @@
 	import { _deleteClassroomSession, _updateSessionActivationStatus } from './classroom.ts';
 	import type { PageData } from './$types';
 	import { toast } from 'svelte-sonner';
-	import { invalidate } from '$app/navigation';
+	import { goto, invalidate } from '$app/navigation';
 
 	export let data: PageData;
 
@@ -98,7 +98,15 @@
 										value={selected_activation_status}
 									/>
 								</div>
-								<button type="button" class="hover:bg-[#f4f5f5] p-2 rounded-md">
+								<button
+									type="button"
+									class="hover:bg-[#f4f5f5] p-2 rounded-md"
+									on:click={() => {
+										goto(
+											`/create-session?classroom=${classroom.id}&session=${session.id}&edit=true`
+										);
+									}}
+								>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
 										fill="none"

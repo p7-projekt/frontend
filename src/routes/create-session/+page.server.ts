@@ -4,7 +4,9 @@ import {
 	fetchExerciseData,
 	fetchCreateSession,
 	fetchLanguageData,
-	fetchCreateClassroomSession
+	fetchCreateClassroomSession,
+	fetchUpdateClassroomSession,
+	fetchSpecificClassroomSession
 } from '$lib/fetchRequests';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { getExerciseIds, getProgrammingLanguages } from './create_session';
@@ -22,7 +24,8 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 		return {
 			instructor_exercises: null,
 			programming_languages: null,
-			classroom_id: null
+			classroom_id: null,
+			session: null
 		};
 	}
 
@@ -49,12 +52,30 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 		programming_languages = await language_response.json();
 	}
 
-	// if related to classroom return classroom
+	// get query parameters if they exist
 	const classroom_id = url.searchParams.get('classroom') || null;
+	const session_id = url.searchParams.get('session');
+
+	let session_response;
+	let session;
+	if (session_id) {
+		session_response = await handleAuthenticatedRequest(
+			(token) => fetchSpecificClassroomSession(backendUrl, api_version_v2, token, session_id),
+			access_token,
+			refresh_token,
+			cookies
+		);
+
+		if (session_response.ok) {
+			session = await session_response.json();
+		}
+	}
+
 	return {
 		instructor_exercises,
 		programming_languages,
-		classroom_id
+		classroom_id,
+		session
 	};
 };
 
@@ -128,6 +149,53 @@ export const actions: Actions = {
 					api_version_v2,
 					token,
 					new_classroom_session,
+					classroom_id
+				),
+			access_token,
+			refresh_token,
+			cookies
+		);
+		if (response.ok) {
+			throw redirect(303, `/classroom/${classroom_id}`);
+		}
+	},
+
+	updateClassroomSession: async ({ request, cookies }) => {
+		const access_token = cookies.get('access_token') || '';
+		const refresh_token = cookies.get('refresh_token') || '';
+
+		// Get input form create session form
+		const form = await request.formData();
+		const classroom_id = form.get('classroom-id');
+		const session_id = form.get('session-id');
+		const session_title = form.get('session-title');
+		const session_description = form.get('session-description');
+		const added_exercise_ids = getExerciseIds(form.get('added-exercise-list'));
+		const programming_language = getProgrammingLanguages(form.get('selected-language'));
+		const activation_status = form.get('activation-status');
+		const updated_classroom_session = {
+			id: session_id,
+			title: session_title,
+			description: session_description,
+			active: activation_status === 'true' ? true : false,
+			exerciseIds: added_exercise_ids,
+			languageIds: programming_language
+		};
+
+		// Validate session
+		const validation = classroomSessionSchema.safeParse(updated_classroom_session); // Assuming a schema without expiration
+		if (!validation.success) {
+			return fail(400, { errors: validation.error.errors, session_description });
+		}
+		debugCreateSession('Validation successful for editing classroom session:', validation.data);
+		console.log(updated_classroom_session);
+		const response = await handleAuthenticatedRequest(
+			(token) =>
+				fetchUpdateClassroomSession(
+					backendUrl,
+					api_version_v2,
+					token,
+					updated_classroom_session,
 					classroom_id
 				),
 			access_token,
