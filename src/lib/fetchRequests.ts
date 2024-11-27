@@ -131,7 +131,7 @@ export async function fetchLanguageData(
 		}
 	});
 }
-
+  
 export async function fetchCreateClassroom(
 	backendUrl: string,
 	api_version: string,
@@ -213,3 +213,4 @@ export async function fetchCreateClassroomSession(
 		body: JSON.stringify(new_session)
 	});
 }
+

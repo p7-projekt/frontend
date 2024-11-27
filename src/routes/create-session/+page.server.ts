@@ -6,7 +6,7 @@ import {
 	fetchLanguageData,
 	fetchCreateClassroomSession
 } from '$lib/fetchRequests';
-import { handleAuthenticatedRequest } from '$lib/requestHandler';
+import { handleAuthenticatedRequest } from '$lib/requestHandler'; 
 import { getExerciseIds, getProgrammingLanguages } from './create_session';
 import { classroomSessionSchema, formSchema } from './schema';
 import { debugCreateSession } from '$lib/debug';
@@ -94,6 +94,9 @@ export const actions: Actions = {
 		);
 		if (response.ok) {
 			throw redirect(303, '/');
+		} else {
+			const responseBody = await response.text(); // Read the response as text
+            debugCreateSession('responseBody:', responseBody);
 		}
 	},
 
