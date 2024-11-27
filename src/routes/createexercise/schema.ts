@@ -12,7 +12,7 @@ export const formSchema = z.object({
 	codeText: z
 		.string()
 		.min(1, 'You must create a solution')
-		.max(10000, 'Solution must max consist of 10000 characters'),
+		.max(100000, 'Solution must max consist of 100000 characters'),
 	testCases: z.array(z.any()).min(1, 'At least one test case is required'),
 	selectedLanguage: z.object({
 		languageId: z.number(),
