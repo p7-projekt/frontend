@@ -38,7 +38,8 @@ describe('Page Server Load function', () => {
 		expect(result).toEqual({
 			instructor_exercises: null,
 			programming_languages: null,
-			classroom_id: null
+			classroom_id: null,
+			session: null
 		});
 	});
 
