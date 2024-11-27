@@ -3,7 +3,8 @@ import { fetchUserData } from '$lib/fetchRequests';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { get_user_role } from '$lib/getrole';
 
-export const load: LayoutServerLoad = async ({ cookies }) => {
+export const load: LayoutServerLoad = async (event) => {
+	const { cookies } = event;
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;
 	const api_version = import.meta.env.VITE_API_VERSION_V1;
 	const access_token: string = cookies.get('access_token') || '';
@@ -25,7 +26,7 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 	if (response.ok) {
 		userData = await response.json();
 		const access_token_: string = cookies.get('access_token') || '';
-		userRole = get_user_role(access_token_);
+		userRole = get_user_role(access_token_); 
 	}
 	return {
 		user: userData && userRole ? { name: userData.name, role: userRole } : null

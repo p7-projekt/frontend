@@ -7,12 +7,34 @@
 
     let openDialog = false;
     let selectedCode = '';
-    let selectedLanguage = 'haskell';
+    let selectedLanguage: { languageId: number; language: string } = { languageId: 0, language: '' };
 
-    function handleSubmissionClick(submission: { name: string; solution: string; language: string }) {
-        selectedCode = submission.solution;
-        selectedLanguage = submission.language;
-        openDialog = true;
+    async function handleSubmissionClick(exerciseId: number, userId: number) {
+        const response = await fetch('/api/dashboard/solution', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ exerciseId, userId })
+        });
+
+        const responseText = await response.text(); // Get the response text
+
+        try {
+            const solution = JSON.parse(responseText); // Try to parse the response as JSON
+            if (response.ok) {
+                selectedCode = solution.solution;
+                selectedLanguage = {
+                    languageId: solution.language_id,
+                    language: solution.language
+                };
+                openDialog = true;
+            } else {
+                console.error('Failed to fetch solution:', solution.error || response.statusText);
+            }
+        } catch (error) {
+            console.error('Failed to parse JSON response:', responseText);
+        }
     }
 </script>
 
@@ -36,7 +58,7 @@
                         <div class="container m-auto grid grid-cols-4">
                             {#each exercise.userDetails as user}
                                 <div class="tile flex items-center justify-center">
-                                    <h1 class="tile-marker cursor-pointer" on:click={() => handleSubmissionClick(user)}>
+                                    <h1 class="tile-marker cursor-pointer" on:click={() => handleSubmissionClick(exercise.id, user.id)}>
                                         {user.name}
                                     </h1>
                                 </div>
