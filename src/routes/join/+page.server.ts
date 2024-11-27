@@ -32,7 +32,7 @@ export async function load({ parent }) {
 }
 
 export const actions = {
-    join: async ({ request, cookies }) => {
+    join: async ({ request, cookies}) => {
         const form = await request.formData();
 		const access_token = cookies.get('access_token') 
 
@@ -60,23 +60,30 @@ export const actions = {
 
         const responseData = await response.json();
         if (!response.ok) {
+			if (responseData.errors?.Errors[0] === 'Already joined') {
+				throw redirect(303, '/session/'); 
+			}
             return fail(400, { error: responseData.errors?.SessionCode?.[0] || 'Invalid code' });
         }
-        const token = responseData.token;
-        if (!token) {
-            return fail(500, { message: 'Server error. Please try again later.' });
-        }
-        const token_expiration = responseData.expiresAt;
+		
+		if (access_token == null) {
+			const token = responseData.token;
+			if (!token) {
+				return fail(500, { message: 'Server error. Please try again later.' });
+			}
+			const token_expiration = responseData.expiresAt;
 
-        const expires_at: Date = new Date(token_expiration);
-        cookies.set('anon_token', token, {
-            path: '/',
-            httpOnly: true,
-            secure: false,
-            sameSite: 'strict',
-            expires: expires_at
+			const expires_at: Date = new Date(token_expiration);
+			cookies.set('anon_token', token, {
+				path: '/',
+				httpOnly: true,
+				secure: false,
+				sameSite: 'strict',
+	            expires: expires_at
         });
 
+		} 
+        
         throw redirect(303, '/session');
     }
 };
