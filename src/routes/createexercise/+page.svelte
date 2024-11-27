@@ -79,7 +79,6 @@
 
 	$: {
         if (selectedLanguage) {
-            console.log(`Selected language changed to: ${selectedLanguage}`);
 			$formData.selectedLanguage = selectedLanguage;
             $formData.codeText = setIDEBoilerPlate(testCaseSchema, selectedLanguage.language);
         }  
