@@ -34,6 +34,7 @@ export async function load({ parent }) {
 export const actions = {
     join: async ({ request, cookies }) => {
         const form = await request.formData();
+		const access_token = cookies.get('access_token') 
 
         const sessionCode = form.get('sessionCode');
         const nickname = form.get('nickname');
@@ -51,7 +52,8 @@ export const actions = {
         const response = await fetch(`${backendUrl}/join`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+				Authorization: `Bearer ${access_token}`		
             },
             body: JSON.stringify(joinCode)
         });
