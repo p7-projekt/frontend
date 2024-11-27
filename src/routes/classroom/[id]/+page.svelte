@@ -21,7 +21,10 @@
 
 	let selected_activation_status = 'Inactive';
 	let activation_select_title: string = 'Inactive';
-	let activation_select_options: string[] = ['Active', 'Inactive'];
+	let activation_select_options: { value: boolean; label: string }[] = [
+		{ value: false, label: 'Inactive' },
+		{ value: true, label: 'Active' }
+	];
 	let isDialogOpen = false;
 
 	const activationStatusSelected = async (event, session_id) => {
@@ -90,7 +93,7 @@
 										select_title={activation_select_title}
 										select_options={activation_select_options}
 										on:message={(event) => activationStatusSelected(event, session.id)}
-										value={{ value: session.id, label: session.active ? 'Active' : 'Inactive' }}
+										values={{ value: session.id, label: session.active ? 'Active' : 'Inactive' }}
 									></Select>
 									<input
 										type="hidden"

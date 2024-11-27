@@ -18,31 +18,34 @@
 
 	const classroom_id = data.classroom_id ? data.classroom_id : null;
 	const edit_session = data.session ? data.session : null;
-	console.log(edit_session);
 
 	let receive_message;
 
 	// Values for the select expiration time Select component
 	let expiration_select_title: string = 'Expires in';
-	let expiration_select_options: string[] = [
-		'1 hour',
-		'2 hours',
-		'3 hours',
-		'4 hours',
-		'5 hours',
-		'6 hours',
-		'7 hours',
-		'8 hours',
-		'9 hours',
-		'10 hours'
+	let expiration_select_options: { value: string; label: string }[] = [
+		{ value: '1', label: 'One hour' },
+		{ value: '2', label: 'Two hours' },
+		{ value: '3', label: 'Three hours' },
+		{ value: '4', label: 'Four hours' },
+		{ value: '5', label: 'Five hours' },
+		{ value: '6', label: 'Six hours' },
+		{ value: '7', label: 'Seven hours' },
+		{ value: '8', label: 'Eight hours' },
+		{ value: '9', label: 'Nine hours' },
+		{ value: '10', label: 'Ten hours' }
 	];
 	let expiration_selected_option: string = '';
 
 	// Values for the programming language Select component
 	let lang_select_title: string = 'Choose Language(s)';
-	let lang_select_options: string[] = data.programming_languages.map(
-		(language: { languageId: number; language: string }) =>
-			language.language.charAt(0).toUpperCase() + language.language.slice(1)
+	let lang_select_options: { value: number; label: string }[] = data.programming_languages.map(
+		(language: { languageId: number; language: string }) => {
+			return {
+				value: language.languageId,
+				label: language.language.charAt(0).toUpperCase() + language.language.slice(1)
+			};
+		}
 	);
 
 	let lang_selected_options: string[];
@@ -67,21 +70,12 @@
 	}
 
 	function expirationOptionSelected(event) {
-		expiration_selected_option = event.detail.chosen_option.split(' ')[0];
+		expiration_selected_option = event.detail.chosen_option.value;
 	}
 
 	function langOptionSelected(event) {
-		const lang_select_strings: string[] = event.detail.chosen_options;
-
-		// Make a lookup in the original data and get the corresponding IDs
-		lang_selected_options = lang_select_strings
-			.map((lang) => {
-				const match = data.programming_languages.find(
-					(language) => language.language.toLowerCase() === lang.toLowerCase()
-				);
-				return match ? match.languageId : null; // Return the ID if found, or null if not found
-			})
-			.filter((id) => id !== null); // Remove null values for unmatched items
+		const lang_selected = event.detail.chosen_options;
+		lang_selected_options = lang_selected.map((lang_selected) => lang_selected.value);
 	}
 
 	// Update validation errors given events
@@ -150,10 +144,11 @@
 					select_title={lang_select_title}
 					select_options={lang_select_options}
 					on:message={langOptionSelected}
-					value={edit_session
+					values={edit_session
 						? getEditLanguages(edit_session.languages, data.programming_languages)
-						: null}
+						: []}
 				></Select>
+				<!-- <TestSelect></TestSelect> -->
 				{#if error.errorInLanguages.message}
 					<p style="color:red; margin-bottom:0;">{error.errorInLanguages.message}</p>
 				{/if}

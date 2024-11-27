@@ -87,6 +87,16 @@ export function getEditLanguages(
 		.filter((language) => editLanguageIds.includes(language.languageId))
 		.map((language) => ({
 			value: language.languageId,
-			label: language.language
+			label: language.language.charAt(0).toUpperCase() + language.language.slice(1)
 		}));
+}
+
+export function getMultiplePreselected(
+	preselected_values: { value: unknown; label: string }[],
+	select_options: string[]
+) {
+	select_options = select_options.map((option) => option.toLowerCase());
+	return preselected_values
+		.filter((value) => select_options.includes(value.label))
+		.map((value) => value.label.charAt(0).toUpperCase() + value.label.slice(1));
 }
