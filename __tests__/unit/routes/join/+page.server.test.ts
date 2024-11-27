@@ -12,7 +12,7 @@ vi.mock('@sveltejs/kit', () => ({
 global.fetch = vi.fn();
 
 describe('Join action', () => {
-    const mockCookies = {
+    let mockCookies = {
         get: vi.fn(() => 'anon_token'),
         set: vi.fn(),
         delete: vi.fn()
@@ -74,7 +74,7 @@ describe('Join action', () => {
 
         fetch.mockResolvedValueOnce({
             ok: false,
-            json: async () => ({ errors: { SessionCode: ['Invalid code'] } })
+            json: async () => ({ errors: { SessionCode: ['Invalid code'], Errors: ["Invalid code"] } })
         });
 
         await actions.join({ request: mockRequest, cookies: mockCookies });
@@ -92,7 +92,7 @@ describe('Join action', () => {
 
         fetch.mockResolvedValueOnce({
             ok: false,
-            json: async () => ({ errors: null })
+            json: async () => ({ errors: { Errors: ["Invalid code"] } })
         });
 
         await actions.join({ request: mockRequest, cookies: mockCookies });
@@ -103,6 +103,12 @@ describe('Join action', () => {
         const mockFormData = new FormData();
         mockFormData.set('sessionCode', 'AB1234'); // Valid code format
         mockFormData.set('nickname', 'ValidNick'); // Valid nickname
+
+        mockCookies = {
+            get: vi.fn(),
+            set: vi.fn(),
+            delete: vi.fn()
+        };
 
         const mockRequest = {
             formData: async () => mockFormData
