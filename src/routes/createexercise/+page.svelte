@@ -199,6 +199,7 @@
 					<div class="ide-container w-full h-full">
 						<Ide
 							bind:codeSolutionText={$formData.codeText}
+							bind:solutionLanguage={$formData.selectedLanguage}
 							editable={!(
 								testCaseSchema.parameters.input.length === 0 &&
 								testCaseSchema.parameters.output.length === 0 || 
