@@ -1,12 +1,13 @@
 <script lang="ts">
 	import FlexTable from '$components/FlexTable';
-	import Row from '$components/FlexTable/Row.svelte';
+	import { Label } from '$lib/components/ui/label';
 	import Select from '$components/Select/Select.svelte';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { _deleteClassroomSession, _updateSessionActivationStatus } from './classroom.ts';
 	import type { PageData } from './$types';
 	import { toast } from 'svelte-sonner';
 	import { goto, invalidate } from '$app/navigation';
+	import CopyToClipboard from '$components/CopyToClipboard/CopyToClipboard.svelte';
 
 	export let data: PageData;
 
@@ -19,6 +20,7 @@
 		sessions: { id: number; title: string; active: boolean }[];
 	} = data.classroom;
 
+	console.log(classroom);
 	let selected_activation_status = 'Inactive';
 	let activation_select_title: string = 'Inactive';
 	let activation_select_options: { value: boolean; label: string }[] = [
@@ -55,7 +57,13 @@
 </script>
 
 <div class="container grid grid-cols-1 gap-y-8 w-full text-[#333] mt-3">
-	<h1 class=" text-3xl font-semibold col-span-full">{classroom.title}</h1>
+	<div class="flex justify-between">
+		<h1 class=" text-3xl font-semibold">{classroom.title}</h1>
+		<div>
+			<Label class="text-base font-medium">Invite Code</Label>
+			<CopyToClipboard textToCopy={classroom.roomcode}></CopyToClipboard>
+		</div>
+	</div>
 
 	<div>
 		<h2 class="text-2xl font-semibold col-span-full mb-3">Description</h2>
