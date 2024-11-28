@@ -47,7 +47,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		);
 
 		if (response.ok) {
-			return json({ message: 'Session deleted' }, { status: 200 });
+			return json({ message: 'Session updated' }, { status: 200 });
 		} else {
 			return json({ error: 'Failed to update session' }, { status: 500 });
 		}

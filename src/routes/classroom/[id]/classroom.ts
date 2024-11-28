@@ -65,3 +65,37 @@ export async function _updateSessionActivationStatus(
 		};
 	}
 }
+export async function _updateClassroom(
+	classroomId: number | null,
+	classroom: {
+		id: number;
+		title: string;
+		description: string;
+		roomcode: string;
+		isOpen: boolean;
+		sessions: { id: number; title: string; active: boolean }[];
+	},
+	openStatus: boolean
+) {
+	const response = await fetch('/api/update-classroom', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			classroom_id: classroom.id,
+			classroom_title: classroom.title,
+			classroom_description: classroom.description,
+			open_status: openStatus
+		})
+	});
+
+	if (response.ok) {
+		// Update the session.active property on the client side to avoid reloading page
+		classroom.isOpen = openStatus;
+
+		return {
+			classroom: classroom
+		};
+	}
+}

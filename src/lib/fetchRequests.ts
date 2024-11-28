@@ -251,3 +251,24 @@ export async function fetchUpdateClassroomSession(
 		body: JSON.stringify(session)
 	});
 }
+
+export async function fetchUpdateClassroom(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	classroom: {
+		title: string;
+		description: string;
+		registrationOpen: boolean;
+	},
+	classroom_id: number
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms/${classroom_id}`, {
+		method: 'PUT',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${access_token}`
+		},
+		body: JSON.stringify({ classroom })
+	});
+}
