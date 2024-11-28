@@ -29,7 +29,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		cookies
 	);
 
-	console.log(response);
 	if (response.ok) {
 		return json({ message: 'Classroom updated' }, { status: 200 });
 	} else {

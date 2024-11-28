@@ -15,7 +15,6 @@
 
 	export let data: PageData;
 	const user = data.user;
-	console.log(user);
 
 	let classroom: {
 		id: number;
@@ -26,7 +25,8 @@
 		sessions: { id: number; title: string; active: boolean }[];
 	} = data.classroom;
 
-	// console.log(classroom);
+	console.log(classroom);
+
 	let selected_activation_status: string = 'Inactive';
 	let activation_select_title: string = 'Inactive';
 	let activation_select_options: { value: boolean; label: string }[] = [
@@ -36,8 +36,8 @@
 
 	let selected_open_status: string = 'Closed';
 	let status_select_options: { value: boolean; label: string }[] = [
-		{ value: false, label: 'closed' },
-		{ value: true, label: 'open' }
+		{ value: false, label: 'Closed' },
+		{ value: true, label: 'Open' }
 	];
 
 	let isDialogOpen = false;
@@ -127,7 +127,7 @@
 				<FlexTable.Header />
 				<FlexTable.Body>
 					{#each classroom.sessions as session}
-						{#if user?.role === 'Student' && session.active}
+						{#if (user?.role === 'Student' && session.active) || user?.role === 'Instructor'}
 							<FlexTable.Row nr_cols={2} cssClass="mb-6 mt-6">
 								<FlexTable.Column>
 									<a href="/session/{session.id}">

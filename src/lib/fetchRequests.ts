@@ -269,6 +269,6 @@ export async function fetchUpdateClassroom(
 			'Content-Type': 'application/json',
 			Authorization: `Bearer ${access_token}`
 		},
-		body: JSON.stringify({ classroom })
+		body: JSON.stringify(classroom)
 	});
 }
