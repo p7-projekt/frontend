@@ -33,6 +33,7 @@
 		selected_session_title = session.title;
 		isDialogOpen = true;
 	}
+	
 </script>
 
 <Card.Header class="p-0">

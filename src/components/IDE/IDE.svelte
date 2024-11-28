@@ -10,7 +10,7 @@
 	const haskellExtension = [StreamLanguage.define(haskell)];
 
 	function getExtension() {
-		switch (solutionLanguage) {
+		switch (solutionLanguage.toLowerCase()) {
 			case 'haskell':
 				return haskellExtension;
 			default:

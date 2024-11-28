@@ -1,7 +1,5 @@
 import { load, actions } from '$src/routes/createexercise/+page.server';
-import { describe, it, expect, vi } from 'vitest';
-import { handleAuthenticatedRequest } from '$lib/requestHandler';
-import { redirect } from '@sveltejs/kit';
+import { describe, it, expect, vi } from 'vitest'; 
 
 vi.mock('sveltekit-superforms', () => ({
 	setError: vi.fn(),
@@ -13,6 +11,15 @@ vi.mock('sveltekit-superforms', () => ({
 			testCases: []
 		}
 	}))
+}));
+
+vi.mock('$lib/fetchRequests', () => ({ 
+	fetchLanguageData: vi.fn(() =>
+	Promise.resolve({
+		ok: true,
+		json: () => Promise.resolve()
+	})
+)
 }));
 
 vi.mock('@sveltejs/kit', () => ({
@@ -61,6 +68,7 @@ describe('Page Server Load function', () => {
 				get: vi.fn((param) => (param === 'exerciseid' ? '1' : null))
 			}
 		};
+ 
 
 		const mockExerciseData = {
 			title: 'Exercise 1',
