@@ -32,3 +32,7 @@ export {
 	Trigger as SelectTrigger,
 	Separator as SelectSeparator
 };
+
+export function ItemIndicator(ItemIndicator: any) {
+	throw new Error('Function not implemented.');
+}

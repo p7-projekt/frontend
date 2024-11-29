@@ -35,11 +35,19 @@ export function _validate_url_path(user: { name: string; role: string } | null, 
 			throw redirect(303, '/');
 		}
 	} else if (user.role === 'Student') {
-		if (!allowedStudentRoutes.includes(urlp) && !urlp.startsWith('/session')) {
+		if (
+			!allowedStudentRoutes.includes(urlp) &&
+			!urlp.startsWith('/session') &&
+			!urlp.startsWith('/classroom')
+		) {
 			throw redirect(303, '/');
 		}
 	} else if (user.role === 'Instructor') {
-		if (!allowedInstructorRoutes.includes(urlp) && !urlp.startsWith('/classroom') && !urlp.endsWith('/dashboard') && !urlp.startsWith('/session'))  { 
+		if (
+			!allowedInstructorRoutes.includes(urlp) &&
+			!urlp.startsWith('/classroom') &&
+			!urlp.startsWith('/session')
+		) {
 			throw redirect(303, '/');
 		}
 	}

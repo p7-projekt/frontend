@@ -17,9 +17,9 @@
 	import { onMount } from 'svelte';
 	import LanguageSelection from '$components/IDE/LanguageSelection.svelte';
 	import TestResults from '$components/Tests/TestResults.svelte';
-	
+
 	export { formSchema as form };
- 
+
 	export let data: PageData;
 
 	let open: boolean = false;
@@ -27,7 +27,7 @@
 	let exerciseId: number;
 	let overwriteCodeText: boolean = false;
 	let isLoading: boolean = false;
-	let selectedLanguage: { languageId: number; language: string }= { languageId: 0, language: '' };
+	let selectedLanguage: { languageId: number; language: string } = { languageId: 0, language: '' };
 	let languages = data.data.languages;
 
 	onMount(() => {
@@ -69,7 +69,7 @@
 	data.testCasesStore.subscribe((store) => {
 		$formData.testCases = store.testCases;
 	});
- 
+
 	$: if (
 		testCaseSchema.parameters.input.length > 0 ||
 		testCaseSchema.parameters.output.length > 0
@@ -78,14 +78,14 @@
 	}
 
 	$: {
-        if (selectedLanguage) {
+		if (selectedLanguage) {
 			$formData.selectedLanguage = selectedLanguage;
-            $formData.codeText = setIDEBoilerPlate(testCaseSchema, selectedLanguage.language);
-        }  
-    }
- 
+			$formData.codeText = setIDEBoilerPlate(testCaseSchema, selectedLanguage.language);
+		}
+	}
+
 	function createBoilerplate() {
-		if ((!$formData.codeText || overwriteCodeText) && selectedLanguage!=null) {
+		if ((!$formData.codeText || overwriteCodeText) && selectedLanguage != null) {
 			$formData.codeText = setIDEBoilerPlate(testCaseSchema);
 			overwriteCodeText = false; // Reset the flag after overwriting codeText
 		}
@@ -201,9 +201,9 @@
 							bind:codeSolutionText={$formData.codeText}
 							bind:solutionLanguage={$formData.selectedLanguage}
 							editable={!(
-								testCaseSchema.parameters.input.length === 0 &&
-								testCaseSchema.parameters.output.length === 0 || 
-								selectedLanguage.language==''
+								(testCaseSchema.parameters.input.length === 0 &&
+									testCaseSchema.parameters.output.length === 0) ||
+								selectedLanguage.language == ''
 							)}
 						/>
 					</div>
@@ -219,21 +219,23 @@
 						<TestResults testResults={$errors.test} />
 					{/if}
 					<div class="flex justify-between w-full items-center mx-8">
-						<div class="mx-8"  >
-							<LanguageSelection bind:selected={selectedLanguage} {languages}/>
+						<div class="mx-8">
+							<LanguageSelection bind:selected={selectedLanguage} {languages} />
 						</div>
 						<div class="mx-8">
 							{#if $submitting}
-							<Button disabled>
-								<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
-								Please wait
-							</Button>
+								<Button disabled>
+									<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
+									Please wait
+								</Button>
 							{:else}
 								<Form.Button>Confirm</Form.Button>
 							{/if}
 						</div>
 					</div>
-					{#if selectedLanguage.language==''}<span class="invalid">Select a language to begin coding your solution</span>{/if}
+					{#if selectedLanguage.language == ''}<span class="invalid"
+							>Select a language to begin coding your solution</span
+						>{/if}
 					{#if $errors.selectedLanguage && Object.keys($errors.selectedLanguage).length > 0 && JSON.stringify($errors.selectedLanguage) !== '{}'}
 						<span class="invalid">Select a language before proceeding!</span>
 					{/if}

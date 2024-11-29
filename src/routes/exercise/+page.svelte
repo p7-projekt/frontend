@@ -13,10 +13,10 @@
 	import { debugExercise } from '$lib/debug';
 	import { setIDEBoilerPlate } from '$lib/boilerplate';
 	import type { ActionData } from '../$types';
-	import TestResultsStudent from '$components/Tests/TestResultsStudent.svelte'; 
+	import TestResultsStudent from '$components/Tests/TestResultsStudent.svelte';
 
 	export let data: PageData;
-	export let actionData: ActionData; 
+	export let actionData: ActionData;
 	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form;
 	export let exerciseData = data.exerciseData;
 	let languages = data.languages;
@@ -25,7 +25,7 @@
 	let enableIDE: boolean = false;
 
 	$: {
-        if (selectedLanguage !== previousSelectedLanguage) {
+		if (selectedLanguage !== previousSelectedLanguage) {
 			previousSelectedLanguage = selectedLanguage;
 			$formData.selectedLanguage = selectedLanguage;
             $formData.codeText = setIDEBoilerPlate(data.testTemplate, selectedLanguage.language); 
@@ -81,15 +81,15 @@
 					{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
 
 					<div class="flex justify-between w-full items-center mx-8">
-						<div class="mx-8"  >
-							<LanguageSelection bind:selected={selectedLanguage} {languages}/>
+						<div class="mx-8">
+							<LanguageSelection bind:selected={selectedLanguage} {languages} />
 						</div>
 						<div class="mx-8">
 							{#if $submitting}
-							<Button disabled>
-								<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
-								Please wait
-							</Button>
+								<Button disabled>
+									<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
+									Please wait
+								</Button>
 							{:else}
 								<Form.Button>Confirm</Form.Button>
 							{/if}
@@ -99,6 +99,7 @@
 					{#if $errors.selectedLanguage && Object.keys($errors.selectedLanguage).length > 0 && JSON.stringify($errors.selectedLanguage) !== '{}'}
 						<span class="invalid">Select a language before proceeding!</span>
 					{/if}
+				</div>
 			</form>
 		</Resizable.Pane>
 	</Resizable.PaneGroup>

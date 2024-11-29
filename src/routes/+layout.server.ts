@@ -20,7 +20,7 @@ export const load: LayoutServerLoad = async (event) => {
 		refresh_token,
 		cookies
 	);
-	
+
 	let userRole;
 	let userData;
 	if (response.ok) {

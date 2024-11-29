@@ -22,9 +22,8 @@ vi.mock('sveltekit-superforms', () => ({
 			],
 			selectedLanguage: {
 				languageId: 1,
-				language: "brainfuck"		
-			},
-
+				language: 'brainfuck'
+			}
 		}
 	}))
 }));
