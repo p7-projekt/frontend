@@ -1,6 +1,7 @@
 import type { PageServerLoad } from './$types';
 import { fetchExerciseData, fetchSessionsData, fetchClassroomData } from '$lib/fetchRequests';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
+import { redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ cookies, depends, parent }) => {
 	const backendUrl = import.meta.env.VITE_BACKEND_URL;
