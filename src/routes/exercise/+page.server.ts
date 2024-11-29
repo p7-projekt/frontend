@@ -5,13 +5,20 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
 import { setIDEBoilerPlate } from '$lib/boilerplate';
 import { debugExercise } from '$lib/debug';
+import { availableLanguages } from '$lib/availableLanguages';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const apiVersion = import.meta.env.VITE_API_VERSION_V1;
+const apiVersionV2 = import.meta.env.VITE_API_VERSION_V2;
 
 export const load: PageServerLoad = async ({ cookies, url }) => {
 	const access_token: string = cookies.get('access_token') || '';
 	const exerciseId = url.searchParams.get('exerciseid');
+
+	let languages;
+	availableLanguages.subscribe((value) => {
+		languages = value;
+	})();
 
 	const response = await fetch(`${backendUrl}/${apiVersion}/exercises/${exerciseId}`, {
 		method: 'GET',
@@ -36,7 +43,6 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 	} else {
 		jsonResponse = {};
 	}
- 
 
 	const testTemplate = {
 		parameters: {
@@ -52,18 +58,34 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 	};
 
 	const form = await superValidate(zod(formSchema));
-	form.data.codeText = setIDEBoilerPlate(testTemplate);
 
 	return {
 		form,
-		exerciseData: jsonResponse
+		exerciseData: jsonResponse,
+		testTemplate,
+		languages
 	};
 };
+
+async function getLanguages(
+	backendUrl: string,
+	api_version: string,
+	access_token: string
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/languages`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${access_token}`
+		}
+	});
+}
 
 function convertFormData(formData, sessionId) {
 	return {
 		solution: formData.codeText,
-		sessionId: sessionId
+		sessionId: sessionId,
+		languageId: formData.selectedLanguage.languageId
 	};
 }
 
@@ -96,18 +118,20 @@ export const actions: Actions = {
 
 		// Convert form data to API format
 		const apiData = convertFormData(form.data, sessionId);
- 
 
 		const access_token = event.cookies.get('anon_token');
 
-		const response = await fetch(`${backendUrl}/${apiVersion}/exercises/${exerciseId}/submission`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${access_token}` // Append the Bearer token
-			},
-			body: JSON.stringify(apiData)
-		});
+		const response = await fetch(
+			`${backendUrl}/${apiVersionV2}/exercises/${exerciseId}/submission`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${access_token}` // Append the Bearer token
+				},
+				body: JSON.stringify(apiData)
+			}
+		);
 
 		if (response.ok) {
 			const responseBody = await response.text(); // Read the response as text
@@ -122,16 +146,9 @@ export const actions: Actions = {
 			} else {
 				resJSON = { detail: 'No response body' }; // Handle empty response body
 			}
- 
 
-			if (resJSON.isFailed) {
-				const errorMessages = resJSON.errors.map((err) => err.message).join('\n');
-				debugExercise('Epic fail from server:', resJSON);
-				return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
-			} else {
-				debugExercise('Epic Win:', resJSON);
-				throw redirect(303, '/session');
-			}
+			debugExercise('Epic Win:', resJSON);
+			throw redirect(303, '/session');
 		} else {
 			const responseBody = await response.text(); // Read the response as text
 			debugExercise('responseBody:', responseBody);
@@ -139,11 +156,20 @@ export const actions: Actions = {
 			if (responseBody) {
 				try {
 					const resJSON = JSON.parse(responseBody); // Try to parse the response as JSON
-					if (resJSON.errors) {
-						const errorMessages = Object.values(resJSON.errors).flat().join('\n'); // Flatten and join all error messages
+					if (resJSON.testCaseResults) {
+						debugExercise('Test case errors:', resJSON.testCaseResults);
+						return setError(form, 'test', resJSON.testCaseResults);
+					} else if (resJSON.message) {
+						// Handle compiler error response
+						debugExercise('resJSON.message:', resJSON.message);
+						return setError(form, 'codeText', resJSON.message || 'An error occurred on the server');
+					} else if (resJSON.errors) {
+						// Handle validation error response
+						const errorMessages = Object.values(resJSON.errors).flat().join('\n');
+						debugExercise('Validation errors:', errorMessages);
 						return setError(form, 'codeText', errorMessages || 'An error occurred on the server');
 					} else {
-						error = { detail: responseBody }; // If no errors field, use the text as the error detail
+						error = { detail: responseBody }; // If no specific error field, use the text as the error detail
 					}
 				} catch (e) {
 					error = { detail: responseBody }; // If parsing fails, use the text as the error detail

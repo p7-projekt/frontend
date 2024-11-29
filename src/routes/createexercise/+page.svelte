@@ -15,6 +15,9 @@
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import { setIDEBoilerPlate } from '../../lib/boilerplate';
 	import { onMount } from 'svelte';
+	import LanguageSelection from '$components/IDE/LanguageSelection.svelte';
+	import TestResults from '$components/Tests/TestResults.svelte';
+
 	export { formSchema as form };
 
 	export let data: PageData;
@@ -24,6 +27,8 @@
 	let exerciseId: number;
 	let overwriteCodeText: boolean = false;
 	let isLoading: boolean = false;
+	let selectedLanguage: { languageId: number; language: string } = { languageId: 0, language: '' };
+	let languages = data.data.languages;
 
 	onMount(() => {
 		const urlParams = new URLSearchParams(window.location.search);
@@ -59,13 +64,12 @@
 			input: { type: string; value: string }[];
 			output: { type: string; value: string }[];
 		};
-	} = data.testCaseSchema; 
+	} = data.testCaseSchema;
 
 	data.testCasesStore.subscribe((store) => {
 		$formData.testCases = store.testCases;
 	});
 
-	// Reactive statement to call createBoilerplate when testCaseSchema is set
 	$: if (
 		testCaseSchema.parameters.input.length > 0 ||
 		testCaseSchema.parameters.output.length > 0
@@ -73,8 +77,15 @@
 		createBoilerplate();
 	}
 
+	$: {
+		if (selectedLanguage) {
+			$formData.selectedLanguage = selectedLanguage;
+			$formData.codeText = setIDEBoilerPlate(testCaseSchema, selectedLanguage.language);
+		}
+	}
+
 	function createBoilerplate() {
-		if (!$formData.codeText || overwriteCodeText) {
+		if ((!$formData.codeText || overwriteCodeText) && selectedLanguage != null) {
 			$formData.codeText = setIDEBoilerPlate(testCaseSchema);
 			overwriteCodeText = false; // Reset the flag after overwriting codeText
 		}
@@ -114,7 +125,7 @@
 						</div>
 					</Resizable.Pane>
 					<Resizable.Handle />
-					<Resizable.Pane defaultSize={40}>
+					<Resizable.Pane defaultSize={40} style="overflow:auto">
 						<div class="m-8 content">
 							<p>Test Case Schema</p>
 
@@ -172,7 +183,7 @@
 							</Dialog.Root>
 
 							<TestCaseList
-								testCasesStore={data.testCasesStore} 
+								testCasesStore={data.testCasesStore}
 								bind:testCaseTemplate={testCaseSchema}
 							/>
 							{#if $errors.testCases && $errors.testCases._errors}<span class="invalid"
@@ -188,28 +199,46 @@
 					<div class="ide-container w-full h-full">
 						<Ide
 							bind:codeSolutionText={$formData.codeText}
+							bind:solutionLanguage={$formData.selectedLanguage}
 							editable={!(
-								testCaseSchema.parameters.input.length === 0 &&
-								testCaseSchema.parameters.output.length === 0
+								(testCaseSchema.parameters.input.length === 0 &&
+									testCaseSchema.parameters.output.length === 0) ||
+								selectedLanguage.language == ''
 							)}
 						/>
 					</div>
-					{#if testCaseSchema.parameters.input.length === 0 && testCaseSchema.parameters.output.length === 0}<span
-							class="invalid"
-							>Set a Test Case Schema before you can start creating your solution</span
-						>{/if}
-					{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
-					{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
-					<div class="flex space-x-4">
-						{#if $submitting}
-							<Button disabled>
-								<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
-								Please wait
-							</Button>
-						{:else}
-							<Form.Button>Confirm</Form.Button>
-						{/if}
+					<div style="max-height: 30%; overflow-y: auto;">
+						{#if testCaseSchema.parameters.input.length === 0 && testCaseSchema.parameters.output.length === 0}<span
+								class="invalid"
+								>Set a Test Case Schema before you can start creating your solution</span
+							>{/if}
+						{#if $errors.codeText}<span class="invalid">{$errors.codeText}</span>{/if}
+						{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
 					</div>
+					{#if $errors.test}
+						<TestResults testResults={$errors.test} />
+					{/if}
+					<div class="flex justify-between w-full items-center mx-8">
+						<div class="mx-8">
+							<LanguageSelection bind:selected={selectedLanguage} {languages} />
+						</div>
+						<div class="mx-8">
+							{#if $submitting}
+								<Button disabled>
+									<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
+									Please wait
+								</Button>
+							{:else}
+								<Form.Button>Confirm</Form.Button>
+							{/if}
+						</div>
+					</div>
+					{#if selectedLanguage.language == ''}<span class="invalid"
+							>Select a language to begin coding your solution</span
+						>{/if}
+					{#if $errors.selectedLanguage && Object.keys($errors.selectedLanguage).length > 0 && JSON.stringify($errors.selectedLanguage) !== '{}'}
+						<span class="invalid">Select a language before proceeding!</span>
+					{/if}
 				</div>
 			</Resizable.Pane>
 		</Resizable.PaneGroup>

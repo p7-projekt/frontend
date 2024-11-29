@@ -3,6 +3,7 @@ export const convertFormData = (formData) => {
 		name: formData.title,
 		description: formData.description,
 		solution: formData.codeText,
+		solutionLanguage: formData.selectedLanguage.languageId,
 		inputParameterType: formData.testCases[0].parameters.input.map((param: any) => param.type),
 		outputParamaterType: formData.testCases[0].parameters.output.map((param: any) => param.type),
 		testcases: formData.testCases.map((testCase: any) => ({

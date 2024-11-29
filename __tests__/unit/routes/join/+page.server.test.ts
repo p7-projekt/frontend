@@ -12,7 +12,7 @@ vi.mock('@sveltejs/kit', () => ({
 global.fetch = vi.fn();
 
 describe('Join action', () => {
-	const mockCookies = {
+	let mockCookies = {
 		get: vi.fn(() => 'anon_token'),
 		set: vi.fn(),
 		delete: vi.fn()
@@ -21,6 +21,7 @@ describe('Join action', () => {
 	it('returns a validation error if session code is invalid', async () => {
 		const mockFormData = new FormData();
 		mockFormData.set('sessionCode', 'ABC123'); // Invalid format
+		mockFormData.set('nickname', 'ValidNick'); // Valid nickname
 
 		const mockRequest = {
 			formData: async () => mockFormData
@@ -35,6 +36,7 @@ describe('Join action', () => {
 	it('fails if session code length is incorrect', async () => {
 		const mockFormData = new FormData();
 		mockFormData.set('sessionCode', 'A123'); // Invalid length
+		mockFormData.set('nickname', 'ValidNick'); // Valid nickname
 
 		const mockRequest = {
 			formData: async () => mockFormData
@@ -49,6 +51,7 @@ describe('Join action', () => {
 	it('fails if session code last four digits are out of range', async () => {
 		const mockFormData = new FormData();
 		mockFormData.set('sessionCode', 'AB0999'); // Out of range
+		mockFormData.set('nickname', 'ValidNick'); // Valid nickname
 
 		const mockRequest = {
 			formData: async () => mockFormData
@@ -63,6 +66,7 @@ describe('Join action', () => {
 	it('returns validation error if join request fails with invalid code error', async () => {
 		const mockFormData = new FormData();
 		mockFormData.set('sessionCode', 'AB1234'); // Valid code format
+		mockFormData.set('nickname', 'ValidNick'); // Valid nickname
 
 		const mockRequest = {
 			formData: async () => mockFormData
@@ -70,7 +74,7 @@ describe('Join action', () => {
 
 		fetch.mockResolvedValueOnce({
 			ok: false,
-			json: async () => ({ errors: { SessionCode: ['Invalid code'] } })
+			json: async () => ({ errors: { SessionCode: ['Invalid code'], Errors: ['Invalid code'] } })
 		});
 
 		await actions.join({ request: mockRequest, cookies: mockCookies });
@@ -80,6 +84,7 @@ describe('Join action', () => {
 	it('returns validation error if join request fails with no error', async () => {
 		const mockFormData = new FormData();
 		mockFormData.set('sessionCode', 'AB1234'); // Valid code format
+		mockFormData.set('nickname', 'ValidNick'); // Valid nickname
 
 		const mockRequest = {
 			formData: async () => mockFormData
@@ -87,7 +92,7 @@ describe('Join action', () => {
 
 		fetch.mockResolvedValueOnce({
 			ok: false,
-			json: async () => ({ errors: null })
+			json: async () => ({ errors: { Errors: ['Invalid code'] } })
 		});
 
 		await actions.join({ request: mockRequest, cookies: mockCookies });
@@ -97,6 +102,13 @@ describe('Join action', () => {
 	it('returns server error if no token is received', async () => {
 		const mockFormData = new FormData();
 		mockFormData.set('sessionCode', 'AB1234'); // Valid code format
+		mockFormData.set('nickname', 'ValidNick'); // Valid nickname
+
+		mockCookies = {
+			get: vi.fn(),
+			set: vi.fn(),
+			delete: vi.fn()
+		};
 
 		const mockRequest = {
 			formData: async () => mockFormData
@@ -114,6 +126,7 @@ describe('Join action', () => {
 	it('sets anon_token cookie and redirects on successful join', async () => {
 		const mockFormData = new FormData();
 		mockFormData.set('sessionCode', 'AB1234'); // Valid code format
+		mockFormData.set('nickname', 'ValidNick'); // Valid nickname
 
 		const mockRequest = {
 			formData: async () => mockFormData

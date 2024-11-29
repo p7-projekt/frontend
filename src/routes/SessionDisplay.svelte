@@ -35,10 +35,10 @@
 	}
 </script>
 
-<Card.Header>
+<Card.Header class="p-0">
 	<Card.Title class="text-[1.25rem]">Sessions</Card.Title>
 </Card.Header>
-<Card.Content>
+<Card.Content class="p-0">
 	<div class="grid grid-cols-1 gap-4 overflow-y-auto scrollable-list">
 		{#each sessions as session (session.id)}
 			<div class="rounded-[1.5rem] p-[1.5rem] border-[1.5px]" out:slide>
@@ -89,7 +89,7 @@
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel on:click={() => (isDialogOpen = false)}>Cancel</AlertDialog.Cancel>
-			<AlertDialog.Action on:click={clickDelete}>Delete</AlertDialog.Action>
+			<AlertDialog.Action class="bg-[#e63946]" on:click={clickDelete}>Delete</AlertDialog.Action>
 		</AlertDialog.Footer>
 	</AlertDialog.Content>
 </AlertDialog.Root>

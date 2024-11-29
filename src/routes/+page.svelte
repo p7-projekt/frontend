@@ -7,10 +7,13 @@
 	import { _deleteExercise } from './+page';
 	import { toast } from 'svelte-sonner';
 	import { Button } from '$lib/components/ui/button';
+	import ClassroomDisplay from './ClassroomDisplay.svelte';
+	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
 
 	export let data: PageData;
 
 	const sessionData = data.sessions;
+	const classrooms = data.classrooms;
 
 	let instructor_exercises: { id: number; content: string }[];
 	if (data.instructor_exercises) {
@@ -58,31 +61,77 @@
 	}
 </script>
 
-{#if data.user?.role === "Instructor"}
+{#if data.user?.role === 'Instructor'}
 	<div class="container pl-6 w-full text-[#333] grid grid-cols-1 gap-y-8">
-		<h1 class="text-2xl font-semibold col-span-full">Instructor Home</h1>
+		<h1 class="text-2xl font-semibold col-span-full">Instructor Dashboard</h1>
 		<div class="flex gap-x-12 h-full">
-			<main class="flex flex-1 flex-col w-1/2 h-[35.5rem]">
-				{#if !data.sessions}
-					<div
-						class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
-					>
-						<div class="flex flex-col items-center gap-1 text-center">
-							<h3 class="text-2xl font-bold tracking-tight">You have no Sessions</h3>
-							<p class="text-muted-foreground text-sm">
-								You can start instructing as soon as you add a session.
-							</p>
-							<button
-								class="bg-[#1f2937] text-white hover:bg-transparent hover:text-[#1f2937] ease-in-out duration-300 p-6 rounded-lg shadow-lg text-xl py-5 px-10 mt-8"
-								on:click={handleClickCreateSession}>Create Session</button
-							>
+			<main class="flex flex-col w-1/2 h-[38rem] justify-between">
+				<div class="scrollable-list h-full flex-col flex justify-between overflow-auto">
+					{#if data.classrooms}
+						<ClassroomDisplay classroom_list={classrooms} />
+						<div class="flex justify-end mr-1 mb-2">
+							<div class="flex items-center space-x-4 mt-4">
+								<span class="text-[#333] font-medium text-[1.0625rem]">Create Classroom</span>
+								<button
+									on:click={() => goto('/create-classroom')}
+									class="bg-[#1f2937] hover:bg-[#e9eaeb] hover:text-[#1f2937] flex items-center justify-center rounded-full w-7 h-7 text-white font-bold transition duration-300 ease-in-out hover:scale-110"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="#1f2937"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="size-5"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M12 4.5v15m7.5-7.5h-15"
+										/>
+									</svg>
+								</button>
+							</div>
 						</div>
-					</div>
-				{:else}
-					<SessionDisplay {sessionData} />
-				{/if}
+					{:else}
+						<div
+							class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
+						>
+							<div class="flex flex-col items-center gap-1 text-center">
+								<h3 class="text-2xl font-bold tracking-tight">Classrooms</h3>
+								<p class="text-muted-foreground text-sm">
+									Create classrooms for your students to complete sessions and exercises.
+								</p>
+								<a
+									href="/create-classroom"
+									class="bg-[#1f2937] text-white hover:bg-transparent hover:text-[#1f2937] ease-in-out duration-300 p-6 rounded-lg shadow-lg text-xl py-5 px-10 mt-8"
+									>Create Classroom
+								</a>
+							</div>
+						</div>
+					{/if}
+					{#if !data.sessions}
+						<div
+							class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
+						>
+							<div class="flex flex-col items-center gap-1 text-center">
+								<h3 class="text-2xl font-bold tracking-tight">One-off Sessions</h3>
+								<p class="text-muted-foreground text-sm">
+									If you simply desire to create a temporary session with exercises for your
+									students.
+								</p>
+								<button
+									class="bg-[#1f2937] text-white hover:bg-transparent hover:text-[#1f2937] ease-in-out duration-300 p-6 rounded-lg shadow-lg text-xl py-5 px-10 mt-8"
+									on:click={handleClickCreateSession}>Create Session</button
+								>
+							</div>
+						</div>
+					{:else}
+						<SessionDisplay {sessionData} />
+					{/if}
+				</div>
 			</main>
-			<div class=" h-[35.5rem] w-1/2">
+			<div class=" h-[38rem] w-1/2">
 				<ListBox
 					list={instructor_exercises}
 					list_title="Private"
@@ -103,14 +152,16 @@
 						<AlertDialog.Footer>
 							<AlertDialog.Cancel on:click={() => (isDialogOpen = false)}>Cancel</AlertDialog.Cancel
 							>
-							<AlertDialog.Action on:click={clickDelete}>Delete</AlertDialog.Action>
+							<AlertDialog.Action class="bg-[#e63946]" on:click={clickDelete}
+								>Delete</AlertDialog.Action
+							>
 						</AlertDialog.Footer>
 					</AlertDialog.Content>
 				</AlertDialog.Root>
 
 				<div class="flex justify-end mr-1">
 					<div class="flex items-center space-x-4 mt-4">
-						<span class="text-[#333] font-medium text-[1.0625rem]">Create New Exercise</span>
+						<span class="text-[#333] font-medium text-[1.0625rem]">Create Exercise</span>
 						<button
 							on:click={() => goto('/createexercise')}
 							class="bg-[#1f2937] hover:bg-[#e9eaeb] hover:text-[#1f2937] flex items-center justify-center rounded-full w-7 h-7 text-white font-bold transition duration-300 ease-in-out hover:scale-110"
@@ -137,16 +188,16 @@
 			<!-- Page Title -->
 			<h1 class="text-4xl font-bold mb-4 text-gray-800">SyntaxShift</h1>
 			<p class="text-lg text-gray-600 mb-8">Welcome to SyntaxShift!</p>
-			
+
 			<!-- Buttons -->
 			<div class="space-y-4">
 				{#if !data.user}
-				<Button href="/login" class="w-full bg-blue-500 hover:bg-blue-600 text-white">
-					Log In
-				</Button>
-				<Button href="/signup" class="w-full bg-green-500 hover:bg-green-600 text-white">
-					Sign Up
-				</Button>
+					<Button href="/login" class="w-full bg-blue-500 hover:bg-blue-600 text-white">
+						Log In
+					</Button>
+					<Button href="/signup" class="w-full bg-green-500 hover:bg-green-600 text-white">
+						Sign Up
+					</Button>
 				{/if}
 				<Button href="/join" class="w-full bg-purple-500 hover:bg-purple-600 text-white">
 					Join a Room
@@ -155,3 +206,17 @@
 		</div>
 	</div>
 {/if}
+
+<style>
+	.scrollable-list {
+		overflow-y: scroll; /* Enable vertical scrolling */
+		overflow-x: hidden; /* Disable horizontal scrolling */
+		scrollbar-width: none; /* For Firefox: hide scrollbar */
+		-ms-overflow-style: none; /* For IE and Edge: hide scrollbar */
+	}
+
+	/* For WebKit browsers (Chrome, Safari, etc.) */
+	.scrollable-list::-webkit-scrollbar {
+		display: none; /* Hide scrollbar */
+	}
+</style>
