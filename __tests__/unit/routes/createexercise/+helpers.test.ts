@@ -41,7 +41,7 @@ describe('convertFormData', () => {
 			]
 		};
 
-        const apiData = convertFormData(formData);
-        expect(apiData).toEqual(expectedApiData);
-    });
+		const apiData = convertFormData(formData);
+		expect(apiData).toEqual(expectedApiData);
+	});
 });

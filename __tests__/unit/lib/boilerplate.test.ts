@@ -24,7 +24,9 @@ describe('setIDEBoilerPlate', () => {
 			}
 		};
 		const result = setIDEBoilerPlate(testTemplate, 'haskell');
-		expect(result).toBe('module Solution where\nsolution :: Int -> String -> Bool\nsolution input0 input1 = output0');
+		expect(result).toBe(
+			'module Solution where\nsolution :: Int -> String -> Bool\nsolution input0 input1 = output0'
+		);
 	});
 
 	it('should generate Haskell boilerplate for multiple inputs and multiple outputs', () => {

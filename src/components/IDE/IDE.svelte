@@ -8,20 +8,19 @@
 	export let solutionLanguage: { languageId: number; language: string };
 	export let editable: boolean = true;
 	let previousSolutionLanguage: { languageId: number; language: string };
-	let unique = {}
+	let unique = {};
 
 	function restart() {
-   		unique = {}
+		unique = {};
 	}
 
 	function deepEqual(obj1, obj2) {
-        return JSON.stringify(obj1) === JSON.stringify(obj2);
-    }
+		return JSON.stringify(obj1) === JSON.stringify(obj2);
+	}
 
 	$: {
 		if (!deepEqual(solutionLanguage, previousSolutionLanguage)) {
-
-			console.log("solution language i ide" + solutionLanguage.language);
+			console.log('solution language i ide' + solutionLanguage.language);
 			getExtension();
 			restart();
 			previousSolutionLanguage = solutionLanguage;
@@ -42,13 +41,14 @@
 		}
 	}
 </script>
+
 {#if solutionLanguage != undefined}
-{#key unique}
-	<CodeMirror
-		{editable}
-		class="w-full h-full"
-		bind:value={codeSolutionText}
-		extensions={getExtension()}
-	/>
-{/key}
+	{#key unique}
+		<CodeMirror
+			{editable}
+			class="w-full h-full"
+			bind:value={codeSolutionText}
+			extensions={getExtension()}
+		/>
+	{/key}
 {/if}

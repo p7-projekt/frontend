@@ -13,12 +13,12 @@ const apiVersionV2 = import.meta.env.VITE_API_VERSION_V2;
 
 export const load: PageServerLoad = async ({ cookies, url }) => {
 	const access_token: string = cookies.get('access_token') || '';
-	const exerciseId = url.searchParams.get('exerciseid'); 
-		 
+	const exerciseId = url.searchParams.get('exerciseid');
+
 	let languages;
 	availableLanguages.subscribe((value) => {
 		languages = value;
-	})(); 
+	})();
 
 	const response = await fetch(`${backendUrl}/${apiVersion}/exercises/${exerciseId}`, {
 		method: 'GET',
