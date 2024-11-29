@@ -226,6 +226,9 @@ export async function getUserSolution(
             Authorization: `Bearer ${access_token}`
         }
     });
+}
+
+
 export async function fetchSpecificClassroomSession(
 	backendUrl: string,
 	api_version: string,
