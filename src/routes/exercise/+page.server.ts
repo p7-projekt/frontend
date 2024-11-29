@@ -15,20 +15,10 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 	const access_token: string = cookies.get('access_token') || '';
 	const exerciseId = url.searchParams.get('exerciseid');
 
-	// Virker ikke endnu for anynom brugere har ikke adhanh til languages endpointet
-	// const languagesResponse = await getLanguages(backendUrl, apiVersionV2, access_token);
 	let languages;
 	availableLanguages.subscribe((value) => {
 		languages = value;
 	})();
-
-	// if (!languagesResponse.ok) {
-	//     debugExercise('Failed to fetch languages:', languagesResponse.status);
-	//     throw redirect(303, '/');
-	// } else {
-	//     languages = await languagesResponse.json();
-	//     debugExercise('Languages:', languages);
-	// }
 
 	const response = await fetch(`${backendUrl}/${apiVersion}/exercises/${exerciseId}`, {
 		method: 'GET',

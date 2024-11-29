@@ -1,11 +1,20 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { onMount } from 'svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
-	import type { ActionData } from '../$types';
+	import type { ActionData, PageData } from '../$types';
 
 	let code: string = '';
+	let nickname: string = '';
 	export let form: ActionData;
+	export let data: PageData;
+
+	onMount(() => {
+		if (data.user?.role === 'Student') {
+			nickname = data.user?.name;
+		}
+	});
 </script>
 
 <div class="flex min-h-screen items-start pt-32 justify-center bg-gray-100">
@@ -24,6 +33,20 @@
 			required
 			autocomplete="off"
 		/>
+
+		{#if data.user?.role != 'Student'}
+			<p class="text-xl font-semibold text-gray-700 mb-4">Enter a Name</p>
+			<Input
+				class="mb-4 w-full"
+				name="nickname"
+				placeholder="Enter Name"
+				bind:value={nickname}
+				required
+				autocomplete="off"
+			/>
+		{:else}
+			<input type="hidden" name="nickname" value={nickname} />
+		{/if}
 
 		<!-- Error Message -->
 		{#if form?.error}

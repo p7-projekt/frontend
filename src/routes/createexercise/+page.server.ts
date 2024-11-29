@@ -157,12 +157,15 @@ export const actions: Actions = {
 			debugCreateExercise('Successful post:', resJSON);
 			throw redirect(303, '/');
 		} else {
-			const responseBody = await response.text(); // Read the response as text
+			const responseBody = await response.json(); // Read the response as text
 			debugCreateExercise('responseBody:', responseBody);
 			let error;
 			if (responseBody) {
 				try {
 					const resJSON = JSON.parse(responseBody); // Try to parse the response as JSON
+					debugCreateExercise('Kristian Sørensen header:', response.header);
+
+					debugCreateExercise('resJSON Kristian Sørensen:', resJSON);
 					if (resJSON.testCaseResults) {
 						debugCreateExercise('Test case errors:', resJSON.testCaseResults);
 						return setError(form, 'test', resJSON.testCaseResults);

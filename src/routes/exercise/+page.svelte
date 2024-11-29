@@ -22,12 +22,14 @@
 	let languages = data.languages;
 	let previousSelectedLanguage: { languageId: number; language: string };
 	let selectedLanguage: { languageId: number; language: string };
+	let enableIDE: boolean = false;
 
 	$: {
 		if (selectedLanguage !== previousSelectedLanguage) {
 			previousSelectedLanguage = selectedLanguage;
 			$formData.selectedLanguage = selectedLanguage;
 			$formData.codeText = setIDEBoilerPlate(data.testTemplate, selectedLanguage.language);
+			enableIDE = true;
 		}
 	}
 
@@ -71,7 +73,7 @@
 				<div class="flex flex-col h-full items-center justify-center p-6 space-y-4 content">
 					<div class="ide-container w-full h-full">
 						<Ide
-							editable={selectedLanguage != ''}
+							editable={enableIDE}
 							bind:solutionLanguage={selectedLanguage}
 							bind:codeSolutionText={$formData.codeText}
 						/>
@@ -97,7 +99,8 @@
 							{/if}
 						</div>
 					</div>
-					{#if selectedLanguage == ''}<span class="invalid">Select a language to begin coding!</span
+					{#if selectedLanguage === undefined}<span class="invalid"
+							>Select a language to begin coding!</span
 						>{/if}
 					{#if $errors.selectedLanguage && Object.keys($errors.selectedLanguage).length > 0 && JSON.stringify($errors.selectedLanguage) !== '{}'}
 						<span class="invalid">Select a language before proceeding!</span>

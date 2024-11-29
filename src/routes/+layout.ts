@@ -22,6 +22,7 @@ export function _validate_url_path(user: { name: string; role: string } | null, 
 		'/session',
 		'/create-session',
 		'/createexercise',
+		'/dashboard',
 		'/create-classroom'
 	];
 
