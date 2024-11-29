@@ -272,3 +272,19 @@ export async function fetchUpdateClassroom(
 		body: JSON.stringify(classroom)
 	});
 }
+
+export async function fetchLeaveClassroom(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	classroom_id: number
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms/${classroom_id}/leave`, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${access_token}`
+		},
+		body: JSON.stringify(classroom_id)
+	});
+}

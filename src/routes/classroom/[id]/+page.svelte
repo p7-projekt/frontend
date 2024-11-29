@@ -12,6 +12,7 @@
 	import { toast } from 'svelte-sonner';
 	import { goto, invalidate } from '$app/navigation';
 	import CopyToClipboard from '$components/CopyToClipboard/CopyToClipboard.svelte';
+	import { enhance } from '$app/forms';
 
 	export let data: PageData;
 	const user = data.user;
@@ -24,8 +25,6 @@
 		isOpen: boolean;
 		sessions: { id: number; title: string; active: boolean }[];
 	} = data.classroom;
-
-	console.log(classroom);
 
 	let selected_activation_status: string = 'Inactive';
 	let activation_select_title: string = 'Inactive';
@@ -87,6 +86,17 @@
 				<Label class="text-base font-medium">Invite Code</Label>
 				<CopyToClipboard textToCopy={classroom.roomcode}></CopyToClipboard>
 			</div>
+		{:else}
+			<form method="post" action="?/leaveClassroom" use:enhance>
+				<input type="hidden" name="classroom-id" value={classroom.id} />
+
+				<button
+					type="submit"
+					class="text-[1.125rem] px-2 py-1 text-sm rounded-sm text-white border-2 border-[#e63946] bg-[#e63946] transition-all ease-in-out duration-300 hover:bg-transparent hover:text-[#e63946]"
+				>
+					Leave room
+				</button>
+			</form>
 		{/if}
 	</div>
 

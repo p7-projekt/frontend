@@ -65,6 +65,7 @@ export async function _updateSessionActivationStatus(
 		};
 	}
 }
+
 export async function _updateClassroom(
 	classroomId: number | null,
 	classroom: {
