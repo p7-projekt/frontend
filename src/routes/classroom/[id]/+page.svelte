@@ -140,7 +140,7 @@
 						{#if (user?.role === 'Student' && session.active) || user?.role === 'Instructor'}
 							<FlexTable.Row nr_cols={2} cssClass="mb-6 mt-6">
 								<FlexTable.Column>
-									<a href="/session/{session.id}">
+									<a href="/session/{session.id}/dashboard">
 										<h3 class="text-[1.375rem] mb-2 font-medium relative text-[#1971c2]">
 											{session.title}
 										</h3>
