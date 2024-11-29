@@ -139,13 +139,27 @@
 					{#each classroom.sessions as session}
 						{#if (user?.role === 'Student' && session.active) || user?.role === 'Instructor'}
 							<FlexTable.Row nr_cols={2} cssClass="mb-6 mt-6">
+								
+								{#if user?.role === 'Instructor'}
+									<FlexTable.Column>
+										<a href="/session/{session.id}/dashboard">
+											<h3 class="text-[1.375rem] mb-2 font-medium relative text-[#1971c2]">
+												{session.title}
+											</h3>
+										</a>
+									</FlexTable.Column>
+								{:else}
 								<FlexTable.Column>
-									<a href="/session/{session.id}/dashboard">
+									<a href="/session/{session.id}">
 										<h3 class="text-[1.375rem] mb-2 font-medium relative text-[#1971c2]">
 											{session.title}
 										</h3>
 									</a>
 								</FlexTable.Column>
+									{/if}
+									
+
+
 								<FlexTable.Column cssClass="gap-[2rem] pl-[22rem]">
 									{#if user?.role === 'Instructor'}
 										<div>
