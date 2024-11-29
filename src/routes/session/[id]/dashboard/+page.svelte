@@ -2,6 +2,7 @@
 	import type { PageData } from './$types';
 	import * as Accordion from '$lib/components/ui/accordion';
 	import * as Dialog from '$lib/components/ui/dialog';
+	import { fetchSolution } from '$lib/fetchRequests';
 	import Ide from '$components/IDE/IDE.svelte';
 	export let data: PageData;
 
@@ -10,13 +11,7 @@
 	let selectedLanguage: { languageId: number; language: string } = { languageId: 0, language: '' };
 
 	async function handleSubmissionClick(exerciseId: number, userId: number) {
-		const response = await fetch('/api/dashboard/solution', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ exerciseId, userId })
-		});
+		const response = await fetchSolution(exerciseId, userId); 
 
 		const responseText = await response.text(); // Get the response text
 

@@ -288,3 +288,31 @@ export async function fetchLeaveClassroom(
 		body: JSON.stringify(classroom_id)
 	});
 }
+
+export async function getTimedSession(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	sessionId: string
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/dashboard/${sessionId}`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${access_token}` // Append the Bearer token
+		}
+	});
+}
+
+export async function fetchSolution( 
+    exerciseId: number,
+    userId: number
+): Promise<Response> {
+    return await fetch('/api/dashboard/solution', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ exerciseId, userId })
+	});
+}

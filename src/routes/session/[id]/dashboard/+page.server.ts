@@ -1,5 +1,6 @@
 import { error } from 'console';
 import type { PageServerLoad } from './$types';
+import { getTimedSession } from '$lib/fetchRequests';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const apiVersionV2 = import.meta.env.VITE_API_VERSION_V2;
@@ -28,17 +29,4 @@ export const load = (async ({ cookies, url }) => {
 	};
 }) satisfies PageServerLoad;
 
-async function getTimedSession(
-	backendUrl: string,
-	api_version: string,
-	access_token: string,
-	sessionId: string
-): Promise<Response> {
-	return await fetch(`${backendUrl}/${api_version}/dashboard/${sessionId}`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${access_token}` // Append the Bearer token
-		}
-	});
-}
+
