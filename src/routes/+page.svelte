@@ -65,10 +65,50 @@
 	<div class="container pl-6 w-full text-[#333] grid grid-cols-1 gap-y-8">
 		<h1 class="text-2xl font-semibold col-span-full">Instructor Dashboard</h1>
 		<div class="flex gap-x-12 h-full">
-			<main class="flex flex-1 flex-col w-1/2 h-[36.5rem]">
-				<ScrollArea>
-					{#if classrooms}
+			<main class="flex flex-col w-1/2 h-[38rem] justify-between">
+				<div class="scrollable-list h-full flex-col flex justify-between overflow-auto">
+					{#if data.classrooms}
 						<ClassroomDisplay classroom_list={classrooms} />
+						<div class="flex justify-end mr-1 mb-2">
+							<div class="flex items-center space-x-4 mt-4">
+								<span class="text-[#333] font-medium text-[1.0625rem]">Create Classroom</span>
+								<button
+									on:click={() => goto('/create-classroom')}
+									class="bg-[#1f2937] hover:bg-[#e9eaeb] hover:text-[#1f2937] flex items-center justify-center rounded-full w-7 h-7 text-white font-bold transition duration-300 ease-in-out hover:scale-110"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="#1f2937"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="size-5"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M12 4.5v15m7.5-7.5h-15"
+										/>
+									</svg>
+								</button>
+							</div>
+						</div>
+					{:else}
+						<div
+							class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
+						>
+							<div class="flex flex-col items-center gap-1 text-center">
+								<h3 class="text-2xl font-bold tracking-tight">Classrooms</h3>
+								<p class="text-muted-foreground text-sm">
+									Create classrooms for your students to complete sessions and exercises.
+								</p>
+								<a
+									href="/create-classroom"
+									class="bg-[#1f2937] text-white hover:bg-transparent hover:text-[#1f2937] ease-in-out duration-300 p-6 rounded-lg shadow-lg text-xl py-5 px-10 mt-8"
+									>Create Classroom
+								</a>
+							</div>
+						</div>
 					{/if}
 					{#if !data.sessions}
 						<div
@@ -77,7 +117,8 @@
 							<div class="flex flex-col items-center gap-1 text-center">
 								<h3 class="text-2xl font-bold tracking-tight">One-off Sessions</h3>
 								<p class="text-muted-foreground text-sm">
-									If you simply desire to create a temporary session for your students.
+									If you simply desire to create a temporary session with exercises for your
+									students.
 								</p>
 								<button
 									class="bg-[#1f2937] text-white hover:bg-transparent hover:text-[#1f2937] ease-in-out duration-300 p-6 rounded-lg shadow-lg text-xl py-5 px-10 mt-8"
@@ -88,9 +129,9 @@
 					{:else}
 						<SessionDisplay {sessionData} />
 					{/if}
-				</ScrollArea>
+				</div>
 			</main>
-			<div class=" h-[36.5rem] w-1/2">
+			<div class=" h-[38rem] w-1/2">
 				<ListBox
 					list={instructor_exercises}
 					list_title="Private"
@@ -120,7 +161,7 @@
 
 				<div class="flex justify-end mr-1">
 					<div class="flex items-center space-x-4 mt-4">
-						<span class="text-[#333] font-medium text-[1.0625rem]">Create New Exercise</span>
+						<span class="text-[#333] font-medium text-[1.0625rem]">Create Exercise</span>
 						<button
 							on:click={() => goto('/createexercise')}
 							class="bg-[#1f2937] hover:bg-[#e9eaeb] hover:text-[#1f2937] flex items-center justify-center rounded-full w-7 h-7 text-white font-bold transition duration-300 ease-in-out hover:scale-110"
@@ -165,3 +206,17 @@
 		</div>
 	</div>
 {/if}
+
+<style>
+	.scrollable-list {
+		overflow-y: scroll; /* Enable vertical scrolling */
+		overflow-x: hidden; /* Disable horizontal scrolling */
+		scrollbar-width: none; /* For Firefox: hide scrollbar */
+		-ms-overflow-style: none; /* For IE and Edge: hide scrollbar */
+	}
+
+	/* For WebKit browsers (Chrome, Safari, etc.) */
+	.scrollable-list::-webkit-scrollbar {
+		display: none; /* Hide scrollbar */
+	}
+</style>

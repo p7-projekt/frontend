@@ -131,7 +131,7 @@ export async function fetchLanguageData(
 		}
 	});
 }
-  
+
 export async function fetchCreateClassroom(
 	backendUrl: string,
 	api_version: string,
@@ -214,3 +214,77 @@ export async function fetchCreateClassroomSession(
 	});
 }
 
+export async function fetchSpecificClassroomSession(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	session_id: number
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms/session/${session_id}`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${access_token}`
+		}
+	});
+}
+
+export async function fetchUpdateClassroomSession(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	session: {
+		id: number;
+		title: string;
+		description: string;
+		exerciseIds: number[];
+		languageIds: number[];
+		status: boolean;
+	},
+	classroom_id: number
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms/${classroom_id}/session`, {
+		method: 'PUT',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${access_token}`
+		},
+		body: JSON.stringify(session)
+	});
+}
+
+export async function fetchUpdateClassroom(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	classroom: {
+		title: string;
+		description: string;
+		registrationOpen: boolean;
+	},
+	classroom_id: number
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms/${classroom_id}`, {
+		method: 'PUT',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${access_token}`
+		},
+		body: JSON.stringify(classroom)
+	});
+}
+
+export async function fetchLeaveClassroom(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	classroom_id: number
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms/${classroom_id}/leave`, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${access_token}`
+		},
+		body: JSON.stringify(classroom_id)
+	});
+}

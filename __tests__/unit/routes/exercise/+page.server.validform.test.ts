@@ -7,15 +7,15 @@ vi.mock('sveltekit-superforms', () => ({
 	setError: vi.fn(),
 	superValidate: vi.fn(() => ({
 		valid: true,
-		data: { 
+		data: {
 			codeText: 'Valid Code',
-			selectedLanguage:  {
-					parameters: {
-						languageId: 1,
-						language: "Haskell"
-					},
-					publicVisible: true
-				} 
+			selectedLanguage: {
+				parameters: {
+					languageId: 1,
+					language: 'Haskell'
+				},
+				publicVisible: true
+			}
 		}
 	}))
 }));
@@ -33,20 +33,19 @@ vi.mock('$lib/requestHandler', () => ({
 	handleAuthenticatedRequest: vi.fn()
 }));
 
-
 describe('Page Server Load function', () => {
-    it('Loads exercise data correctly if url parameter is provided', async () => {
-        // Arrange
-        const cookies = {
-            get: vi.fn().mockReturnValue('mock_access_token')
-        };
-        const url = {
-            searchParams: {
-                get: vi.fn().mockReturnValue('mock_exercise_id')
-            }
-        };
+	it('Loads exercise data correctly if url parameter is provided', async () => {
+		// Arrange
+		const cookies = {
+			get: vi.fn().mockReturnValue('mock_access_token')
+		};
+		const url = {
+			searchParams: {
+				get: vi.fn().mockReturnValue('mock_exercise_id')
+			}
+		};
 
-        global.fetch = vi.fn(() =>
+		global.fetch = vi.fn(() =>
 			Promise.resolve({
 				ok: true,
 				json: () =>
@@ -63,27 +62,29 @@ describe('Page Server Load function', () => {
 							}
 						]
 					}),
-				text: () => Promise.resolve(JSON.stringify({
-					title: 'Exercise 1',
-					description: 'Description 1',
-					inputParameterType: ['string'],
-					outputParamaterType: ['string'],
-					testCases: [
-						{
-							inputParams: ['input1'],
-							outputParams: ['output1'],
-							publicVisible: true
-						}
-					]
-				},))
-				
+				text: () =>
+					Promise.resolve(
+						JSON.stringify({
+							title: 'Exercise 1',
+							description: 'Description 1',
+							inputParameterType: ['string'],
+							outputParamaterType: ['string'],
+							testCases: [
+								{
+									inputParams: ['input1'],
+									outputParams: ['output1'],
+									publicVisible: true
+								}
+							]
+						})
+					)
 			})
 		);
 
-        // Act
-        const result = await load({ cookies, url });
+		// Act
+		const result = await load({ cookies, url });
 
-        // Assert
+		// Assert
 		expect(result).toEqual({
 			form: {
 				valid: true,
@@ -129,7 +130,7 @@ describe('Page Server Load function', () => {
 				}
 			}
 		});
-    });
+	});
 });
 
 describe('Page Server Actions function', () => {

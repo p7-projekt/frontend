@@ -19,7 +19,7 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 		refresh_token,
 		cookies
 	);
-	
+
 	let userRole;
 	let userData;
 	if (response.ok) {

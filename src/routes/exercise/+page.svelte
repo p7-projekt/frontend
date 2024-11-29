@@ -13,10 +13,10 @@
 	import { debugExercise } from '$lib/debug';
 	import { setIDEBoilerPlate } from '$lib/boilerplate';
 	import type { ActionData } from '../$types';
-	import TestResultsStudent from '$components/Tests/TestResultsStudent.svelte'; 
+	import TestResultsStudent from '$components/Tests/TestResultsStudent.svelte';
 
 	export let data: PageData;
-	export let actionData: ActionData; 
+	export let actionData: ActionData;
 	export let superFormData: SuperValidated<Infer<FormSchema>> = data.form;
 	export let exerciseData = data.exerciseData;
 	let languages = data.languages;
@@ -24,12 +24,12 @@
 	let selectedLanguage: { languageId: number; language: string };
 
 	$: {
-        if (selectedLanguage !== previousSelectedLanguage) {
+		if (selectedLanguage !== previousSelectedLanguage) {
 			previousSelectedLanguage = selectedLanguage;
 			$formData.selectedLanguage = selectedLanguage;
-            $formData.codeText = setIDEBoilerPlate(data.testTemplate, selectedLanguage.language); 
-        }
-    }
+			$formData.codeText = setIDEBoilerPlate(data.testTemplate, selectedLanguage.language);
+		}
+	}
 
 	const form = superForm(superFormData, {
 		validators: zodClient(formSchema),
@@ -70,7 +70,11 @@
 			<form method="POST" use:enhance class="max-w max-h">
 				<div class="flex flex-col h-full items-center justify-center p-6 space-y-4 content">
 					<div class="ide-container w-full h-full">
-						<Ide editable={selectedLanguage!=''} bind:solutionLanguage={selectedLanguage}  bind:codeSolutionText={$formData.codeText} />
+						<Ide
+							editable={selectedLanguage != ''}
+							bind:solutionLanguage={selectedLanguage}
+							bind:codeSolutionText={$formData.codeText}
+						/>
 					</div>
 					{#if $errors.test}
 						<TestResultsStudent testResults={$errors.test} />
@@ -79,24 +83,26 @@
 					{#if $errors._errors}<span class="invalid">{$errors._errors}</span>{/if}
 
 					<div class="flex justify-between w-full items-center mx-8">
-						<div class="mx-8"  >
-							<LanguageSelection bind:selected={selectedLanguage} {languages}/>
+						<div class="mx-8">
+							<LanguageSelection bind:selected={selectedLanguage} {languages} />
 						</div>
 						<div class="mx-8">
 							{#if $submitting}
-							<Button disabled>
-								<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
-								Please wait
-							</Button>
+								<Button disabled>
+									<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
+									Please wait
+								</Button>
 							{:else}
 								<Form.Button>Confirm</Form.Button>
 							{/if}
 						</div>
-					</div> 
-					{#if selectedLanguage==''}<span class="invalid">Select a language to begin coding!</span>{/if}
+					</div>
+					{#if selectedLanguage == ''}<span class="invalid">Select a language to begin coding!</span
+						>{/if}
 					{#if $errors.selectedLanguage && Object.keys($errors.selectedLanguage).length > 0 && JSON.stringify($errors.selectedLanguage) !== '{}'}
 						<span class="invalid">Select a language before proceeding!</span>
 					{/if}
+				</div>
 			</form>
 		</Resizable.Pane>
 	</Resizable.PaneGroup>

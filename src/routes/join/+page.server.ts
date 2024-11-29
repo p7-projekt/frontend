@@ -34,7 +34,7 @@ export const actions = {
 
 		const joinCode = {
 			SessionCode: sessionCode,
-			Name: "Kristian Sørensen"
+			Name: 'Kristian Sørensen'
 		};
 
 		const response = await fetch(`${backendUrl}/join`, {
