@@ -17,6 +17,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 					Authorization: `Bearer ${anon_token}`
 				}
 			});
+
 			if (response.ok) {
 				const resJSON = await response.json();
 				throw redirect(303, `/session/${resJSON.sessionId}`);
