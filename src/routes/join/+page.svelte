@@ -21,19 +21,9 @@
 	<form
 		class="flex flex-col items-center text-center max-w-md w-full p-8 bg-white shadow-md rounded-lg"
 		method="POST"
-		action="?/join"
+		action={data.user?.role != 'Student' ? '?/joinAnon' : '?/joinStudent'}
 		use:enhance
 	>
-		<p class="text-xl font-semibold text-gray-700 mb-4">Enter your code below to join!</p>
-		<Input
-			class="mb-4 w-full"
-			name="sessionCode"
-			placeholder="Enter code"
-			bind:value={code}
-			required
-			autocomplete="off"
-		/>
-
 		{#if data.user?.role != 'Student'}
 			<p class="text-xl font-semibold text-gray-700 mb-4">Enter a Name</p>
 			<Input
@@ -47,6 +37,16 @@
 		{:else}
 			<input type="hidden" name="nickname" value={nickname} />
 		{/if}
+
+		<p class="text-xl font-semibold text-gray-700 mb-4">Enter your code below to join!</p>
+		<Input
+			class="mb-4 w-full"
+			name="join-code"
+			placeholder="Enter code"
+			bind:value={code}
+			required
+			autocomplete="off"
+		/>
 
 		<!-- Error Message -->
 		{#if form?.error}
