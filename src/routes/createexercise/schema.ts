@@ -17,7 +17,7 @@ export const formSchema = z.object({
 	selectedLanguage: z.object({
 		languageId: z.number(),
 		language: z.string().min(1, 'You must select a code solution language')
-	}),
+	})
 });
 
 export type FormSchema = typeof formSchema;

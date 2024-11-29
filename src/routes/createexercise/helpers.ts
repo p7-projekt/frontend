@@ -11,6 +11,5 @@ export const convertFormData = (formData) => {
 			outputParams: testCase.parameters.output.map((param: any) => param.value),
 			publicVisible: testCase.publicVisible
 		}))
-		
 	};
 };
