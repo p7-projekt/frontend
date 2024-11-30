@@ -48,6 +48,20 @@ export async function fetchSpecificSession(
 	});
 }
 
+export async function fetchClassroomSession(
+	backendUrl: string,
+	api_version: string,
+	access_token: string,
+	session_id: number
+): Promise<Response> {
+	return await fetch(`${backendUrl}/${api_version}/classrooms/session/${session_id}`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${access_token}`
+		}
+	});
+}
+
 export async function fetchExerciseData(
 	backendUrl: string,
 	api_version: string,

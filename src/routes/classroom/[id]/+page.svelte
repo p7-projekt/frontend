@@ -150,7 +150,7 @@
 									</FlexTable.Column>
 								{:else}
 								<FlexTable.Column>
-									<a href="/session/{session.id}">
+									<a href="/session/{session.id}?classroom=true">
 										<h3 class="text-[1.375rem] mb-2 font-medium relative text-[#1971c2]">
 											{session.title}
 										</h3>
@@ -218,7 +218,7 @@
 									{:else}
 										<div class="flex justify-end items-end flex-col mb-1.5 pl-[12.3rem]">
 											<a
-												href="/session/{session.id}"
+												href="/session/{session.id}?classroom=true"
 												class=" text-[1.125rem] px-2 py-1 text-sm rounded-sm text-white border-2 border-[#1f2937] bg-[#1f2937] transition-all ease-in-out duration-300 hover:bg-transparent hover:text-[#1f2937]"
 												>View</a
 											>
