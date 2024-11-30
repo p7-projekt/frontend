@@ -3,7 +3,7 @@
 	import { slide } from 'svelte/transition'; 
 	import * as Card from '$lib/components/ui/card/index.js';
 
-	export let classroomData: { id: number; title: string; expiresInSeconds: number }[] = [];
+	export let classroomData: { id: number; title: string; description: string }[] = [];
 
 	let classrooms = classroomData;  
 </script>
@@ -20,6 +20,7 @@
 						{classroom.title}
 					</a> 
 				</h2> 
+				{classroom.description}
 			</div>
 		{/each}
 	</div>

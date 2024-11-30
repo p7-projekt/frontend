@@ -11,7 +11,7 @@
     <h1 class="text-2xl font-semibold col-span-full">Student Home</h1>
     <div class="flex gap-x-12 h-full">
         <main class="flex flex-1 flex-col w-1/2 h-[35.5rem]">
-            {#if !data.classroomData || data.classroomData.length === 0}
+            {#if !data.classrooms || data.classrooms.length === 0}
                 <div
                     class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
                 >
@@ -27,11 +27,11 @@
                     </div>
                 </div>
             {:else}
-                <StudentClassroomDisplay classroomData={data.classroomData} />
+                <StudentClassroomDisplay classroomData={data.classrooms} />
             {/if}
         </main>
         <main class="flex flex-1 flex-col w-1/2 h-[35.5rem]">
-            {#if !data.sessionData || data.sessionData.length === 0}
+            {#if !data.sessions || data.sessions.length === 0}
                 <div
                     class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
                 >
@@ -47,7 +47,7 @@
                     </div>
                 </div>
             {:else}
-                <StudentSessionDisplay sessionData={data.sessionData} />
+                <StudentSessionDisplay sessionData={data.sessions} />
             {/if}
         </main>
     </div>
