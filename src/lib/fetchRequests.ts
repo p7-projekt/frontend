@@ -288,7 +288,7 @@ export async function fetchLeaveClassroom(
 		body: JSON.stringify(classroom_id)
 	});
 }
-  
+
 export async function getSessionDashboard(
 	backendUrl: string,
 	api_version: string,
