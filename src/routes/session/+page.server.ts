@@ -31,4 +31,3 @@ export const load: PageServerLoad = async ({ cookies }) => {
 		}
 	} else throw redirect(303, '/join');
 };
-w;
