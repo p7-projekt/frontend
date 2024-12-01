@@ -28,5 +28,3 @@ export const load = (async ({ cookies, url }) => {
 		dashData: jsonResponse
 	};
 }) satisfies PageServerLoad;
-
-
