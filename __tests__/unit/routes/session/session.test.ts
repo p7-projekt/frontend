@@ -1,9 +1,9 @@
 import { describe, it, expect, vi } from 'vitest';
-import { get_anon_userID } from '../../../../src/routes/session/session'; // Adjust the path to your function module
+import { get_userID } from '../../../../src/routes/session/session'; // Adjust the path to your function module
 
 // Mock the `cookies` object interface
 
-describe('get_anon_userID', () => {
+describe('get_userID', () => {
 	it('should return the user ID when a valid token is provided', () => {
 		const expected_userID = '5';
 		const anon_token =
@@ -17,7 +17,7 @@ describe('get_anon_userID', () => {
 		};
 
 		// Call `get_anon_userID` with the mocked `cookies` object
-		const result = get_anon_userID(anon_token, mockCookies);
+		const result = get_userID(anon_token, mockCookies);
 
 		expect(result).toEqual(expected_userID);
 	});
@@ -33,7 +33,7 @@ describe('get_anon_userID', () => {
 		};
 
 		try {
-			get_anon_userID(invalid_token, mockCookies);
+			get_userID(invalid_token, mockCookies);
 		} catch (error) {
 			// Check that the `redirect` throws an object with status and location
 			expect(error.status).toBe(303);
