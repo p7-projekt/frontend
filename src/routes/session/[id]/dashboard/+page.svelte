@@ -11,7 +11,7 @@
 	let selectedLanguage: { languageId: number; language: string } = { languageId: 0, language: '' };
 
 	async function handleSubmissionClick(exerciseId: number, userId: number) {
-		const response = await fetchSolution(exerciseId, userId); 
+		const response = await fetchSolution(exerciseId, userId);
 
 		const responseText = await response.text(); // Get the response text
 

@@ -20,7 +20,6 @@
 
 	$: {
 		if (!deepEqual(solutionLanguage, previousSolutionLanguage)) {
-			console.log('solution language i ide' + solutionLanguage.language);
 			getExtension();
 			restart();
 			previousSolutionLanguage = solutionLanguage;

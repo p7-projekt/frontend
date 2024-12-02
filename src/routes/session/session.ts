@@ -1,7 +1,7 @@
 import { redirect, type Cookies } from '@sveltejs/kit';
 import { jwtDecode } from 'jwt-decode';
 
-export function get_anon_userID(anon_token: string, cookies: Cookies) {
+export function get_userID(anon_token: string, cookies: Cookies) {
 	try {
 		const decoded_token = jwtDecode(anon_token) as {
 			'http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata': string;

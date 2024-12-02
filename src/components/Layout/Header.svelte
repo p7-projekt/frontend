@@ -19,7 +19,7 @@
 		</div>
 
 		<div class="text-center">
-			<a href="/session" class=" font-medium text-[1.125rem]">Session</a>
+			<a href="/session" class=" font-medium text-[1.125rem]">One-Off Session</a>
 		</div>
 
 		{#if !user}
