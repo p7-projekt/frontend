@@ -38,12 +38,13 @@ export const load: PageServerLoad = async ({ cookies, url, params }) => {
 		};
 	} else if (access_token) {
 		const fetchFunction = isClassroom ? fetchClassroomSession : fetchSpecificSession;
-		const response = await handleAuthenticatedRequest(
-			(token) => fetchFunction(backendUrl, api_version2, token, params.id),
-			access_token,
-			refresh_token,
-			cookies
-		);
+        const apiversion = isClassroom ? api_version2 : api_version;
+        const response = await handleAuthenticatedRequest(
+            (token) => fetchFunction(backendUrl, apiversion, token, params.id),
+            access_token,
+            refresh_token,
+            cookies
+        );
 		let session;
 		if (response.ok) {
 			session = await response.json();
