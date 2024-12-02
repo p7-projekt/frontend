@@ -7,7 +7,7 @@
 		_deleteClassroomSession,
 		_updateClassroom,
 		_updateSessionActivationStatus
-	} from './classroom.ts';
+	} from './classroom';
 	import type { PageData } from './$types';
 	import { toast } from 'svelte-sonner';
 	import { goto, invalidate } from '$app/navigation';
@@ -139,7 +139,6 @@
 					{#each classroom.sessions as session}
 						{#if (user?.role === 'Student' && session.active) || user?.role === 'Instructor'}
 							<FlexTable.Row nr_cols={2} cssClass="mb-6 mt-6">
-								
 								{#if user?.role === 'Instructor'}
 									<FlexTable.Column>
 										<a href="/session/{session.id}/dashboard">

@@ -1,10 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
 import { load } from '$src/routes/session/+page.server';
 import { redirect } from '@sveltejs/kit';
-import { get_anon_userID } from '$src/routes/session/session';
+import { get_userID } from '$src/routes/session/session';
 
 vi.mock('$src/routes/session/session', () => ({
-	get_anon_userID: vi.fn()
+	get_userID: vi.fn()
 }));
 
 vi.mock('@sveltejs/kit', () => ({
@@ -27,12 +27,16 @@ describe('Page Server Load function', () => {
 
 	it('deletes anon_token and redirects to /join on 401 response', async () => {
 		const mockCookies = {
-			get: vi.fn(() => 'valid_anon_token'),
+			get: vi.fn((key) => {
+				if (key === 'anon_token') return 'valid_anon_token';
+				if (key === 'access_token') return undefined; // Simulate no access_token
+				return '';
+			}),
 			set: vi.fn(),
 			delete: vi.fn()
 		};
 
-		get_anon_userID.mockReturnValue('Uncle Bob');
+		get_userID.mockReturnValue('Uncle Bob');
 		fetch.mockResolvedValueOnce({ ok: false, status: 401 });
 
 		await expect(load({ cookies: mockCookies })).rejects.toThrow();
@@ -41,12 +45,16 @@ describe('Page Server Load function', () => {
 	});
 	it('deletes anon_token and redirects to /join on other response', async () => {
 		const mockCookies = {
-			get: vi.fn(() => 'valid_anon_token'),
+			get: vi.fn((key) => {
+				if (key === 'anon_token') return 'valid_anon_token';
+				if (key === 'access_token') return undefined; // Simulate no access_token
+				return '';
+			}),
 			set: vi.fn(),
 			delete: vi.fn()
 		};
 
-		get_anon_userID.mockReturnValue('Uncle Bob');
+		get_userID.mockReturnValue('Uncle Bob');
 		fetch.mockResolvedValueOnce({ ok: false, status: 404 });
 
 		await expect(load({ cookies: mockCookies })).rejects.toThrow();
@@ -61,7 +69,7 @@ describe('Page Server Load function', () => {
 			delete: vi.fn()
 		};
 
-		get_anon_userID.mockReturnValue('Uncle Bob');
+		get_userID.mockReturnValue('Uncle Bob');
 		fetch.mockResolvedValueOnce({
 			ok: true,
 			json: async () => ({ sessionId: '7' })
