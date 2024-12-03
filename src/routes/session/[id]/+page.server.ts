@@ -1,4 +1,4 @@
-import { fetchClassroomSession, fetchSpecificSession } from '$lib/fetchRequests';
+import { fetchSpecificClassroomSession, fetchSpecificSession } from '$lib/fetchRequests';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { error, redirect } from '@sveltejs/kit';
 import { availableLanguages } from '$lib/availableLanguages';
@@ -37,7 +37,7 @@ export const load: PageServerLoad = async ({ cookies, url, params }) => {
 			session: session
 		};
 	} else if (access_token) {
-		const fetchFunction = isClassroom ? fetchClassroomSession : fetchSpecificSession;
+		const fetchFunction = isClassroom ? fetchSpecificClassroomSession : fetchSpecificSession;
         const apiversion = isClassroom ? api_version2 : api_version;
         const response = await handleAuthenticatedRequest(
             (token) => fetchFunction(backendUrl, apiversion, token, params.id),
