@@ -2,6 +2,7 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
 import { fetchSpecificClassroomSession, fetchUpdateClassroomSession } from '$lib/fetchRequests';
+import { debugUpdateSessionStatus } from '$lib/debug';
 
 // Internal API endpoint to log the user out
 export const POST: RequestHandler = async ({ request, cookies }) => {
@@ -21,17 +22,22 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		cookies
 	);
 
+	debugUpdateSessionStatus(response);
+
 	// Ensure that a response is returned in all cases
 	if (response.ok) {
 		const session = await response.json();
+		console.log(session);
+
 		const updated_session = {
 			id: session.id,
 			title: session.title,
 			description: session.description,
 			active: activation_status,
-			exerciseIds: session.exerciseIds.map((exercise) => exercise.exerciseId),
-			languageIds: session.languages
+			exerciseIds: session.exercises.map((exercise) => exercise.id),
+			languageIds: session.languages.map((language) => language.languageId),
 		};
+		debugUpdateSessionStatus('Updated session:', updated_session);
 		response = await handleAuthenticatedRequest(
 			(token) =>
 				fetchUpdateClassroomSession(
