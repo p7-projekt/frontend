@@ -22,13 +22,13 @@
 					<p>Cause: {test.cause}</p>
 					<ul>
 						<li>
-							Test Input Parameters: {test.details.inputParameters
+							Test Input Parameters: {test?.details?.inputParameters
 								.map((param) => `${param.valueType}: ${param.value}`)
 								.join(', ')}
 						</li>
 
-						<li>Actual Output: {test.details.actual}</li>
-						<li>Expected Output: {test.details.expected}</li>
+						<li>Actual Output: {test?.details?.actual}</li>
+						<li>Expected Output: {test?.details?.expected}</li>
 					</ul>
 				{/if}
 			</Tooltip.Content>

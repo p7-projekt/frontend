@@ -153,12 +153,14 @@ export const actions: Actions = {
 			debugExercise('Epic Win:', resJSON);
 			throw redirect(303, '/session');
 		} else {
-			const responseBody = await response.text(); // Read the response as text
+			const responseBody = await response.json();  
 			debugExercise('responseBody:', responseBody);
 			let error;
 			if (responseBody) {
 				try {
 					const resJSON = JSON.parse(responseBody); // Try to parse the response as JSON
+					debugExercise('resJSON:', responseBody);
+
 					if (resJSON.testCaseResults) {
 						debugExercise('Test case errors:', resJSON.testCaseResults);
 						return setError(form, 'test', resJSON.testCaseResults);
@@ -227,12 +229,14 @@ export const actions: Actions = {
 			debugExercise('Epic Win:', resJSON);
 			throw redirect(303, '/session');
 		} else {
-			const responseBody = await response.text(); // Read the response as text
+			const responseBody = await response.json();  
 			debugExercise('responseBody:', responseBody);
 			let error;
 			if (responseBody) {
 				try {
-					const resJSON = JSON.parse(responseBody); // Try to parse the response as JSON
+					const resJSON = JSON.parse(responseBody); 
+					debugExercise('resJSON:', responseBody);
+
 					if (resJSON.testCaseResults) {
 						debugExercise('Test case errors:', resJSON.testCaseResults);
 						return setError(form, 'test', resJSON.testCaseResults);
@@ -255,7 +259,7 @@ export const actions: Actions = {
 				error = { detail: 'An unknown error occurred' }; // Handle empty response body
 			}
 
-			return setError(form, 'codeText', error.detail || 'An error occurred on the server');
+			return setError(form, 'codeText', error.detail.detail || 'An error occurred on the server');
 		}
 	}
 };
