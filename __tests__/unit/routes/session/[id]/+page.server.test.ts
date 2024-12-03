@@ -17,6 +17,11 @@ vi.mock('@sveltejs/kit', () => ({
 }));
 
 const mockParams = { id: '7' };
+const mockUrl = {
+	searchParams: {
+		get: vi.fn(() => null)
+	}
+};
 
 global.fetch = vi.fn();
 
@@ -28,7 +33,7 @@ describe('Page Server Load function', () => {
 			delete: vi.fn()
 		};
 
-		await expect(load({ cookies: mockCookies, params: mockParams })).rejects.toThrow();
+		await expect(load({ cookies: mockCookies, params: mockParams, url: mockUrl })).rejects.toThrow();
 		expect(redirect).toHaveBeenCalledWith(303, '/join');
 	});
 
@@ -43,7 +48,7 @@ describe('Page Server Load function', () => {
 
 		fetch.mockResolvedValueOnce({ ok: false, status: 404 });
 
-		await expect(load({ cookies: mockCookies, params: mockParams })).rejects.toThrow();
+		await expect(load({ cookies: mockCookies, params: mockParams, url: mockUrl })).rejects.toThrow();
 		expect(error).toHaveBeenCalledWith(404, 'Session not found');
 	});
 	it('deletes anon_token and redirects to /join on other response', async () => {
@@ -55,7 +60,7 @@ describe('Page Server Load function', () => {
 
 		fetch.mockResolvedValueOnce({ ok: false, status: 401 });
 
-		await expect(load({ cookies: mockCookies, params: mockParams })).rejects.toThrow();
+		await expect(load({ cookies: mockCookies, params: mockParams, url: mockUrl })).rejects.toThrow();
 		expect(mockCookies.delete).toHaveBeenCalledWith('anon_token', { path: '/', secure: false });
 		expect(redirect).toHaveBeenCalledWith(303, '/join');
 	});
@@ -84,7 +89,7 @@ describe('Page Server Load function', () => {
 			})
 		});
 
-		const result = await load({ cookies: mockCookies, params: mockParams });
+		const result = await load({ cookies: mockCookies, params: mockParams, url: mockUrl });
 		expect(result).toEqual({
 			session: {
 				title: 'Krath Session',
@@ -127,7 +132,7 @@ describe('Page Server Load function', () => {
 			})
 		});
 
-		const result = await load({ cookies: mockCookies, params: mockParams });
+		const result = await load({ cookies: mockCookies, params: mockParams, url: mockUrl });
 		expect(result).toEqual({
 			session: {
 				title: 'Krath Session',

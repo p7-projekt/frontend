@@ -47,6 +47,9 @@ export async function fetchSpecificSession(
 		}
 	});
 }
+ 
+
+
 
 export async function fetchExerciseData(
 	backendUrl: string,
@@ -227,7 +230,7 @@ export async function fetchSpecificClassroomSession(
 		}
 	});
 }
-
+ 
 export async function fetchUpdateClassroomSession(
 	backendUrl: string,
 	api_version: string,

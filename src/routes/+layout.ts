@@ -14,7 +14,7 @@ export const load: LayoutLoad = ({ data, url }) => {
 
 export function _validate_url_path(user: { name: string; role: string } | null, urlp: string) {
 	const allowedAnonRoutes = ['/join', '/login', '/', '/signup', '/exercise', '/session'];
-	const allowedStudentRoutes = ['/join', '/exercise', '/session', '/'];
+	const allowedStudentRoutes = ['/join', '/exercise', '/session', '/', '/studenthome'];
 	const allowedInstructorRoutes = [
 		'/join',
 		'/exercise',

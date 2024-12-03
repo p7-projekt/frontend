@@ -5,7 +5,7 @@
 		id: number;
 		testResult: string;
 		cause?: string;
-		details?: { inputParameters: any[]; actual: any; expected: any };
+		details?: any;
 	}[];
 
 	let selectedTest = null;
@@ -26,17 +26,22 @@
 			<Tooltip.Content>
 				<p>Test ID: {test.id}</p>
 				<p>Result: {test.testResult}</p>
-				{#if test.testResult === 'failure'}
+				{#if test.testResult === 'failure'} 
 					<p>Cause: {test.cause}</p>
+					{#if typeof test.details === "string"}
+						<p>details: {test?.details} </p>
+					{/if}
+					{#if test?.details?.inputParameters !== undefined}
 					<ul>
 						<li>
-							Test Input Parameters: {test.details.inputParameters
+							Test Input Parameters: {test?.details?.inputParameters
 								.map((param) => `${param.valueType}: ${param.value}`)
 								.join(', ')}
 						</li>
-						<li>Actual Output: {test.details.actual}</li>
-						<li>Expected Output: {test.details.expected}</li>
+						<li>Actual Output: {test?.details?.actual}</li>
+						<li>Expected Output: {test?.details?.expected}</li>
 					</ul>
+					{/if} 
 				{/if}
 			</Tooltip.Content>
 		</Tooltip.Root>
