@@ -148,17 +148,16 @@
 										</a>
 									</FlexTable.Column>
 								{:else}
-								<FlexTable.Column>
-									<a href="/session/{session.id}?classroom=true">
-										<h3 class="text-[1.375rem] mb-2 font-medium relative text-[#1971c2]">
-											{session.title}
-										</h3>
-									</a>
-								</FlexTable.Column>
+									<FlexTable.Column>
+										<a href="/session/{session.id}?classroom=true">
+											<h3 class="text-[1.375rem] mb-2 font-medium relative text-[#1971c2]">
+												{session.title}
+											</h3>
+										</a>
+									</FlexTable.Column>
 								{/if}
 
- 
-								<FlexTable.Column cssClass="gap-[2rem] justify-self-end"> 
+								<FlexTable.Column cssClass="gap-[2rem] justify-self-end">
 									{#if user?.role === 'Instructor'}
 										<div>
 											<Select

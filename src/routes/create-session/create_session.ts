@@ -15,8 +15,8 @@ export function getExerciseIds(exercise_list: FormDataEntryValue | null) {
 export function getProgrammingLanguages(lang_ids_str: FormDataEntryValue | null) {
 	try {
 		let languages = lang_ids_str ? JSON.parse(lang_ids_str) : [];
- 
-		return languages
+
+		return languages;
 	} catch (error) {
 		debugCreateSession('Error parsing  added programming languages:', error);
 		return [];
@@ -86,7 +86,9 @@ export function getEditLanguages(
 ): { value: number; label: string }[] {
 	// Filter and map the languages to return in the desired format for the Select component
 	return languages
-		.filter((language) => editLanguages.map((editLanguage) => (editLanguage.languageId)).includes(language.languageId))
+		.filter((language) =>
+			editLanguages.map((editLanguage) => editLanguage.languageId).includes(language.languageId)
+		)
 		.map((language) => ({
 			value: language.languageId,
 			label: language.language.charAt(0).toUpperCase() + language.language.slice(1)

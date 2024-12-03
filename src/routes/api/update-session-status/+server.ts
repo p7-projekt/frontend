@@ -27,7 +27,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 	// Ensure that a response is returned in all cases
 	if (response.ok) {
 		const session = await response.json();
-		console.log(session);
 
 		const updated_session = {
 			id: session.id,
@@ -35,7 +34,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 			description: session.description,
 			active: activation_status,
 			exerciseIds: session.exercises.map((exercise) => exercise.id),
-			languageIds: session.languages.map((language) => language.languageId),
+			languageIds: session.languages.map((language) => language.languageId)
 		};
 		debugUpdateSessionStatus('Updated session:', updated_session);
 		response = await handleAuthenticatedRequest(

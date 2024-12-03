@@ -113,8 +113,8 @@ describe('Page Server Load function', () => {
 				]
 			},
 			languages: [],
-			exerciseId: "mock_exercise_and_session_id",
-			sessionId: "mock_exercise_and_session_id",
+			exerciseId: 'mock_exercise_and_session_id',
+			sessionId: 'mock_exercise_and_session_id',
 			testTemplate: {
 				parameters: {
 					input: [

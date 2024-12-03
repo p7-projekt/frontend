@@ -48,7 +48,9 @@
 		}
 	);
 
-	let lang_selected_options: string[] = edit_session ? edit_session.languages.map((lang) => lang.languageId) : [];
+	let lang_selected_options: string[] = edit_session
+		? edit_session.languages.map((lang) => lang.languageId)
+		: [];
 
 	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
 	let added_exercise_list: { id: number; content: string }[] = !edit_session
