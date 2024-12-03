@@ -40,7 +40,7 @@
 </script>
 
 <Card.Header class="p-0">
-	<Card.Title class="text-[1.25rem]">Sessions</Card.Title>
+	<Card.Title class="text-[1.25rem]">One-Off Session</Card.Title>
 </Card.Header>
 <Card.Content class="p-0">
 	<div class="grid grid-cols-1 gap-4 overflow-y-auto scrollable-list">
