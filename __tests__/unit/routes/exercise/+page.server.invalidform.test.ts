@@ -31,7 +31,7 @@ vi.mock('$lib/requestHandler', () => ({
 }));
 
 describe('Page Server Actions function', () => {
-	it('Return 400 if form is invalid', async () => {
+	it('Return 400 if form is invalid anon user', async () => {
 		const mockCookies = {
 			get: vi.fn(() => 'valid_token'),
 			set: vi.fn(),
@@ -59,7 +59,7 @@ describe('Page Server Actions function', () => {
 
 		handleAuthenticatedRequest.mockResolvedValueOnce(mockResponse);
 
-		const result = await actions.default({ url: mockUrl, cookies: mockCookies });
+		const result = await actions.postAnon({ url: mockUrl, cookies: mockCookies });
 
 		expect(result.status).toBe(400);
 	});

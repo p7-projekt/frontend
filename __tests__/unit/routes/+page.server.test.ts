@@ -13,6 +13,8 @@ vi.mock('$lib/fetchRequests', () => ({
 
 const mockDepends = vi.fn();
 
+const mockParent = vi.fn(() => ({ name: "Esben", role: "Frontend Techlead" }));
+
 describe('Page Server Load function', () => {
 	it('returns null when no tokens are available', async () => {
 		// Arrange
@@ -22,7 +24,7 @@ describe('Page Server Load function', () => {
 			delete: vi.fn()
 		};
 
-		const result = await load({ cookies: mockCookies, depends: mockDepends });
+		const result = await load({ cookies: mockCookies, depends: mockDepends, parent: mockParent });
 		expect(result).toEqual({ classrooms: null, instructor_exercises: null, sessions: null });
 	});
 
@@ -66,7 +68,7 @@ describe('Page Server Load function', () => {
 			.mockResolvedValueOnce({ ok: true, json: async () => mockSessionData })
 			.mockResolvedValueOnce({ ok: true, json: async () => mockClassroomData });
 
-		const result = await load({ cookies: mockCookies, depends: mockDepends });
+		const result = await load({ cookies: mockCookies, depends: mockDepends, parent: mockParent  });
 
 		expect(result).toEqual({
 			classrooms: mockClassroomData,
@@ -103,7 +105,7 @@ describe('Page Server Load function', () => {
 			.mockResolvedValueOnce({ ok: false });
 
 		// Call the load function with mock cookies and depends
-		const result = await load({ cookies: mockCookies, depends: mockDepends });
+		const result = await load({ cookies: mockCookies, depends: mockDepends, parent: mockParent  });
 
 		// Verify that the instructor exercises are returned and sessions are null
 		expect(result).toEqual({

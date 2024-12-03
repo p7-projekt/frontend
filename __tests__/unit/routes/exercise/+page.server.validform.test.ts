@@ -41,7 +41,7 @@ describe('Page Server Load function', () => {
 		};
 		const url = {
 			searchParams: {
-				get: vi.fn().mockReturnValue('mock_exercise_id')
+				get: vi.fn().mockReturnValue('mock_exercise_and_session_id')
 			}
 		};
 
@@ -113,6 +113,8 @@ describe('Page Server Load function', () => {
 				]
 			},
 			languages: [],
+			exerciseId: "mock_exercise_and_session_id",
+			sessionId: "mock_exercise_and_session_id",
 			testTemplate: {
 				parameters: {
 					input: [
@@ -134,7 +136,7 @@ describe('Page Server Load function', () => {
 });
 
 describe('Page Server Actions function', () => {
-	it('redirects on successful exercise creation', async () => {
+	it('redirects on successful exercise creation anon user', async () => {
 		// Arrange
 		const formData = new FormData();
 		formData.set('title', 'Test Exercise');
@@ -177,7 +179,7 @@ describe('Page Server Actions function', () => {
 		};
 
 		// Act and Assert
-		await expect(actions.default(event)).rejects.toThrow();
+		await expect(actions.postAnon(event)).rejects.toThrow();
 		expect(redirect).toHaveBeenCalledWith(303, '/session');
 	});
 });
