@@ -138,7 +138,7 @@
 				<FlexTable.Body>
 					{#each classroom.sessions as session}
 						{#if (user?.role === 'Student' && session.active) || user?.role === 'Instructor'}
-							<FlexTable.Row nr_cols={2} cssClass="mb-6 mt-6">
+							<FlexTable.Row nr_cols={2} cssClass="mb-6 mt-6 ">
 								{#if user?.role === 'Instructor'}
 									<FlexTable.Column>
 										<a href="/session/{session.id}/dashboard">
@@ -157,8 +157,8 @@
 								</FlexTable.Column>
 								{/if}
 
-
-								<FlexTable.Column cssClass="gap-[2rem] pl-[22rem]">
+ 
+								<FlexTable.Column cssClass="gap-[2rem] justify-self-end"> 
 									{#if user?.role === 'Instructor'}
 										<div>
 											<Select

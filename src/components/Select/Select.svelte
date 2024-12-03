@@ -62,7 +62,7 @@
 <div class="relative w-64" bind:this={dropdownContainer}>
 	<!-- Dropdown Button -->
 	<button
-		class="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:ring focus:ring-indigo-500"
+		class="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 bg-white border border-gray-300 shadow-md rounded-md shadow-sm hover:bg-gray-50 focus:ring focus:ring-indigo-500"
 		type="button"
 		on:click={toggleDropdown}
 	>

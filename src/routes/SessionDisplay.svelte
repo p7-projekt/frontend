@@ -40,12 +40,12 @@
 </script>
 
 <Card.Header class="p-0">
-	<Card.Title class="text-[1.25rem]">Sessions</Card.Title>
+	<Card.Title class="text-[1.25rem]">One-Off Session</Card.Title>
 </Card.Header>
 <Card.Content class="p-0">
 	<div class="grid grid-cols-1 gap-4 overflow-y-auto scrollable-list">
 		{#each sessions as session (session.id)}
-			<div class="rounded-[1.5rem] p-[1.5rem] border-[1.5px]" out:slide>
+			<div class="rounded-[1.5rem] p-[1.5rem] border border-gray-300 shadow-md bg-[#fff]" out:slide>
 				<h2 class="text-[1.375rem] mb-2 font-medium relative">
 					<a href="/session/{session.id}">
 						{session.title}
