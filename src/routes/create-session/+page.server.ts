@@ -139,6 +139,9 @@ export const actions: Actions = {
 			languageIds: programming_language
 		};
 
+		debugCreateSession('new_classroom_session:', new_classroom_session);
+
+
 		// Validate session
 		const validation = classroomSessionSchema.safeParse(new_classroom_session); // Assuming a schema without expiration
 		if (!validation.success) {
@@ -184,10 +187,14 @@ export const actions: Actions = {
 			exerciseIds: added_exercise_ids,
 			languageIds: programming_language
 		};
+		debugCreateSession('updated_classroom_session:', updated_classroom_session);
 
 		// Validate session
 		const validation = classroomSessionSchema.safeParse(updated_classroom_session); // Assuming a schema without expiration
+		
 		if (!validation.success) {
+			debugCreateSession('updated_classroom_session:', validation.error.errors);
+
 			return fail(400, { errors: validation.error.errors, session_description });
 		}
 		debugCreateSession('Validation successful for editing classroom session:', validation.data);

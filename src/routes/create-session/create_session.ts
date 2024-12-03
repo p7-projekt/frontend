@@ -14,7 +14,9 @@ export function getExerciseIds(exercise_list: FormDataEntryValue | null) {
 
 export function getProgrammingLanguages(lang_ids_str: FormDataEntryValue | null) {
 	try {
-		return lang_ids_str ? JSON.parse(lang_ids_str as string) : [];
+		let languages = lang_ids_str ? JSON.parse(lang_ids_str) : [];
+ 
+		return languages
 	} catch (error) {
 		debugCreateSession('Error parsing  added programming languages:', error);
 		return [];
@@ -53,21 +55,21 @@ export function displayValidationErrors(form: ActionData) {
 }
 
 export function getEditAddedExercises(
-	exercise_list: { exerciseId: number; exerciseTitle: string; solved: boolean }[]
+	exercise_list: { id: number; name: string; solved: boolean }[]
 ): { id: number; content: string }[] {
 	// Map the exercise_list to match the desired format
 	return exercise_list.map((exercise) => ({
-		id: exercise.exerciseId,
-		content: exercise.exerciseTitle
+		id: exercise.id,
+		content: exercise.name
 	}));
 }
 
 export function getEditRemainingExercises(
 	author_exercises: { id: number; name: string }[],
-	exercise_list: { exerciseId: number; exerciseTitle: string; solved: boolean }[]
+	exercise_list: { id: number; name: string; solved: boolean }[]
 ): { id: number; content: string }[] {
 	// Extract exercise IDs from exercise_list
-	const exerciseListIds = exercise_list.map((exercise) => exercise.exerciseId);
+	const exerciseListIds = exercise_list.map((exercise) => exercise.id);
 
 	// Filter and map the author_exercises to return exercises not included in exercise_list
 	return author_exercises
@@ -79,12 +81,12 @@ export function getEditRemainingExercises(
 }
 
 export function getEditLanguages(
-	editLanguageIds: number[],
+	editLanguages: { languageId: number; language: string }[],
 	languages: { languageId: number; language: string }[]
 ): { value: number; label: string }[] {
 	// Filter and map the languages to return in the desired format for the Select component
 	return languages
-		.filter((language) => editLanguageIds.includes(language.languageId))
+		.filter((language) => editLanguages.map((editLanguage) => (editLanguage.languageId)).includes(language.languageId))
 		.map((language) => ({
 			value: language.languageId,
 			label: language.language.charAt(0).toUpperCase() + language.language.slice(1)

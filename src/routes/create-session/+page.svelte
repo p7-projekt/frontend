@@ -48,15 +48,15 @@
 		}
 	);
 
-	let lang_selected_options: string[] = edit_session ? edit_session.languages : [];
+	let lang_selected_options: string[] = edit_session ? edit_session.languages.map((lang) => lang.languageId) : [];
 
 	// To make the ListBox component as resuable as possible we map Exercise properties to the parameters of the ListComponent
 	let added_exercise_list: { id: number; content: string }[] = !edit_session
 		? []
-		: getEditAddedExercises(edit_session.exerciseIds);
+		: getEditAddedExercises(edit_session.exercises);
 	let remaining_exercise_list =
 		edit_session && data.instructor_exercises
-			? getEditRemainingExercises(data.instructor_exercises, edit_session.exerciseIds)
+			? getEditRemainingExercises(data.instructor_exercises, edit_session.exercises)
 			: data.instructor_exercises
 				? data.instructor_exercises.map((exercise: { id: number; name: string }) => ({
 						id: exercise.id,
