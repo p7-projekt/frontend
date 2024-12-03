@@ -36,7 +36,7 @@ describe('POST /update-classroom-session', () => {
 				id: 'session123',
 				title: 'Session Title',
 				description: 'Session Description',
-				exerciseIds: [{ exerciseId: 'exercise1' }, { exerciseId: 'exercise2' }],
+				exercises: [{ exerciseId: 'exercise1' }, { exerciseId: 'exercise2' }],
 				languages: ['en', 'fr']
 			})
 		});
@@ -75,7 +75,7 @@ describe('POST /update-classroom-session', () => {
 					id: 'session123',
 					title: 'Session Title',
 					description: 'Session Description',
-					exerciseIds: [{ exerciseId: 'exercise1' }, { exerciseId: 'exercise2' }],
+					exercises: [{ exerciseId: 'exercise1' }, { exerciseId: 'exercise2' }],
 					languages: ['en', 'fr']
 				})
 			});
@@ -160,7 +160,7 @@ describe('POST /update-classroom-session', () => {
 				id: 'session123',
 				title: 'Session Title',
 				description: 'Session Description',
-				exerciseIds: [{ exerciseId: 'exercise1' }, { exerciseId: 'exercise2' }],
+				exercises: [{ exerciseId: 'exercise1' }, { exerciseId: 'exercise2' }],
 				languages: ['en', 'fr']
 			})
 		});
