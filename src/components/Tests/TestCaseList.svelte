@@ -63,7 +63,9 @@
 	{:else}
 		<div class="space-y-2">
 			{#each testCases as testCase}
-				<div class="flex items-center justify-between p-2 border rounded-lg shadow-sm bg-gray-50">
+				<div
+					class="flex items-center justify-between p-2 border border-gray-300 rounded-lg shadow-sm bg-[#fff]"
+				>
 					<div class="flex items-center space-x-4 text-sm">
 						<div>
 							<strong class="font-medium">Input:</strong>

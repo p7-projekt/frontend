@@ -118,12 +118,12 @@
 		margin: 0;
 	}
 	main {
-		height: 80vh;
+		height: 90vh;
 		display: flex;
 		flex-direction: column;
 	}
 	form {
-		height: 80vh;
+		height: 90vh;
 		display: flex;
 		flex-direction: column;
 	}

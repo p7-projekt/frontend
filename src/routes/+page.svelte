@@ -95,7 +95,7 @@
 						</div>
 					{:else}
 						<div
-							class="flex flex-1 items-center justify-center rounded-lg border border bg-[#fff] shadow-sm border-gray-400"
+							class="flex flex-1 items-center justify-center rounded-lg border border bg-[#fff] border-gray-300 shadow-md"
 						>
 							<div class="flex flex-col items-center gap-1 text-center">
 								<h3 class="text-2xl font-bold tracking-tight">Classrooms</h3>
@@ -112,7 +112,7 @@
 					{/if}
 					{#if !data.sessions}
 						<div
-							class="flex flex-1 items-center justify-center rounded-lg border border-gray-300 shadow-sm bg-[#fff]"
+							class="flex flex-1 items-center justify-center rounded-lg border border-gray-300 shadow-md shadow-sm bg-[#fff]"
 						>
 							<div class="flex flex-col items-center gap-1 text-center">
 								<h3 class="text-2xl font-bold tracking-tight">One-off Sessions</h3>

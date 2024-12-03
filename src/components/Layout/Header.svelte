@@ -18,9 +18,7 @@
 			<a href="/" class="inline-block font-medium text-[1.125rem]">Home</a>
 		</div>
 
-		<div class="text-center">
-			<a href="/session" class=" font-medium text-[1.125rem]">One-Off Session</a>
-		</div>
+		<div></div>
 
 		{#if !user}
 			<div class="flex items-center ml-auto space-x-6">

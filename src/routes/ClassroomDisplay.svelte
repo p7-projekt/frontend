@@ -46,7 +46,7 @@
 		{#each classroom_list.slice(0, visibleRows * columns) as classroom (classroom.id)}
 			<li>
 				<div
-					class="h-[19rem] w-full border pb-[0.25rem] pt-[2.25rem] px-[0.75rem] relative overflow-hidden rounded-[1.5rem] border-gray-400 shadow-sm bg-[#fff]"
+					class="h-[19rem] w-full border pb-[0.25rem] pt-[2.25rem] px-[0.75rem] relative overflow-hidden rounded-[1.5rem] border-gray-300 shadow-md bg-[#fff]"
 				>
 					<div>
 						<a href="/classroom/{classroom.id}">
