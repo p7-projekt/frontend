@@ -45,7 +45,7 @@
 	{#key unique}
 		<CodeMirror
 			{editable}
-			class="w-full h-full"
+			class="w-full h-full bg-[#fff]"
 			bind:value={codeSolutionText}
 			extensions={getExtension()}
 		/>

@@ -65,12 +65,12 @@
 	<div class="container pl-6 w-full text-[#333] grid grid-cols-1 gap-y-8">
 		<h1 class="text-2xl font-semibold col-span-full">Instructor Dashboard</h1>
 		<div class="flex gap-x-12 h-full">
-			<main class="flex flex-col w-1/2 h-[38rem] justify-between">
+			<main class="flex flex-col w-1/2 h-[40rem] justify-between">
 				<div class="scrollable-list h-full flex-col flex justify-between overflow-auto">
 					{#if data.classrooms}
 						<ClassroomDisplay classroom_list={classrooms} />
 						<div class="flex justify-end mr-1 mb-2">
-							<div class="flex items-center space-x-4 mt-4">
+							<div class="flex items-center space-x-4">
 								<span class="text-[#333] font-medium text-[1.0625rem]">Create Classroom</span>
 								<button
 									on:click={() => goto('/create-classroom')}
@@ -95,7 +95,7 @@
 						</div>
 					{:else}
 						<div
-							class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
+							class="flex flex-1 items-center justify-center rounded-lg border border bg-[#fff] border-gray-300 shadow-md"
 						>
 							<div class="flex flex-col items-center gap-1 text-center">
 								<h3 class="text-2xl font-bold tracking-tight">Classrooms</h3>
@@ -112,7 +112,7 @@
 					{/if}
 					{#if !data.sessions}
 						<div
-							class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
+							class="flex flex-1 items-center justify-center rounded-lg border border-gray-300 shadow-md shadow-sm bg-[#fff]"
 						>
 							<div class="flex flex-col items-center gap-1 text-center">
 								<h3 class="text-2xl font-bold tracking-tight">One-off Sessions</h3>
@@ -131,7 +131,7 @@
 					{/if}
 				</div>
 			</main>
-			<div class=" h-[38rem] w-1/2">
+			<div class=" h-[40rem] w-1/2">
 				<ListBox
 					list={instructor_exercises}
 					list_title="Private"
@@ -160,7 +160,7 @@
 				</AlertDialog.Root>
 
 				<div class="flex justify-end mr-1">
-					<div class="flex items-center space-x-4 mt-4">
+					<div class="flex items-center space-x-4">
 						<span class="text-[#333] font-medium text-[1.0625rem]">Create Exercise</span>
 						<button
 							on:click={() => goto('/createexercise')}

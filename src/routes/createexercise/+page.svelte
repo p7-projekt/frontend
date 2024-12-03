@@ -93,7 +93,7 @@
 </script>
 
 <main>
-	<form method="POST" use:enhance class="max-w max-h">
+	<form method="POST" use:enhance class="w-full h-full">
 		<Resizable.PaneGroup direction="horizontal" class="pane-group max-w max-h rounded-lg border">
 			<Resizable.Pane defaultSize={50} class="pane">
 				<Resizable.PaneGroup direction="vertical">
@@ -126,11 +126,11 @@
 					</Resizable.Pane>
 					<Resizable.Handle />
 					<Resizable.Pane defaultSize={40} style="overflow:auto">
-						<div class="m-8 content">
+						<div class="m-8 content font-medium">
 							<p>Test Case Schema</p>
 
 							<div
-								class="flex items-center justify-between p-2 border rounded-lg shadow-sm bg-gray-50"
+								class="flex items-center justify-between p-2 border border-gray-300 rounded-lg shadow-sm bg-[#fff] mb-4"
 							>
 								<div class="flex items-center space-x-4 text-sm">
 									<div>
@@ -252,12 +252,12 @@
 		margin: 0;
 	}
 	main {
-		height: 80vh;
+		height: 90vh;
 		display: flex;
 		flex-direction: column;
 	}
 	form {
-		height: 80vh;
+		height: 90vh;
 		display: flex;
 		flex-direction: column;
 	}

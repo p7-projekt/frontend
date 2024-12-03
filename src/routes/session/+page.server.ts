@@ -23,7 +23,9 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 			if (response.ok) {
 				const resJSON = await response.json();
-				throw redirect(303, `/session/${resJSON.sessionId}`);
+				if (resJSON.sessionId) {
+					throw redirect(303, `/session/${resJSON.sessionId}`);
+				} else throw redirect(303, '/');
 			} else {
 				cookies.delete('anon_token', { path: '/', secure: false });
 				throw redirect(303, '/join');
