@@ -188,7 +188,7 @@ export const actions: Actions = {
 				error = { detail: 'An unknown error occurred' }; // Handle empty response body
 			}
 
-			return setError(form, 'codeText', error.detail || 'An error occurred on the server');
+			return setError(form, 'codeText', error.detail.detail || 'An error occurred on the server');
 		}
 	}
 };
