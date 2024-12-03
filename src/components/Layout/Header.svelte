@@ -11,7 +11,7 @@
 2 / 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 80 / 96 / 128 
 -->
 <header
-	class="py-4 px-4 sm:px-5 bg-white min-h-[70px] tracking-wide relative z-50 text-[#333] font-medium"
+	class="py-4 px-4 sm:px-5 bg-white min-h-[70px] tracking-wide relative z-50 text-[#333] font-medium bg-[#fcfdfd]"
 >
 	<div class="grid grid-cols-3 justify-between gap-4 w-full">
 		<div>

@@ -17,7 +17,7 @@
 	}
 </script>
 
-<div class="flex flex-col w-full h-full rounded-lg border-[1.5px]">
+<div class="flex flex-col w-full h-full rounded-lg border border-gray-400 shadow-sm bg-[#fff]">
 	<div class="table-header pl-1">
 		<div class="flex items-center h-12 font-medium">
 			{list_title} Exercises

@@ -20,7 +20,7 @@
 			/>
 		</svg></DropdownMenu.Trigger
 	>
-	<DropdownMenu.Content>
+	<DropdownMenu.Content class="bg-[#fff]">
 		<DropdownMenu.Group>
 			<DropdownMenu.Item
 				class="cursor-pointer"

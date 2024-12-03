@@ -3,6 +3,6 @@
 	export let cssClass = '';
 </script>
 
-<div class="grid grid-cols-{nr_cols} rounded-md {cssClass} border-b p-2">
+<div class="grid grid-cols-{nr_cols} rounded-md {cssClass} border-b border-gray-400 p-2">
 	<slot />
 </div>

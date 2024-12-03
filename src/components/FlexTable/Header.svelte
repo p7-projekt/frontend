@@ -3,7 +3,7 @@
 </script>
 
 <header
-	class="border-b grid grid-cols-{nr_cols} hover:bg-muted/50 text-muted-foreground rounded-t-md"
+	class="border-b border-gray-400 grid grid-cols-{nr_cols} hover:bg-muted/50 text-muted-foreground rounded-t-md"
 >
 	<slot />
 </header>
