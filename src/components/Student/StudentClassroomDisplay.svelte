@@ -2,6 +2,7 @@
 	import Timer from '$components/Timer/Timer.svelte'; 
 	import { slide } from 'svelte/transition'; 
 	import * as Card from '$lib/components/ui/card/index.js';
+	import { goto } from '$app/navigation';
 
 	export let classroomData: { id: number; title: string; description: string }[] = [];
 
@@ -25,7 +26,20 @@
 		{/each}
 	</div>
 </Card.Content> 
-
+<div
+class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
+>
+<div class="flex flex-col items-center gap-1 text-center">
+	<h3 class="text-2xl font-bold tracking-tight">Join Another Classroom</h3>
+	<p class="text-muted-foreground text-sm">
+		Click here to join another classroom
+	</p>
+	<button
+		class="bg-[#1f2937] text-white hover:bg-transparent hover:text-[#1f2937] ease-in-out duration-300 p-6 rounded-lg shadow-lg text-xl py-5 px-10 mt-8"
+		on:click={() => goto('/join')}>Join Classroom</button
+	>
+</div>
+</div>
 <style>
 	.scrollable-list > div {
 		transition: opacity 0.3s ease;
