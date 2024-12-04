@@ -66,7 +66,7 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 		testTemplate,
 		languages,
 		exerciseId,
-        sessionId
+		sessionId
 	};
 };
 
@@ -118,7 +118,7 @@ export const actions: Actions = {
 
 		const exerciseId = event.url.searchParams.get('exerciseid') || 'XXX';
 		const sessionId = event.url.searchParams.get('seshid') || 'XXX';
-		
+
 		// Convert form data to API format
 		const apiData = convertFormData(form.data, sessionId);
 
@@ -153,7 +153,7 @@ export const actions: Actions = {
 			debugExercise('Epic Win:', resJSON);
 			throw redirect(303, '/session');
 		} else {
-			const responseBody = await response.json();  
+			const responseBody = await response.json();
 			debugExercise('responseBody:', responseBody);
 			let error;
 			if (responseBody) {
@@ -229,12 +229,12 @@ export const actions: Actions = {
 			debugExercise('Epic Win:', resJSON);
 			throw redirect(303, '/session');
 		} else {
-			const responseBody = await response.json();  
+			const responseBody = await response.json();
 			debugExercise('responseBody:', responseBody);
 			let error;
 			if (responseBody) {
 				try {
-					const resJSON = JSON.parse(responseBody); 
+					const resJSON = JSON.parse(responseBody);
 					debugExercise('resJSON:', responseBody);
 
 					if (resJSON.testCaseResults) {

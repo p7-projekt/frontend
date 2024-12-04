@@ -12,8 +12,8 @@ export const load: PageServerLoad = async ({ cookies, depends, parent }) => {
 	const { user } = await parent();
 
 	if (user?.role === 'Student') {
-        throw redirect(303, '/studenthome');
-    }
+		throw redirect(303, '/studenthome');
+	}
 
 	depends('data:sessions');
 

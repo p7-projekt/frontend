@@ -95,8 +95,8 @@ export const actions = {
 			if (responseData.joinedType === 2) {
 				throw redirect(303, `/classroom/${responseData.joinedId}`);
 			} else throw redirect(303, '/session');
-		} else {
-			return fail(500, { message: 'Server error. Please try again later' });
-		}
+		} else if (response.status === 400) {
+			return fail(400, { error: 'The classroom is not open for join' });
+		} else return fail(500, { error: 'Server Error. Please try again later' });
 	}
 };

@@ -69,8 +69,11 @@
 		</Resizable.Pane>
 		<Resizable.Handle />
 		<Resizable.Pane defaultSize={50} class="pane">
-			<form method="POST" use:enhance class="max-w max-h"
-			action={`?/${data.user?.role != 'Student' ? 'postAnon' : 'postStudent'}&exerciseid=${data.exerciseId}&seshid=${data.sessionId}`}
+			<form
+				method="POST"
+				use:enhance
+				class="max-w max-h"
+				action={`?/${data.user?.role != 'Student' ? 'postAnon' : 'postStudent'}&exerciseid=${data.exerciseId}&seshid=${data.sessionId}`}
 			>
 				<div class="flex flex-col h-full items-center justify-center p-6 space-y-4 content">
 					<div class="ide-container w-full h-full">

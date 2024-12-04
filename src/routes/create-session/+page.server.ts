@@ -141,7 +141,6 @@ export const actions: Actions = {
 
 		debugCreateSession('new_classroom_session:', new_classroom_session);
 
-
 		// Validate session
 		const validation = classroomSessionSchema.safeParse(new_classroom_session); // Assuming a schema without expiration
 		if (!validation.success) {
@@ -191,7 +190,7 @@ export const actions: Actions = {
 
 		// Validate session
 		const validation = classroomSessionSchema.safeParse(updated_classroom_session); // Assuming a schema without expiration
-		
+
 		if (!validation.success) {
 			debugCreateSession('updated_classroom_session:', validation.error.errors);
 
