@@ -13,7 +13,7 @@
 		<main class="flex flex-1 flex-col w-1/2 h-[35.5rem]">
 			{#if !data.classrooms || data.classrooms.length === 0}
 				<div
-					class="flex flex-1 items-center justify-center rounded-lg border border-gray-300 shadow-md"
+					class="flex flex-1 items-center justify-center rounded-lg border border-gray-300 shadow-md bg-[#fff]"
 				>
 					<div class="flex flex-col items-center gap-1 text-center">
 						<h3 class="text-2xl font-bold tracking-tight">You are not a part of any Classrooms</h3>
@@ -33,7 +33,7 @@
 		<main class="flex flex-1 flex-col w-1/2 h-[35.5rem]">
 			{#if !data.sessions || data.sessions.length === 0}
 				<div
-					class="flex flex-1 items-center justify-center rounded-lg border border-gray-300 shadow-md"
+					class="flex flex-1 items-center justify-center rounded-lg border border-gray-300 shadow-md bg-[#fff]"
 				>
 					<div class="flex flex-col items-center gap-1 text-center">
 						<h3 class="text-2xl font-bold tracking-tight">You are not a part of any Sessions</h3>
