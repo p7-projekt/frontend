@@ -1,6 +1,6 @@
 // +page.server.ts
 import type { PageServerLoad, Actions } from './$types.js';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './sign-up-schema';
@@ -33,9 +33,7 @@ export const actions: Actions = {
 		});
 
 		if (response.ok) {
-			return ok({
-				form
-			});
+			throw redirect(303, '/login');
 		} else {
 			const error = await response.json();
 			return setError(form, 'confirmPassword', error.errors.Password.join('\n') || 'Signup failed');

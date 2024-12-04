@@ -28,7 +28,7 @@
 					const response = await fetch('/api/logout', { method: 'POST' });
 					if (response.ok) {
 						invalidateAll();
-						goto('/');
+						goto('/join');
 					}
 				}}>Log out</DropdownMenu.Item
 			>

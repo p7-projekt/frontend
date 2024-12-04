@@ -17,9 +17,7 @@
 	}
 </script>
 
-<div
-	class="flex flex-col w-full h-full rounded-lg border border-gray-300 shadow-md shadow-sm bg-[#fff]"
->
+<div class="flex flex-col w-full h-full rounded-lg border border-gray-300 shadow-md bg-[#fff]">
 	<div class="table-header pl-1">
 		<div class="flex items-center h-12 font-medium">
 			{list_title} Exercises

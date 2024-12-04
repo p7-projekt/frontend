@@ -6,9 +6,8 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { _deleteExercise } from './+page';
 	import { toast } from 'svelte-sonner';
-	import { Button } from '$lib/components/ui/button';
 	import ClassroomDisplay from './ClassroomDisplay.svelte';
-	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
 
@@ -59,6 +58,12 @@
 		selected_exercise_title = event.detail.item_content;
 		isDialogOpen = true;
 	}
+
+	onMount(() => {
+		if (!data.user) {
+			goto('/join');
+		}
+	});
 </script>
 
 {#if data.user?.role === 'Instructor'}
@@ -66,7 +71,7 @@
 		<h1 class="text-2xl font-semibold col-span-full">Instructor Dashboard</h1>
 		<div class="flex gap-x-12 h-full">
 			<main class="flex flex-col w-1/2 h-[40rem] justify-between">
-				<div class="scrollable-list h-full flex-col flex justify-between overflow-auto">
+				<div class="scrollable-list h-full flex-col flex justify-between p-2 overflow-auto">
 					{#if data.classrooms}
 						<ClassroomDisplay classroom_list={classrooms} />
 						<div class="flex justify-end mr-1 mb-2">
@@ -112,7 +117,7 @@
 					{/if}
 					{#if !data.sessions}
 						<div
-							class="flex flex-1 items-center justify-center rounded-lg border border-gray-300 shadow-md shadow-sm bg-[#fff]"
+							class="flex flex-1 items-center justify-center rounded-lg border border-gray-300 shadow-md bg-[#fff]"
 						>
 							<div class="flex flex-col items-center gap-1 text-center">
 								<h3 class="text-2xl font-bold tracking-tight">One-off Sessions</h3>
@@ -131,7 +136,7 @@
 					{/if}
 				</div>
 			</main>
-			<div class=" h-[40rem] w-1/2">
+			<div class=" h-[40rem] w-1/2 p-2">
 				<ListBox
 					list={instructor_exercises}
 					list_title="Private"
@@ -159,7 +164,7 @@
 					</AlertDialog.Content>
 				</AlertDialog.Root>
 
-				<div class="flex justify-end mr-1">
+				<div class="flex justify-end mr-1 mt-2">
 					<div class="flex items-center space-x-4">
 						<span class="text-[#333] font-medium text-[1.0625rem]">Create Exercise</span>
 						<button
@@ -179,29 +184,6 @@
 						</button>
 					</div>
 				</div>
-			</div>
-		</div>
-	</div>
-{:else}
-	<div class="flex min-h-screen items-start pt-32 justify-center bg-gray-100">
-		<div class="w-full max-w-md p-8 bg-white shadow-md rounded-lg text-center">
-			<!-- Page Title -->
-			<h1 class="text-4xl font-bold mb-4 text-gray-800">SyntaxShift</h1>
-			<p class="text-lg text-gray-600 mb-8">Welcome to SyntaxShift!</p>
-
-			<!-- Buttons -->
-			<div class="space-y-4">
-				{#if !data.user}
-					<Button href="/login" class="w-full bg-blue-500 hover:bg-blue-600 text-white">
-						Log In
-					</Button>
-					<Button href="/signup" class="w-full bg-green-500 hover:bg-green-600 text-white">
-						Sign Up
-					</Button>
-				{/if}
-				<Button href="/join" class="w-full bg-purple-500 hover:bg-purple-600 text-white">
-					Join a Room
-				</Button>
 			</div>
 		</div>
 	</div>
