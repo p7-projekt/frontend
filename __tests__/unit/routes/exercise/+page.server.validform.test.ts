@@ -115,6 +115,7 @@ describe('Page Server Load function', () => {
 			languages: [],
 			exerciseId: 'mock_exercise_and_session_id',
 			sessionId: 'mock_exercise_and_session_id',
+			isClassroom: false,
 			testTemplate: {
 				parameters: {
 					input: [
@@ -180,6 +181,6 @@ describe('Page Server Actions function', () => {
 
 		// Act and Assert
 		await expect(actions.postAnon(event)).rejects.toThrow();
-		expect(redirect).toHaveBeenCalledWith(303, '/session');
+		expect(redirect).toHaveBeenCalledWith(303, '/session?completed=true');
 	});
 });
