@@ -15,6 +15,7 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 	const access_token: string = cookies.get('access_token') || '';
 	const exerciseId = url.searchParams.get('exerciseid');
 	const sessionId = url.searchParams.get('seshid');
+	const isClassroom = url.searchParams.get('classroom') === 'true';
 
 	let languages;
 	availableLanguages.subscribe((value) => {
@@ -66,7 +67,8 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 		testTemplate,
 		languages,
 		exerciseId,
-		sessionId
+		sessionId,
+		isClassroom
 	};
 };
 
@@ -118,6 +120,8 @@ export const actions: Actions = {
 
 		const exerciseId = event.url.searchParams.get('exerciseid') || 'XXX';
 		const sessionId = event.url.searchParams.get('seshid') || 'XXX';
+		const isClassroom = event.url.searchParams.get('classroom') || 'XXX';
+
 
 		// Convert form data to API format
 		const apiData = convertFormData(form.data, sessionId);
@@ -149,9 +153,13 @@ export const actions: Actions = {
 			} else {
 				resJSON = { detail: 'No response body' }; // Handle empty response body
 			}
-
-			debugExercise('Epic Win:', resJSON);
-			throw redirect(303, '/session');
+			
+			if (isClassroom==='true') {
+				throw redirect(303, `/session/${sessionId}?classroom=true&completed=true`);
+			} else {
+				throw redirect(303, '/session?completed=true');
+			}
+ 
 		} else {
 			const responseBody = await response.json();
 			debugExercise('responseBody:', responseBody);
@@ -194,6 +202,7 @@ export const actions: Actions = {
 
 		const exerciseId = event.url.searchParams.get('exerciseid') || 'XXX';
 		const sessionId = event.url.searchParams.get('seshid') || 'XXX';
+		const isClassroom = event.url.searchParams.get('classroom') || 'XXX';
 
 		// Convert form data to API format
 		const apiData = convertFormData(form.data, sessionId);
@@ -227,7 +236,12 @@ export const actions: Actions = {
 			}
 
 			debugExercise('Epic Win:', resJSON);
-			throw redirect(303, '/session');
+
+			if (isClassroom === 'true') {
+				throw redirect(303, `/session/${sessionId}?classroom=true&completed=true`);
+			} else {
+				throw redirect(303, '/session?completed=true');
+			}
 		} else {
 			const responseBody = await response.json();
 			debugExercise('responseBody:', responseBody);

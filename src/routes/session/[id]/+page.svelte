@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Row from '$components/FlexTable/Row.svelte';
+	import { toast } from 'svelte-sonner';
 
 	export let data: PageData;
 	const session: {
@@ -20,6 +21,9 @@
 		const url = new URL(window.location.href);
 		const pathSegments = url.pathname.split('/');
 		sessionId = pathSegments[pathSegments.length - 1];
+		if (data.showToast) { 
+			toast('Exercise solved!');
+		}
 	});
 </script>
 
@@ -54,7 +58,13 @@
 							</FlexTable.Column>
 							<FlexTable.Column cssClass="justify-center">
 								<button
-									on:click={() => goto(`/exercise?exerciseid=${exercise.id}&seshid=${sessionId}`)}
+									on:click={() => {	
+										if (data.isClassroom) {
+											goto(`/exercise?exerciseid=${exercise.id}&seshid=${sessionId}&classroom=true`);
+										} else {
+											goto(`/exercise?exerciseid=${exercise.id}&seshid=${sessionId}`)}
+										}
+								}
 									class="text-[1.125rem] px-4 py-2 text-sm rounded-sm font-bold text-white border-2 border-[#1f2937] bg-[#1f2937] hover:bg-transparent hover:text-[#1f2937]"
 								>
 									Code

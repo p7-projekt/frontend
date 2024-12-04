@@ -10,7 +10,12 @@ export const load: PageServerLoad = async ({ cookies, url, params }) => {
 	const anon_token = cookies.get('anon_token') || '';
 	const access_token = cookies.get('access_token') || '';
 	const refresh_token = cookies.get('refresh_token') || '';
-	const isClassroom = url.searchParams.get('classroom') === 'true';
+	const classroomQuery = url.searchParams.get('classroom');
+	const isClassroom = classroomQuery == 'true';
+
+	const showToastQuery = url.searchParams.get('completed');
+	const showToast = showToastQuery == 'true';
+	 
 	const fetchUrl = isClassroom
 		? `${backendUrl}/${api_version2}/classrooms/session/${params.id}`
 		: `${backendUrl}/${api_version}/sessions/${params.id}`;
@@ -34,7 +39,9 @@ export const load: PageServerLoad = async ({ cookies, url, params }) => {
 			throw redirect(303, '/join');
 		}
 		return {
-			session: session
+			session: session,
+			isClassroom: isClassroom,
+			showToast: showToast
 		};
 	} else if (access_token) {
 		const fetchFunction = isClassroom ? fetchSpecificClassroomSession : fetchSpecificSession;
@@ -50,7 +57,9 @@ export const load: PageServerLoad = async ({ cookies, url, params }) => {
 			session = await response.json();
 			availableLanguages.set(session.languages);
 			return {
-				session: session
+				session: session,
+				isClassroom: isClassroom,
+				showToast: showToast
 			};
 		} else throw redirect(303, '/');
 	} else throw redirect(303, '/join');

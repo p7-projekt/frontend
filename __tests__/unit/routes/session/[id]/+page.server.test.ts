@@ -97,6 +97,8 @@ describe('Page Server Load function', () => {
 
 		const result = await load({ cookies: mockCookies, params: mockParams, url: mockUrl });
 		expect(result).toEqual({
+			isClassroom: false,
+			showToast: false,
 			session: {
 				title: 'Krath Session',
 				description: 'Rust is better than everything',
@@ -140,6 +142,8 @@ describe('Page Server Load function', () => {
 
 		const result = await load({ cookies: mockCookies, params: mockParams, url: mockUrl });
 		expect(result).toEqual({
+			isClassroom: false,
+			showToast: false,
 			session: {
 				title: 'Krath Session',
 				description: 'Rust is better than everything',

@@ -68,7 +68,7 @@
 
 {#if data.user?.role === 'Instructor'}
 	<div class="container pl-6 w-full text-[#333] grid grid-cols-1 gap-y-8">
-		<h1 class="text-2xl font-semibold col-span-full">Instructor Dashboard</h1>
+		<h1 class="text-2xl font-semibold col-span-full">Instructor Home</h1>
 		<div class="flex gap-x-12 h-full">
 			<main class="flex flex-col w-1/2 h-[40rem] justify-between">
 				<div class="scrollable-list h-full flex-col flex justify-between p-2 overflow-auto">
