@@ -71,10 +71,7 @@
 		}
 	}
 
-	function submitTestCase() {
-		testCasesStore.subscribe((store) => {
-			let testCases = store.testCases;
-		});
+	
 
 		const validInputs =
 			$inputParameters.every(validateInput) && $outputParameters.every(validateInput);

@@ -33,7 +33,6 @@
 		{ value: true, label: 'Active' }
 	];
 
-	let selected_open_status: string = 'Closed';
 	let status_select_options: { value: boolean; label: string }[] = [
 		{ value: false, label: 'Closed' },
 		{ value: true, label: 'Open' }

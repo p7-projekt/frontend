@@ -4,7 +4,6 @@
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import Row from '$components/FlexTable/Row.svelte';
 	import { toast } from 'svelte-sonner';
 
 	export let data: PageData;

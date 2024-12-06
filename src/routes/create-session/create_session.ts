@@ -14,9 +14,7 @@ export function getExerciseIds(exercise_list: FormDataEntryValue | null) {
 
 export function getProgrammingLanguages(lang_ids_str: FormDataEntryValue | null) {
 	try {
-		let languages = lang_ids_str ? JSON.parse(lang_ids_str) : [];
-
-		return languages;
+		return lang_ids_str ? JSON.parse(lang_ids_str) : [];
 	} catch (error) {
 		debugCreateSession('Error parsing  added programming languages:', error);
 		return [];

@@ -1,6 +1,5 @@
-import { load, actions } from '$src/routes/login/+page.server';
+import { actions } from '$src/routes/login/+page.server';
 import { describe, it, expect, vi } from 'vitest';
-import { redirect, fail } from '@sveltejs/kit';
 import { setError } from 'sveltekit-superforms';
 
 vi.mock('sveltekit-superforms', () => ({
@@ -53,7 +52,7 @@ describe('login action function', () => {
 		);
 
 		// Act
-		const result = await actions.default(event);
+		await actions.default(event);
 
 		// Assert
 		expect(setError).toHaveBeenCalledWith(expect.any(Object), 'password', 'Invalid credentials');

@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 
-	export let select_title = '';
 	export let select_options: { value: unknown; label: string }[] = [];
-	export let post_option_str = '';
 
 	export let values: { value: unknown; label: string }[] = [];
 	export let multiple = false; // New prop to toggle between single and multiple select

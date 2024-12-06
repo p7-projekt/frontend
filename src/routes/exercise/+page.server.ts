@@ -3,7 +3,6 @@ import { setError, superValidate } from 'sveltekit-superforms';
 import { fail, redirect } from '@sveltejs/kit';
 import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
-import { setIDEBoilerPlate } from '$lib/boilerplate';
 import { debugExercise } from '$lib/debug';
 import { availableLanguages } from '$lib/availableLanguages';
 
@@ -72,43 +71,12 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 	};
 };
 
-async function getLanguages(
-	backendUrl: string,
-	api_version: string,
-	access_token: string
-): Promise<Response> {
-	return await fetch(`${backendUrl}/${api_version}/languages`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${access_token}`
-		}
-	});
-}
-
 function convertFormData(formData, sessionId) {
 	return {
 		solution: formData.codeText,
 		sessionId: sessionId,
 		languageId: formData.selectedLanguage.languageId
 	};
-}
-
-async function postSolution(
-	backendUrl: string,
-	api_version: string,
-	access_token: string,
-	apiData,
-	exerciseId: int
-): Promise<Response> {
-	return await fetch(`${backendUrl}/${api_version}/exercises/${exerciseId}/submission`, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${access_token}` // Append the Bearer token
-		},
-		body: JSON.stringify(apiData)
-	});
 }
 
 export const actions: Actions = {

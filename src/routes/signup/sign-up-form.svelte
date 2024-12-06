@@ -1,11 +1,9 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import { formSchema, type FormSchema } from './sign-up-schema'; // Import your signup schema
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { onMount } from 'svelte';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 	let signupSuccess = false;
@@ -19,7 +17,7 @@
 		}
 	});
 
-	const { form: formData, enhance, errors } = form;
+	const { form: formData, enhance } = form;
 	$: signupSuccess = signupSuccess;
 </script>
 

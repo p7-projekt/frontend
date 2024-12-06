@@ -26,7 +26,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 		debugCreateExercise('Languages:', languages);
 	}
 
-	let form = await superValidate(zod(formSchema));
+	const form = await superValidate(zod(formSchema));
 	let exerciseData = null;
 
 	debugCreateExercise('loading');
