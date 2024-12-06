@@ -157,7 +157,7 @@ export const actions: Actions = {
 			if (isClassroom==='true') {
 				throw redirect(303, `/session/${sessionId}?classroom=true&completed=true`);
 			} else {
-				throw redirect(303, '/session?completed=true');
+				throw redirect(303, `/session/${sessionId}?completed=true`);
 			}
  
 		} else {
@@ -240,7 +240,7 @@ export const actions: Actions = {
 			if (isClassroom === 'true') {
 				throw redirect(303, `/session/${sessionId}?classroom=true&completed=true`);
 			} else {
-				throw redirect(303, '/session?completed=true');
+				throw redirect(303, `/session/${sessionId}?completed=true`);
 			}
 		} else {
 			const responseBody = await response.json();
