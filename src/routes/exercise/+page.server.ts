@@ -122,7 +122,6 @@ export const actions: Actions = {
 		const sessionId = event.url.searchParams.get('seshid') || 'XXX';
 		const isClassroom = event.url.searchParams.get('classroom') || 'XXX';
 
-
 		// Convert form data to API format
 		const apiData = convertFormData(form.data, sessionId);
 
@@ -153,13 +152,12 @@ export const actions: Actions = {
 			} else {
 				resJSON = { detail: 'No response body' }; // Handle empty response body
 			}
-			
-			if (isClassroom==='true') {
+
+			if (isClassroom === 'true') {
 				throw redirect(303, `/session/${sessionId}?classroom=true&completed=true`);
 			} else {
 				throw redirect(303, `/session/${sessionId}?completed=true`);
 			}
- 
 		} else {
 			const responseBody = await response.json();
 			debugExercise('responseBody:', responseBody);

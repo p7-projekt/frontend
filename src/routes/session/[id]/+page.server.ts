@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ cookies, url, params }) => {
 
 	const showToastQuery = url.searchParams.get('completed');
 	const showToast = showToastQuery == 'true';
-	 
+
 	const fetchUrl = isClassroom
 		? `${backendUrl}/${api_version2}/classrooms/session/${params.id}`
 		: `${backendUrl}/${api_version}/sessions/${params.id}`;

@@ -73,7 +73,8 @@
 				method="POST"
 				use:enhance
 				class="max-w max-h"
-				action={`?/${data.user?.role != 'Student' ? 'postAnon' : 'postStudent'}&exerciseid=${data.exerciseId}&seshid=${data.sessionId}` + (data.isClassroom ? '&classroom=true' : '')}
+				action={`?/${data.user?.role != 'Student' ? 'postAnon' : 'postStudent'}&exerciseid=${data.exerciseId}&seshid=${data.sessionId}` +
+					(data.isClassroom ? '&classroom=true' : '')}
 			>
 				<div class="flex flex-col h-full items-center justify-center p-6 space-y-4 content">
 					<div class="ide-container w-full h-full">
@@ -83,8 +84,8 @@
 							bind:codeSolutionText={$formData.codeText}
 						/>
 						{#if selectedLanguage === undefined}<span class="invalid"
-							>Select a language to begin coding!</span
-						>{/if}
+								>Select a language to begin coding!</span
+							>{/if}
 					</div>
 					{#if $errors.test}
 						<TestResultsStudent testResults={$errors.test} />

@@ -21,7 +21,7 @@
 		const url = new URL(window.location.href);
 		const pathSegments = url.pathname.split('/');
 		sessionId = pathSegments[pathSegments.length - 1];
-		if (data.showToast) { 
+		if (data.showToast) {
 			toast('Exercise solved!');
 		}
 	});
@@ -49,7 +49,7 @@
 					{#each session.exercises as exercise (exercise.id)}
 						<FlexTable.Row nr_cols={3}>
 							<FlexTable.Column cssClass="justify-center">{exercise.name}</FlexTable.Column>
-							{#if (exercise.solved != undefined)}
+							{#if exercise.solved != undefined}
 								<FlexTable.Column cssClass="justify-center">
 									<Checkbox
 										checked={exercise.solved}
@@ -60,13 +60,15 @@
 							{/if}
 							<FlexTable.Column cssClass="justify-center">
 								<button
-									on:click={() => {	
+									on:click={() => {
 										if (data.isClassroom) {
-											goto(`/exercise?exerciseid=${exercise.id}&seshid=${sessionId}&classroom=true`);
+											goto(
+												`/exercise?exerciseid=${exercise.id}&seshid=${sessionId}&classroom=true`
+											);
 										} else {
-											goto(`/exercise?exerciseid=${exercise.id}&seshid=${sessionId}`)}
+											goto(`/exercise?exerciseid=${exercise.id}&seshid=${sessionId}`);
 										}
-								}
+									}}
 									class="text-[1.125rem] px-4 py-2 text-sm rounded-sm font-bold text-white border-2 border-[#1f2937] bg-[#1f2937] hover:bg-transparent hover:text-[#1f2937]"
 								>
 									Code
