@@ -71,8 +71,7 @@
 		}
 	}
 
-	
-
+	function submitTestCase() {
 		const validInputs =
 			$inputParameters.every(validateInput) && $outputParameters.every(validateInput);
 		const hasInputs = $inputParameters.length > 0;
