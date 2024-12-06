@@ -181,6 +181,6 @@ describe('Page Server Actions function', () => {
 
 		// Act and Assert
 		await expect(actions.postAnon(event)).rejects.toThrow();
-		expect(redirect).toHaveBeenCalledWith(303, '/session?completed=true');
+		expect(redirect).toHaveBeenCalledWith(303, '/session/1?completed=true');
 	});
 });
