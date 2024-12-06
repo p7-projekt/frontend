@@ -49,13 +49,15 @@
 					{#each session.exercises as exercise (exercise.id)}
 						<FlexTable.Row nr_cols={3}>
 							<FlexTable.Column cssClass="justify-center">{exercise.name}</FlexTable.Column>
-							<FlexTable.Column cssClass="justify-center">
-								<Checkbox
-									checked={exercise.solved}
-									disabled
-									style="cursor: default !important; opacity: 1;"
-								/>
-							</FlexTable.Column>
+							{#if (exercise.solved != undefined)}
+								<FlexTable.Column cssClass="justify-center">
+									<Checkbox
+										checked={exercise.solved}
+										disabled
+										style="cursor: default !important; opacity: 1;"
+									/>
+								</FlexTable.Column>
+							{/if}
 							<FlexTable.Column cssClass="justify-center">
 								<button
 									on:click={() => {	
