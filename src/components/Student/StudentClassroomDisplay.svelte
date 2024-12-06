@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Timer from '$components/Timer/Timer.svelte';
 	import { slide } from 'svelte/transition';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { goto } from '$app/navigation';

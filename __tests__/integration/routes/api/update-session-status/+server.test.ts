@@ -12,7 +12,6 @@ global.fetch = vi.fn();
 
 describe('POST /update-classroom-session', () => {
 	const backendUrl = 'http://localhost:5015';
-	const api_version_v2 = 'v2';
 
 	it('returns 200 with success message when session is fetched and updated successfully', async () => {
 		const mockCookies = {

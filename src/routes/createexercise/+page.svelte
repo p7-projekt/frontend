@@ -26,7 +26,6 @@
 	let isEditMode: boolean = false;
 	let exerciseId: number;
 	let overwriteCodeText: boolean = false;
-	let isLoading: boolean = false;
 	let selectedLanguage: { languageId: number; language: string } = { languageId: 0, language: '' };
 	let languages = data.data.languages;
 

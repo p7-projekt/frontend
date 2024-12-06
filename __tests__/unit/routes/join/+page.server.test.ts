@@ -12,7 +12,7 @@ vi.mock('@sveltejs/kit', () => ({
 global.fetch = vi.fn();
 
 describe('Join action', () => {
-	let mockCookies = {
+	const mockCookies = {
 		get: vi.fn(() => 'anon_token'),
 		set: vi.fn(),
 		delete: vi.fn()

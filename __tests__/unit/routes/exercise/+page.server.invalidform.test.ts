@@ -1,8 +1,6 @@
 import { actions } from '$src/routes/exercise/+page.server';
 import { describe, it, expect, vi } from 'vitest';
 import { handleAuthenticatedRequest } from '$lib/requestHandler';
-import { setError } from 'sveltekit-superforms';
-import { redirect } from '@sveltejs/kit';
 
 vi.mock('sveltekit-superforms', () => ({
 	setError: vi.fn(),

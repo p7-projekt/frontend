@@ -3,7 +3,6 @@ import { setError, superValidate } from 'sveltekit-superforms';
 import { fail, redirect } from '@sveltejs/kit';
 import { zod } from 'sveltekit-superforms/adapters';
 import { formSchema } from './schema';
-import { setIDEBoilerPlate } from '$lib/boilerplate';
 import { debugExercise } from '$lib/debug';
 import { availableLanguages } from '$lib/availableLanguages';
 
@@ -72,43 +71,12 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 	};
 };
 
-async function getLanguages(
-	backendUrl: string,
-	api_version: string,
-	access_token: string
-): Promise<Response> {
-	return await fetch(`${backendUrl}/${api_version}/languages`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${access_token}`
-		}
-	});
-}
-
 function convertFormData(formData, sessionId) {
 	return {
 		solution: formData.codeText,
 		sessionId: sessionId,
 		languageId: formData.selectedLanguage.languageId
 	};
-}
-
-async function postSolution(
-	backendUrl: string,
-	api_version: string,
-	access_token: string,
-	apiData,
-	exerciseId: int
-): Promise<Response> {
-	return await fetch(`${backendUrl}/${api_version}/exercises/${exerciseId}/submission`, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${access_token}` // Append the Bearer token
-		},
-		body: JSON.stringify(apiData)
-	});
 }
 
 export const actions: Actions = {
@@ -121,7 +89,6 @@ export const actions: Actions = {
 		const exerciseId = event.url.searchParams.get('exerciseid') || 'XXX';
 		const sessionId = event.url.searchParams.get('seshid') || 'XXX';
 		const isClassroom = event.url.searchParams.get('classroom') || 'XXX';
-
 
 		// Convert form data to API format
 		const apiData = convertFormData(form.data, sessionId);
@@ -153,13 +120,12 @@ export const actions: Actions = {
 			} else {
 				resJSON = { detail: 'No response body' }; // Handle empty response body
 			}
-			
-			if (isClassroom==='true') {
+
+			if (isClassroom === 'true') {
 				throw redirect(303, `/session/${sessionId}?classroom=true&completed=true`);
 			} else {
 				throw redirect(303, `/session/${sessionId}?completed=true`);
 			}
- 
 		} else {
 			const responseBody = await response.json();
 			debugExercise('responseBody:', responseBody);

@@ -28,7 +28,7 @@
 				console.error('Failed to fetch solution:', solution.error || response.statusText);
 			}
 		} catch (error) {
-			console.error('Failed to parse JSON response:', responseText);
+			console.error('Failed to parse JSON response:', error, responseText);
 		}
 	}
 </script>

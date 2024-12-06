@@ -11,7 +11,7 @@
 		validators: zodClient(formSchema)
 	});
 
-	const { form: formData, enhance, errors } = form;
+	const { form: formData, enhance } = form;
 </script>
 
 <div class="flex min-h-screen items-start pt-16 justify-center bg-gray-100">
