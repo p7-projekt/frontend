@@ -55,7 +55,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 							value
 						})),
 						output: testCase.outputParams.map((value, index) => ({
-							type: exerciseData.outputParamaterType[index],
+							type: exerciseData.outputParameterType[index],
 							value
 						}))
 					},

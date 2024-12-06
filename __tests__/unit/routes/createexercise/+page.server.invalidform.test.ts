@@ -81,7 +81,7 @@ describe('Page Server Load function', () => {
 				}
 			],
 			inputParameterType: ['string'],
-			outputParamaterType: ['string']
+			outputParameterType: ['string']
 		};
 
 		global.fetch = vi.fn(() =>

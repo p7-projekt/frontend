@@ -21,7 +21,7 @@ export const load: PageLoad = ({ data }) => {
 					value
 				})),
 				output: testCase.outputParams.map((value: any, index: number) => ({
-					type: exerciseData.outputParamaterType[index],
+					type: exerciseData.outputParameterType[index],
 					value
 				}))
 			}
@@ -35,7 +35,7 @@ export const load: PageLoad = ({ data }) => {
 		testCaseSchema = {
 			parameters: {
 				input: exerciseData.inputParameterType.map((type: string) => ({ type, value: '' })),
-				output: exerciseData.outputParamaterType.map((type: string) => ({ type, value: '' }))
+				output: exerciseData.outputParameterType.map((type: string) => ({ type, value: '' }))
 			}
 		};
 	}

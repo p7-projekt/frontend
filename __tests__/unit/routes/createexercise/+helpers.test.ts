@@ -31,7 +31,7 @@ describe('convertFormData', () => {
 			solution: 'Test Code',
 			solutionLanguage: 1,
 			inputParameterType: ['int', 'string'],
-			outputParamaterType: ['bool'],
+			outputParameterType: ['bool'],
 			testcases: [
 				{
 					inputParams: ['1', 'test'],

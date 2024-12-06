@@ -53,7 +53,7 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 				value
 			})),
 			output: jsonResponse.testCases[0].outputParams.map((value, index) => ({
-				type: jsonResponse.outputParamaterType[index],
+				type: jsonResponse.outputParameterType[index],
 				value
 			}))
 		}

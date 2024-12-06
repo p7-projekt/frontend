@@ -53,7 +53,7 @@ describe('Page Server Load function', () => {
 						title: 'Exercise 1',
 						description: 'Description 1',
 						inputParameterType: ['string'],
-						outputParamaterType: ['string'],
+						outputParameterType: ['string'],
 						testCases: [
 							{
 								inputParams: ['input1'],
@@ -68,7 +68,7 @@ describe('Page Server Load function', () => {
 							title: 'Exercise 1',
 							description: 'Description 1',
 							inputParameterType: ['string'],
-							outputParamaterType: ['string'],
+							outputParameterType: ['string'],
 							testCases: [
 								{
 									inputParams: ['input1'],
@@ -103,7 +103,7 @@ describe('Page Server Load function', () => {
 				title: 'Exercise 1',
 				description: 'Description 1',
 				inputParameterType: ['string'],
-				outputParamaterType: ['string'],
+				outputParameterType: ['string'],
 				testCases: [
 					{
 						inputParams: ['input1'],
