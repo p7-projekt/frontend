@@ -53,7 +53,7 @@ describe('Page Server Load function', () => {
 						title: 'Exercise 1',
 						description: 'Description 1',
 						inputParameterType: ['string'],
-						outputParamaterType: ['string'],
+						outputParameterType: ['string'],
 						testCases: [
 							{
 								inputParams: ['input1'],
@@ -68,7 +68,7 @@ describe('Page Server Load function', () => {
 							title: 'Exercise 1',
 							description: 'Description 1',
 							inputParameterType: ['string'],
-							outputParamaterType: ['string'],
+							outputParameterType: ['string'],
 							testCases: [
 								{
 									inputParams: ['input1'],
@@ -103,7 +103,7 @@ describe('Page Server Load function', () => {
 				title: 'Exercise 1',
 				description: 'Description 1',
 				inputParameterType: ['string'],
-				outputParamaterType: ['string'],
+				outputParameterType: ['string'],
 				testCases: [
 					{
 						inputParams: ['input1'],
@@ -181,6 +181,6 @@ describe('Page Server Actions function', () => {
 
 		// Act and Assert
 		await expect(actions.postAnon(event)).rejects.toThrow();
-		expect(redirect).toHaveBeenCalledWith(303, '/session?completed=true');
+		expect(redirect).toHaveBeenCalledWith(303, '/session/1?completed=true');
 	});
 });

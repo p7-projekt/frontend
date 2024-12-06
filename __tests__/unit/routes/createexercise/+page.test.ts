@@ -35,7 +35,7 @@ describe('Page Load function', () => {
 				}
 			],
 			inputParameterType: ['string'],
-			outputParamaterType: ['string']
+			outputParameterType: ['string']
 		};
 
 		const data = { exerciseData };

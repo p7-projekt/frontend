@@ -53,7 +53,7 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 				value
 			})),
 			output: jsonResponse.testCases[0].outputParams.map((value, index) => ({
-				type: jsonResponse.outputParamaterType[index],
+				type: jsonResponse.outputParameterType[index],
 				value
 			}))
 		}
@@ -157,7 +157,7 @@ export const actions: Actions = {
 			if (isClassroom==='true') {
 				throw redirect(303, `/session/${sessionId}?classroom=true&completed=true`);
 			} else {
-				throw redirect(303, '/session?completed=true');
+				throw redirect(303, `/session/${sessionId}?completed=true`);
 			}
  
 		} else {
@@ -240,7 +240,7 @@ export const actions: Actions = {
 			if (isClassroom === 'true') {
 				throw redirect(303, `/session/${sessionId}?classroom=true&completed=true`);
 			} else {
-				throw redirect(303, '/session?completed=true');
+				throw redirect(303, `/session/${sessionId}?completed=true`);
 			}
 		} else {
 			const responseBody = await response.json();
